@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Row from './Row'
-import {LIST} from '../../test/list'
+import {LIST} from '../../../test/list'
 
 const VIEWS = {
     year: [

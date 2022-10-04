@@ -1,5 +1,5 @@
 import React from 'react'
-import TaskManager from '../task-components/TaskManager'
+import TaskManager from '../../task-components/TaskManager'
 import {Link} from 'react-router-dom'
 
 function Preview({ task }) {

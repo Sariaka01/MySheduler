@@ -1,16 +1,3 @@
-body{
-  background-color: #1b1f29;
-  color: #3abee2;
-  user-select: none;
-}
-
-
-h1:hover{
-  user-select: none;  
-
-}
-
-
 .App {
   text-align: center;
 }

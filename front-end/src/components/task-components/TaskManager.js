@@ -7,9 +7,10 @@ function TaskManager() {
     let params= useParams()
     let task= LIST[params.id]
 
-    function generateList(participants){
+    function generateList(participants) {
+        let i= 0
         return <ul>
-            {participants.map(participant => <li>{participant}</li>)}
+            {participants.map(participant => <li key= {i++}>{participant}</li>)}
         </ul>
     }
 

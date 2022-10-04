@@ -2,9 +2,10 @@ import React from 'react'
 import Preview from './Preview'
 
 function Row({ name, tasks }) {
-    let taskList= []
+    let taskList = []
+    let i= 0
     for (let task of tasks) {
-        taskList.push(<Preview task= {task}/>)
+        taskList.push(<Preview key={i++} task= {task}/>)
     }
   return (
     <td>

@@ -2,35 +2,38 @@ import React, {useState, useEffect} from 'react'
 import Row from './Row'
 import {LIST} from '../../test/list'
 
-const MONTHS= [
-    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-]
+const VIEWS = {
+    year: [
+        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ],
+    week: [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ]
+}
 
 function Calendar() {
-    const [view, setView]= useState('year')
-
+    const [view, setView] = useState('year')
+    
     function generateRows(view) {
-        let rows= []
-        switch (view) {
-            default:
-                for (let month of MONTHS) {
-                    rows.push(<Row name={month} tasks={LIST} />)
-                }
+        let rows = []
+        let i= 0
+        for (let name of VIEWS[view]) {
+            rows.push(<Row key={i++} name={name} tasks={LIST} />)
         }
         return rows
     }
 
     useEffect(() => {
-        let _rows= []
+        let _rows = []
         generateRows(view)
     }, [view])
 
 
     return (
-        <table className="table">
+        <table cellSpacing={0} className="table">
             <tbody>
                 <tr>
-                    {generateRows()}
+                    {generateRows(view)}
                 </tr>
             </tbody>
         </table>

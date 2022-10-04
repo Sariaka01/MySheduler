@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@keyframes anim{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.2);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+h1.styled{
+  animation: anim 2s;
+}
+button.change{
+  background-color: #3abee2;
+  width:200px;
+  padding:10px;
+  margin:35px auto;
+  border: none;
+  border-radius: 27px;
+  font-family:source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+  font-size: 20px;
+ 
+}
+button.changedisabled{
+  background-color: #acccd5;
+  color: #acccd5;
+  width:200px;
+  padding:10px;
+  margin:35px auto;
+  border: none;
+  border-radius: 27px;
+  font-family:source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+  font-size: 20px;
+ 
+}
+button.change:hover{
+  box-shadow: 0px 0px 30px 0px #0ff;
+  color: white;
+}
+
+input,select,textarea{
+  background-color:#e0e0e0 ;
+  color: #1f1f1f;
+  width:195px;
+  padding:5px;
+  margin:10px auto;
+  border: solid 3px #464545;
+  border-radius: 7px;
+  font-family:'helvetica';
+  font-size: 15px;
+  border: none;
+}
+
+input:hover,select:hover{
+  border: none;
+  box-shadow: 0px 0px 30px 0px #0ff;
+}
+
+img{
+  color: #0ff;
+}

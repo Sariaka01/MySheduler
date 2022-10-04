@@ -1,25 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import './table.css'
-import Calendar from './components/calendar/Calendar'
 import TaskManager from './components/task-components/TaskManager'
+import Dashboard from './components/Dashboard'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path= "/" element= {
-                                <div className="container">
-                                  <Calendar/>
-                                  <button>Année</button>
-                                  <button>Mois</button>
-                                  <button>Semaine</button>
-                                  <button>Jour</button>
-                                </div>
-       }/>
-       <Route path= "/task/:id" element= {
-         <TaskManager />
-       }/>
+        <Route path= "/" element= {<Dashboard />}/>
+        <Route path= "/task/:id" element= {
+          <TaskManager />
+        }/>
       </Routes>
     </BrowserRouter>
   )

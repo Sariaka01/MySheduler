@@ -3,3 +3,14 @@ td{
     width: 30px;
     height: 30px;
 }
+
+#dashboard {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+}
+
+#dashboard .sidebar button {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}

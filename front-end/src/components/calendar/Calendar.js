@@ -11,8 +11,8 @@ const VIEWS = {
     ]
 }
 
-function Calendar() {
-    const [view, setView] = useState('year')
+function Calendar({ view }) {
+    //const [view, setView] = useState('year')
     
     function generateRows(view) {
         let rows = []
@@ -23,14 +23,14 @@ function Calendar() {
         return rows
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         let _rows = []
         generateRows(view)
-    }, [view])
+    }, [view])*/
 
 
     return (
-        <table cellSpacing={0} className="table">
+        <table className= "table" cellSpacing={0}>
             <tbody>
                 <tr>
                     {generateRows(view)}

@@ -11,6 +11,23 @@ datasource db {
 }
 
 model User {
-  user_id String @id @default(uuid())
-  name    String
+  user_id    String @id @default(uuid())
+  firstname  String
+  lastname   String
+  email      String @unique
+  password   String
+  ownedTasks Task[] @relation("fk_user_task")
+  tasks      Task[] @relation("participants_relation")
+
+  @@index([email])
+}
+
+model Task {
+  task_id      String   @id @default(uuid())
+  creator_id   String
+  creator      User     @relation("fk_user_task", fields: [creator_id], references: [user_id])
+  start        DateTime
+  end          DateTime
+  beforeStart  Int
+  participants User[]   @relation("participants_relation")
 }

@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/node": "^18.8.2",
     "nodemon": "^2.0.20",
     "prisma": "^4.4.0",

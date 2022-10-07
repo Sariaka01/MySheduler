@@ -1,18 +1,26 @@
 import { Request, Response } from "express"
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma= new PrismaClient()
 
 export async function createUser(req: Request, res: Response){
-    const { name } = req.body
+    const { firstname, lastname, email, password } = req.body
     let newUser: any, status: number = 200
     try {
         prisma.$connect()
-        // Create the user
+        newUser= await prisma.user.create({
+            data: {
+                firstname,
+                lastname,
+                email,
+                password: await bcrypt.hash(password, 10)
+            }
+        })
     }
     catch (e: any) {
-        let err_mess: string = e.message.split('\n\n').slice(-2, -1).join(''); // Semicolon is still important
-        [status, newUser] = [/Invalid/.test(e.message)? 400 : 500, { message: `${err_mess}` }]
+        let invalid: boolean = /Invalid/.test(e.message);
+        [status, newUser] = [invalid? 400 : 500, { message: `${invalid? "Invalid input": "Internal server error"}` }]
     }
     finally {
         prisma.$disconnect()

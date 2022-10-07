@@ -1,11 +1,13 @@
 import { Request, Response, Router } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { createUser } from './userController'
+import { createUser, logoutUser, logUser } from './userController'
 
 const prisma= new PrismaClient({ log: ["query"] })
 const userRouter: Router = Router()
 
 userRouter.post('/create', createUser)
+userRouter.post('/login', logUser)
+userRouter.post('/logout', logoutUser)
 
 userRouter.delete('/all', async (req: Request, res: Response) => {
     prisma.$connect()

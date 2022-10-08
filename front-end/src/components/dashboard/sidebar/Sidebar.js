@@ -11,11 +11,9 @@ function Sidebar() {
                     setView('year')
                 }
             }>Year</button>
-            <button>Month</button>
             <button onClick= {
                 () => setView('week')
             }>Week</button>
-            <button>Day</button>
         </div>
     )
 }

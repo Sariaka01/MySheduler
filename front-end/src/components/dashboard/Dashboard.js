@@ -11,7 +11,7 @@ function Dashboard() {
             <DashboardContext.Provider value={{ setView }}>
                 <Sidebar />
             </DashboardContext.Provider>
-            <Calendar view={view} />
+            <Calendar view = {view} />
         </div>
     )
 }

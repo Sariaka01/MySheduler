@@ -1,42 +1,68 @@
-import React, {useState, useEffect} from 'react'
-import Row from './Row'
+import React, { useState, useEffect } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend as Backend } from 'react-dnd-html5-backend'
+import Column from './Column'
 import {LIST} from '../../../test/list'
 
 const VIEWS = {
-    year: [
-        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ],
-    week: [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    ]
+    year: {
+        list: [
+            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+        ],
+        rowNumber: 31   // Per month view
+    },
+    month: {
+        list: function (name) { 
+            console.log(this)
+            const index = [
+                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+            ].indexOf(name)
+            return [index]
+        }(),
+        rowNumber: 24   // Per month view
+    },
+    week: {
+        list: [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        rowNumber: 24   // Per hour
+    },
+    day: {
+        list: [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        rowNumber: 24   // Per hour
+    },
+    test: {
+        list: [
+            "Today", "Tomorrow"
+        ],
+        rowNumber: 5
+    }
 }
 
 function Calendar({ view }) {
     //const [view, setView] = useState('year')
-    
-    function generateRows(view) {
+    function generateColumns() {
         let rows = []
-        let i= 0
-        for (let name of VIEWS[view]) {
-            rows.push(<Row key={i++} name={name} tasks={LIST} />)
+        let i = 0
+        const newView = VIEWS[view]
+        for (let name of newView.list) {
+            rows.push(<Column key={i++} name={name} tasks={LIST} rowNumber= {newView.rowNumber} />)
         }
         return rows
     }
 
     /*useEffect(() => {
         let _rows = []
-        generateRows(view)
+        generateColumns(view)
     }, [view])*/
 
 
     return (
-        <table className= "table" cellSpacing={0}>
-            <tbody>
-                <tr>
-                    {generateRows(view)}
-                </tr>
-            </tbody>
-        </table>
+        <div id="calendar">
+            { generateColumns() }
+        </div>
     )
 }
 

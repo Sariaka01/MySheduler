@@ -1,7 +1,5 @@
-td{
-    border: 2px solid black;
-    width: 30px;
-    height: 30px;
+a {
+    text-decoration: none;
 }
 
 #dashboard {
@@ -13,4 +11,59 @@ td{
     display: block;
     width: 100%;
     cursor: pointer;
+}
+
+#calendar {
+    display: flex;
+    flex-direction: row;
+}
+
+.column {
+    position: relative;
+    width: 250px;
+    margin: 20px 10px;
+    background: moccasin;
+}
+
+.column h3 {
+    text-align: center;
+    padding: 20px;
+}
+
+.preview {
+    display: block;
+    border: solid 1px black;
+    background: yellow;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: 900;
+    height: 100%;
+    cursor: pointer;
+}
+
+.preview span {
+    display: block;
+}
+
+.preview:hover {
+    opacity: 0.8;
+}
+.drop-container {
+    display: grid;
+    background: blueviolet;
+    padding: 10px;
+    height: 125px;
+    width: 100%;
+    border: solid 1px black;
+}
+
+.drop-container td {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.drop-container-over {
+    background: pink;
+    padding: 10px;
 }

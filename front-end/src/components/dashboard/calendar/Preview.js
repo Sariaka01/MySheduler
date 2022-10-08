@@ -1,19 +1,21 @@
-import React from 'react'
-import TaskManager from '../../task-components/TaskManager'
-import {Link} from 'react-router-dom'
+import React, { useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useDrag, useDrop } from 'react-dnd'
 
 function Preview({ task }) {
+
   return (
-    <tr>
-      <td>
-        <Link to= {`/task/${task.id}`} >
-            Name: {task.name}
-            Creator: {task.creator}
-            Start: {task.start}
-            End: {task.end}
-          </Link>
-        </td>
-    </tr>
+    <td>
+      <Link className={'preview'} to= {`/${task.id}`}>
+      <div>
+        <span>Name: {task.name}</span>
+        <span>Creator: {task.creator}</span>
+        <span>Start: {task.start}</span>
+        <span>End: {task.end}</span>
+        </div>
+      </Link>
+    </td>
+    
   )
 }
 

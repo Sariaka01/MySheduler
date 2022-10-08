@@ -1,13 +1,28 @@
+// The function to manage user routes
 import { Request, Response } from "express"
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { TOKEN_SECRET } from "../globals/variable"
 import { GeneralObject } from "../globals/types"
+import { getOperationTime } from "../globals/date-utils"
 
 const prisma= new PrismaClient()
 
-async function findByEmail(email: string, ...fields: string[]): Promise<GeneralObject|number> {
+function getPayload(req: Request): jwt.JwtPayload | null {
+    // Return a payload containing only the email of the actual user from a token or null if the token is invalid
+    try {
+        const token= req.body.token || req.headers.cookie?.split('=')[1]
+        const payload = jwt.verify(token, TOKEN_SECRET) as jwt.JwtPayload
+        return payload
+    }
+    catch {
+        return null
+    }
+}
+
+async function findByEmail(email: string, ...fields: string[]): Promise<GeneralObject | number> {
+    // Find an user by email and return the given fields
     try {
         let user = await prisma.user.findUnique({
             where: {
@@ -30,7 +45,6 @@ async function findByEmail(email: string, ...fields: string[]): Promise<GeneralO
 export async function createUser(req: Request, res: Response){
     const { firstname, lastname, email, password } = req.body
     let newUser: any, status: number = 201  // Status code 201 == Created
-    const now = new Date().toISOString()
     try {
         prisma.$connect()
         newUser= await prisma.user.create({
@@ -38,7 +52,7 @@ export async function createUser(req: Request, res: Response){
                 firstname,
                 lastname,
                 email,
-                password: await bcrypt.hash(password, 10)
+                password: await bcrypt.hash(password, 10),  // Bcrypt encryption
             }
         })
     }
@@ -49,13 +63,12 @@ export async function createUser(req: Request, res: Response){
     finally {
         prisma.$disconnect()
         res.status(status).json(newUser)
-        console.log(`${now}: ${status == 201?'created ': 'error '}${newUser.email? newUser.email: newUser}`)
+        console.log(`${getOperationTime()}: ${status == 201?'created ': 'error '}${newUser.email? newUser.email: newUser.message}`)
     }
 }
 
 export async function logUser(req: Request, res: Response) {
     const { email, password } = req.body
-    const now = new Date().toISOString()
     const user = await findByEmail(email, "email", "password")
 
     switch (user) {
@@ -65,8 +78,9 @@ export async function logUser(req: Request, res: Response) {
             return res.status(500)
         default:
             if (await bcrypt.compare(password, (<GeneralObject>user)["password"])) {
-                let token = jwt.sign({ email }, TOKEN_SECRET)
-                console.log(`${now}: connected ${email}`)
+                let token = jwt.sign({ email }, TOKEN_SECRET)   // Sign the email with the token
+                console.log(`${getOperationTime()}: connected ${email}`)
+                res.set('Set-Cookie', `session=${token}`)
                 res.status(200).json({ token })
             }
             else {
@@ -76,20 +90,72 @@ export async function logUser(req: Request, res: Response) {
 }
 
 export async function logoutUser(req: Request, res: Response) {
-    const now= new Date().toISOString()
     try {
-        const payload = jwt.verify(req.body.token, TOKEN_SECRET) as jwt.JwtPayload
+        const payload = getPayload(req)
+        if (!payload)
+            throw new Error()
+
         const user = await findByEmail(payload.email, "email")
         switch (user) {
             case -1:
                 return res.status(500)
             default:
-                console.log(`${now}: logout ${user? (<GeneralObject>user)["email"]: "unexisting user"}`)
+                console.log(`${getOperationTime()}: logout ${user ? (<GeneralObject>user)["email"] : "unexisting user"}`)              
+                res.set('Set-Cookie', 'session=; Expires=Thu, 01 Jan 1970 00:00:00 GMT;')
                 return res.status(user? 200: 404).json({ message: user? 'Logout successful': 'No user found' })
         }
     }
     catch {
         console.log('Invalid token')
         res.status(400).json({ message: 'Invalid token provided'})
+    }
+}
+
+export async function createTask(req: Request, res: Response) {
+    // Task creation
+    try {
+        const payload = getPayload(req)
+        if (!payload) 
+            return res.status(404).json({ message: 'User not found' })
+        console.log(getOperationTime() + ':\n')
+        console.log(`${payload.email} creating a new task...\n`)
+        const user = await findByEmail(payload.email, "user_id") // Get the user with only the id field
+        console.log(user)
+        switch (user) {
+            case 0:
+                return res.status(404).json({ message: 'User not found' })
+            case -1:
+                return res.status(500)
+            default:
+                console.log('Creating...\n')
+                const id = (<GeneralObject>user)['user_id']
+                const { name, start, end, priority, beforeStart, participants } = req.body.data
+                console.log(
+                    {
+                        name, start, end, priority, beforeStart, participants
+                    }
+                )
+                const newTask = await prisma.task.create({
+                    data: {
+                        name,
+                        creator: {
+                            connect: {
+                                user_id: id
+                            }
+                        }
+                    },
+                    select: {
+                        task_id: true
+                    }
+                })
+                console.log(`Creation done, task id: ${newTask.task_id}`)
+                return res.status(200).json(newTask)
+        }   // End switch
+    }
+    catch {
+        res.status(500)
+    }
+    finally {
+        prisma.$disconnect()
     }
 }

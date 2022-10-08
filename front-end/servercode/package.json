@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon main.ts"
+    "start": "nodemon main.ts",
+    "user-test": "nodemon ./test/userRoute.ts"
   },
   "keywords": [],
   "author": "",

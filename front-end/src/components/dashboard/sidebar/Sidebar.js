@@ -5,7 +5,10 @@ function Sidebar() {
     const { setView } = useContext(DashboardContext)
     
     return (
-        <div className= "sidebar">
+        <div className="sidebar">
+            <button onClick= {
+                () => setView('test')
+            }>Test</button>
             <button onClick={
                 () => {
                     setView('year')

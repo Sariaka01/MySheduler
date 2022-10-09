@@ -5,7 +5,7 @@ import {LIST} from '../../test/list'
 
 function TaskManager() {
     let params= useParams()
-    let task= LIST[params.id]
+    let task= LIST[params.id-1]
 
     function generateList(participants) {
         let i= 0

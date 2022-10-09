@@ -7,7 +7,8 @@ function Column({ name, tasks, rowNumber }) {
     function generateRows() {
         let rows= []
         for (let i = 0; i < rowNumber; i++) {
-            let el = i<4? <DropContainer key= {i}><Preview task={tasks[i%4]} /></DropContainer>: <DropContainer key= {i} />
+            // Filter the tasks
+            let el = i<4? <DropContainer key= {i} tasks={[tasks[i%4]]} />: <DropContainer key= {i} />
             rows.push(el)
         }
         return rows

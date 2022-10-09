@@ -1,68 +1,71 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend'
 import Column from './Column'
-import {LIST} from '../../../test/list'
-
-const VIEWS = {
-    year: {
-        list: [
-            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-        ],
-        rowNumber: 31   // Per month view
-    },
-    month: {
-        list: function (name) { 
-            console.log(this)
-            const index = [
-                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-            ].indexOf(name)
-            return [index]
-        }(),
-        rowNumber: 24   // Per month view
-    },
-    week: {
-        list: [
-            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-        ],
-        rowNumber: 24   // Per hour
-    },
-    day: {
-        list: [
-            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-        ],
-        rowNumber: 24   // Per hour
-    },
-    test: {
-        list: [
-            "Today", "Tomorrow"
-        ],
-        rowNumber: 5
-    }
-}
+import { DashboardContext } from '../Dashboard'
+import DropContainer from './DropContainer'
+import { VIEWS } from './views'
 
 function Calendar({ view }) {
-    //const [view, setView] = useState('year')
+    const { tasks } = useContext(DashboardContext)
+    const [list, setList] = useState(tasks)
+    /*function generateRowNumbers() {
+        let rows = []
+        let newView = VIEWS[view]
+        for (let i = 1; i <= newView.rowNumber; i++) {
+            rows.push(<tr key={i}>
+                <td>
+                    <h4>{i}</h4>
+                </td>
+            </tr>)
+        }
+        return <table><tbody>{rows}</tbody></table>
+    }
     function generateColumns() {
         let rows = []
         let i = 0
         const newView = VIEWS[view]
         for (let name of newView.list) {
-            rows.push(<Column key={i++} name={name} tasks={LIST} rowNumber= {newView.rowNumber} />)
+            // Filter the tasks
+            rows.push(<td key={i++}><Column name={name} tasks={tasks} rowNumber= {newView.rowNumber} /></td>)
+        }
+        return rows
+    }*/
+    const onDrop = (item, monitor) => {
+    }
+
+    function generateCalendar() {
+        const newView = VIEWS[view]
+        let rows = []
+        for (let i = 0; i <= newView.rowNumber; i ++) {
+            // Row creation
+            let cols = []
+            if (i == 0) {
+                // First row with the names
+                cols.push(<td key={'nbsp'} className="row-number nbsp">&nbsp;</td>, ...newView.list.map(el => <td key={`${el}`} className = "title"><h3>{ el }</h3></td>))
+            }
+            else {
+                cols.push(<td key={`row-number-${i}`} className="row-number drop-container"><h3>{i}</h3></td>)
+                // Filter tasks
+                for (let j = 0; j < newView.list.length; j++) {
+                    let date = `${i}-${newView.list[j].toLowerCase()}` // Date
+                    let taskList = tasks.filter(task => task.date == date)
+                    cols.push(<DropContainer key={`${date}`} tasks={ taskList } onDrop= {onDrop} />)
+                }
+            }
+            rows.push(<tr key= {`row-${i}`}>{cols}</tr>)
         }
         return rows
     }
 
-    /*useEffect(() => {
-        let _rows = []
-        generateColumns(view)
-    }, [view])*/
-
-
     return (
-        <div id="calendar">
-            { generateColumns() }
-        </div>
+        <DndProvider backend= {Backend}>
+            <table id="calendar" cellSpacing = {0}>
+                <tbody>
+                    { generateCalendar() }
+                </tbody>
+            </table>
+        </DndProvider>
     )
 }
 

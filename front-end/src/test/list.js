@@ -6,7 +6,8 @@ const LIST= [
         "start": "12-12-2022 09:30",
         "end": "12-12-2022 17:00",
         "description": "BOnjour le monde, voici task manager",
-        "participants": ["Mendrika", "Faniry", "Safidy", "Sariaka", "Tsiory", "Kevin"]
+        "participants": ["Mendrika", "Faniry", "Safidy", "Sariaka", "Tsiory", "Kevin"],
+        "date": "2-today"
     },
     {
         "id": 2,
@@ -15,7 +16,8 @@ const LIST= [
         "start": "12-12-2022 09:30",
         "end": "12-12-2022 17:00",
         "description": "BOnjour le monde, voici task manager",
-        "participants": ["Sariaka", "Tsiory", "Kevin"]
+        "participants": ["Sariaka", "Tsiory", "Kevin"],
+        "date": "1-tomorrow"
     },
     {
         "id": 3,
@@ -24,7 +26,8 @@ const LIST= [
         "start": "12-12-2022 09:30",
         "end": "12-12-2022 17:00",
         "description": "BOnjour le monde, voici task manager",
-        "participants": ["Sariaka", "Tsiory", "Kevin"]
+        "participants": ["Sariaka", "Tsiory", "Kevin"],
+        "date": "3-tomorrow"
     },
     {
         "id": 4,
@@ -33,7 +36,8 @@ const LIST= [
         "start": "12-12-2022 09:30",
         "end": "12-12-2022 17:00",
         "description": "BOnjour le monde, voici task manager",
-        "participants": ["Sariaka", "Tsiory", "Kevin"]
+        "participants": ["Sariaka", "Tsiory", "Kevin"],
+        "date": "5-today"
     }
 ]
 

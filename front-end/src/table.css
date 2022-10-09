@@ -2,10 +2,10 @@ a {
     text-decoration: none;
 }
 
-#dashboard {
+/*#dashboard {
     display: grid;
     grid-template-columns: 100px 1fr;
-}
+}*/
 
 #dashboard .sidebar button {
     display: block;
@@ -14,10 +14,23 @@ a {
 }
 
 #calendar {
-    display: flex;
-    flex-direction: row;
+    display: block;
 }
 
+#calendar td {
+    border: solid 1px black;
+}
+
+#calendar .nbsp {
+    border: none;
+}
+
+#calendar .title {
+    text-align: center;
+    padding: 5px;
+}
+
+/*
 .column {
     position: relative;
     width: 250px;
@@ -29,8 +42,21 @@ a {
     text-align: center;
     padding: 20px;
 }
+*/
+#calendar .drop-container:first-child {
+    width: 50px;
+}
+#calendar .drop-container {
+    /* display: grid; */
+    /* background: blueviolet; */
+    position: relative;
+    padding: 10px;
+    height: 125px;
+    width: 250px;
+    border: solid 1px black;
+}
 
-.preview {
+#calendar .preview {
     display: block;
     border: solid 1px black;
     background: yellow;
@@ -38,6 +64,8 @@ a {
     padding: 5px;
     font-weight: 900;
     height: 100%;
+    width: 100%;
+    overflow: hidden;
     cursor: pointer;
 }
 
@@ -48,22 +76,12 @@ a {
 .preview:hover {
     opacity: 0.8;
 }
-.drop-container {
-    display: grid;
-    background: blueviolet;
-    padding: 10px;
-    height: 125px;
-    width: 100%;
-    border: solid 1px black;
-}
-
-.drop-container td {
+/*.drop-container td {
     width: 100%;
     height: 100%;
     border-radius: 5px;
 }
-
+*/
 .drop-container-over {
     background: pink;
-    padding: 10px;
 }

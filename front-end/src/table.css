@@ -30,22 +30,10 @@ a {
     padding: 5px;
 }
 
-/*
-.column {
-    position: relative;
-    width: 250px;
-    margin: 20px 10px;
-    background: moccasin;
-}
-
-.column h3 {
-    text-align: center;
-    padding: 20px;
-}
-*/
 #calendar .drop-container:first-child {
     width: 50px;
 }
+
 #calendar .drop-container {
     /* display: grid; */
     /* background: blueviolet; */
@@ -54,34 +42,30 @@ a {
     height: 125px;
     width: 250px;
     border: solid 1px black;
+    vertical-align: top;
 }
 
 #calendar .preview {
-    display: block;
+    display: inline-block;
     border: solid 1px black;
     background: yellow;
     border-radius: 5px;
     padding: 5px;
     font-weight: 900;
-    height: 100%;
+    height: 100px;
     width: 100%;
     overflow: hidden;
     cursor: pointer;
 }
 
-.preview span {
+#calendar .preview span {
     display: block;
 }
 
-.preview:hover {
+#calendar .preview:hover {
     opacity: 0.8;
 }
-/*.drop-container td {
-    width: 100%;
-    height: 100%;
-    border-radius: 5px;
-}
-*/
-.drop-container-over {
+
+#calendar .drop-container-over {
     background: pink;
 }

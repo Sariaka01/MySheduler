@@ -5,33 +5,20 @@ import Column from './Column'
 import { DashboardContext } from '../Dashboard'
 import DropContainer from './DropContainer'
 import { VIEWS } from './views'
+import { LIST } from '../../../test/list'
 
 function Calendar({ view }) {
-    const { tasks } = useContext(DashboardContext)
-    const [list, setList] = useState(tasks)
-    /*function generateRowNumbers() {
-        let rows = []
-        let newView = VIEWS[view]
-        for (let i = 1; i <= newView.rowNumber; i++) {
-            rows.push(<tr key={i}>
-                <td>
-                    <h4>{i}</h4>
-                </td>
-            </tr>)
-        }
-        return <table><tbody>{rows}</tbody></table>
-    }
-    function generateColumns() {
-        let rows = []
-        let i = 0
-        const newView = VIEWS[view]
-        for (let name of newView.list) {
-            // Filter the tasks
-            rows.push(<td key={i++}><Column name={name} tasks={tasks} rowNumber= {newView.rowNumber} /></td>)
-        }
-        return rows
-    }*/
-    const onDrop = (item, monitor) => {
+    const [ tasks, setTasks ] = useState(LIST)
+    const onDrop = (item, monitor, date) => {
+        setTasks(prev => {
+            let element = prev.find(el => el.id == item.id)
+            element.date = date
+
+            let newList = prev
+                .filter(el => el.id != item.id)
+                .concat(element)
+            return newList
+        })
     }
 
     function generateCalendar() {
@@ -50,7 +37,7 @@ function Calendar({ view }) {
                 for (let j = 0; j < newView.list.length; j++) {
                     let date = `${i}-${newView.list[j].toLowerCase()}` // Date
                     let taskList = tasks.filter(task => task.date == date)
-                    cols.push(<DropContainer key={`${date}`} tasks={ taskList } onDrop= {onDrop} />)
+                    cols.push(<DropContainer key={`${date}`} tasks={ taskList } onDrop= {onDrop} date = {date} />)
                 }
             }
             rows.push(<tr key= {`row-${i}`}>{cols}</tr>)

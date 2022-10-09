@@ -2,11 +2,11 @@ import React from 'react'
 import { useDrop } from 'react-dnd'
 import Preview from './Preview'
 
-function DropContainer({ tasks, onDrop }) {
+function DropContainer({ tasks, onDrop, date }) {
     const [{ isOver }, drop] = useDrop({
         accept: 'task',
         drop: (item, monitor) => {
-            onDrop(item)
+            onDrop(item, monitor, date)
         },
         collect: (monitor) => ({
             isOver: monitor.isOver()
@@ -16,7 +16,7 @@ function DropContainer({ tasks, onDrop }) {
         return tasks.map((task, i) => <Preview key={i} task={task} />)
     }
     return (
-        <td ref={drop} className= { isOver? "drop-container-over": "drop-container" }>
+        <td ref={drop} className= { `drop-container ${isOver? 'drop-container-over': ''}` }>
             {tasks && generateChildren()}
         </td>
     )

@@ -17,6 +17,13 @@ a {
     display: block;
 }
 
+#calendar tr:first-child {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: yellowgreen;
+}
+
 #calendar td {
     border: solid 1px black;
 }

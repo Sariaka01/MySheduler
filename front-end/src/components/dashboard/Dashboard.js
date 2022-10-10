@@ -6,11 +6,12 @@ export const DashboardContext= createContext()
 
 function Dashboard() {
     const [view, setView] = useState('test')
+    const [year, setYear] = useState(new Date().getFullYear())
     return (
         <div id="dashboard">
             <DashboardContext.Provider value={{ setView }}>
                 <Sidebar />
-                <Calendar view={view} />
+                <Calendar view={view} year= {year} />
             </DashboardContext.Provider>
         </div>
     )

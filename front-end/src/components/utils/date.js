@@ -12,7 +12,8 @@ export const VIEWS = {
             // Only month changes
             const cur = new Date(curDate)
             const [day, month] = date.split('-')
-            const newDateString = new Date(`${cur.getFullYear()}-${month}-${day}`).toISOString()
+            console.log(day, month)
+            const newDateString = new Date(`${cur.getFullYear()}-${month}-${('0'+day).slice(-2)}`).toUTCString()
             console.log(newDateString)
             return newDateString
         },

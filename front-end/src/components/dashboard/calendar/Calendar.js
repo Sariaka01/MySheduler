@@ -19,6 +19,7 @@ function Calendar({ view }) {
 
     function generateCalendar() {
         let rows = []
+        let remainder = tasks
         for (let i = 0; i <= newView.rowNumber; i ++) {
             // Row creation
             let cols = []
@@ -31,7 +32,17 @@ function Calendar({ view }) {
                 // Filter tasks
                 for (let j = 1; j <= newView.list.length; j++) {
                     let dateLabel = `${i}-${j}` // Date, j-th element of the i-th row, i-1 because of the first row
-                    let taskList = tasks.filter(task => newView.belongsTo(task, dateLabel))
+                    let taskList= []
+                    if (remainder.length) {
+                        let newRemainder = []
+                        for (let task of remainder) {
+                            if (newView.belongsTo(task, dateLabel))
+                                taskList.push(task)
+                            else
+                                newRemainder.push(task)
+                        }
+                        remainder= newRemainder
+                    }
                     cols.push(<DropContainer key={`${dateLabel}`} tasks={ taskList } onDrop= {onDrop} date = {dateLabel} />)
                 }
             }

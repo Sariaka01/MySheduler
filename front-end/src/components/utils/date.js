@@ -4,6 +4,8 @@ export function getWeek(date) {
     const days = Math.floor((date - firstJanuary) / (24 * 60 * 60 * 1000))   // Operations on dates works with milliseconds
     return Math.ceil(days / 7)
 }
+
+
 export const VIEWS = {
     year: {
         list: [

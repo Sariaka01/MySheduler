@@ -60,7 +60,7 @@ function Calendar({ view, year }) {
 
     return (
         <DndProvider backend= {Backend}>
-            <table id="calendar" cellSpacing = {0}>
+            <table id = "calendar" cellSpacing = {0}>
                 <tbody>
                     { generateCalendar() }
                 </tbody>

@@ -5,7 +5,7 @@ import { useDrag, useDrop } from 'react-dnd'
 function Preview({ task }) {
   const [{ isDragging }, drag] = useDrag({
     type: 'task',
-    item: { id: task.id }
+    item: { ...task }
   })
   /*const [, drop] = useDrop({
     accept: 'task',

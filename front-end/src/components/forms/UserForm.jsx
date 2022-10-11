@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import Registration from './Registration'
 import Login from './Login'
 import './user-form.css'
@@ -11,7 +12,7 @@ function UserForm() {
                 <button onClick = {() => setIsLogin(true)}>LOGIN</button>
                 <button onClick = {() => setIsLogin(false)}>REGISTER</button>
             </div>
-            {isLogin && <Login /> || <Registration />} 
+            {isLogin && <Login /> || <Registration />}
         </div>
     )
 }

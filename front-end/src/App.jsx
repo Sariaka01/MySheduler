@@ -8,10 +8,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="user" element={<UserForm />}>
-          <Route path= "dashboard" element= {<h1>Dashboard</h1>}/>
-          <Route path= "task/:id" element= {<TaskManager />}/>
+        <Route path='/'>
+          <Route index element={ <UserForm /> } />
+          <Route path= 'dashboard' element= {<Dashboard />}/>
+          <Route path= 'task/:id' element= {<TaskManager />}/>
         </Route>
+      <Route path='*' element={ <h1>Error 404: Page not found</h1>} />
       </Routes>
     </BrowserRouter>
   )

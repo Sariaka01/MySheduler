@@ -1,7 +1,7 @@
 // Routes for user managing
 import { Request, Response, Router } from 'express'
-import { createUser, logoutUser, logUser } from './userController'
-import { clearAll, clearTaskTable, clearUserTable } from './admin'
+import { createUser, logoutUser, logUser} from './userController'
+import { clearAll, clearTaskTable, clearUserTable, selectAllUser } from './admin'
 import taskRouter from './taskRoute'
 
 const userRouter: Router = Router()
@@ -9,6 +9,7 @@ const userRouter: Router = Router()
 userRouter.post('/create', createUser)
 userRouter.post('/login', logUser)
 userRouter.post('/logout', logoutUser)
+userRouter.post('/all', selectAllUser)
 userRouter.delete('/', async (req: Request, res: Response) => {
     const { table } = req.query
     switch (table) {
@@ -26,6 +27,6 @@ userRouter.delete('/', async (req: Request, res: Response) => {
             return res.status(400) // Wrong input
     }
 })
-userRouter.use('/task', taskRouter) // Task must be used by logged users
+userRouter.use('/tasks', taskRouter) // Task must be used by logged users
 
 export default userRouter

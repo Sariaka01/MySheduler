@@ -1,6 +1,7 @@
 import React, {createContext, useState} from 'react'
 import Calendar from './calendar/Calendar'
 import Sidebar from './sidebar/Sidebar'
+import './table.css'
 
 export const DashboardContext= createContext()
 

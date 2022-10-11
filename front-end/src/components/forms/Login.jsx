@@ -5,7 +5,8 @@ import { clearInputs } from './form-managing'
 function Login() {
     const [emailInput, passwordInput] = [useRef(null), useRef(null)]
     const [isShowing, setIsShowing] = useState(false)
-    const [errorMessage, setErrorMessage] = useState(false)
+    
+    const [errorMessage, setErrorMessage] = useState('')
     const login = async (e) => {
         e.preventDefault()
         try {
@@ -20,8 +21,8 @@ function Login() {
             }
         }
         catch {
-            setErrorMessage(true)
-            setTimeout(() => setErrorMessage(false), 3000)
+            setErrorMessage('Wrong email or password provided')
+            setTimeout(() => setErrorMessage(''), 3000)
             clearInputs(passwordInput)
         }
     }
@@ -36,7 +37,7 @@ function Login() {
                 { isShowing && 'Hide' || 'Show' } password 
             </label><br />
             <button type='submit'>LOGIN</button>
-            {errorMessage && <><br /><span className='error-message'>Wrong username or password</span></>}
+            {errorMessage && <><br /><span className='error-message'>{ errorMessage }</span></>}
     </form>
     )
 }

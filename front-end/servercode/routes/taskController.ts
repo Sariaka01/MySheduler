@@ -16,7 +16,6 @@ const SELECTOR = {
                     beforeStart: true,
                     creator: {
                         select: {
-                            user_id: false,
                             firstname: true,
                             lastname: true,
                             email: true
@@ -24,6 +23,8 @@ const SELECTOR = {
                     },
                     participants: {
                         select: {
+                            firstname: true,
+                            lastname: true,
                             email: true
                         }
                     }

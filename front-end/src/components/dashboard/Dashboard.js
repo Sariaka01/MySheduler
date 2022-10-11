@@ -5,7 +5,7 @@ import Sidebar from './sidebar/Sidebar'
 export const DashboardContext= createContext()
 
 function Dashboard() {
-    const [view, setView] = useState('test')
+    const [view, setView] = useState('year')
     const [year, setYear] = useState(new Date().getFullYear())
     return (
         <div id="dashboard">

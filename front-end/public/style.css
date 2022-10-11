@@ -1,0 +1,26 @@
+* {
+    font-family: "Montserrat";
+}
+@font-face {
+    font-family: Ubuntu;
+    src: url('../fonts/ubuntu/Ubuntu-Regular.ttf'); 
+}
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url('../fonts/poppins/Poppins-Regular.ttf'); 
+}
+  
+
+@font-face {
+    font-family: Montserrat-Bold;
+    src: url('../fonts/montserrat/Montserrat-Bold.ttf'); 
+}
+@font-face {
+    font-family: Montserrat;
+    src: url('../fonts/montserrat/Montserrat-Medium.ttf'); 
+}
+
+body{
+    user-select: none;
+}

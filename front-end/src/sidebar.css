@@ -1,0 +1,53 @@
+.nav {
+    position: relative;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    overflow: hidden;
+    color: #000000;
+    
+}
+
+
+.nav button {
+    float: left;
+    width: 65px; 
+    height: 30px; 
+    margin: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(46, 46, 46);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(31, 214, 159);
+    box-shadow: 0 0 3px rgba(70, 50, 50, 0.3);
+    
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+
+}
+
+.nav-centered span {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+}
+
+.nav-right{
+    float: right;
+    margin-top: 10px;
+    color: white;
+}
+.nav span{
+    padding-right: 20px;
+}

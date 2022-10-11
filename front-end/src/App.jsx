@@ -8,9 +8,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UserForm />}>
-          <Route path= "/dashboard" element= {<Dashboard />}/>
-          <Route path= "/task/:id" element= {<TaskManager />}/>
+        <Route path="user" element={<UserForm />}>
+          <Route path= "dashboard" element= {<h1>Dashboard</h1>}/>
+          <Route path= "task/:id" element= {<TaskManager />}/>
         </Route>
       </Routes>
     </BrowserRouter>

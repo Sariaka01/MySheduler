@@ -22,7 +22,7 @@ userRouter.delete('/', async (req: Request, res: Response) => {
             await clearAll(req, res)
             break
         default:
-            console.log('Bad entry')
+            console.log('Bad entry: unknown table query')
             return res.status(400) // Wrong input
     }
 })

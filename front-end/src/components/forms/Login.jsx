@@ -21,7 +21,7 @@ function Login() {
         }
         catch {
             setErrorMessage(true)
-            setTimeout(() => setErrorMessage(false), 2000)
+            setTimeout(() => setErrorMessage(false), 3000)
             clearInputs(passwordInput)
         }
     }

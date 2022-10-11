@@ -9,3 +9,7 @@ input[type=checkbox] {
     display: inline;
     cursor: pointer;
 }
+.error-message {
+    color: #f00;
+    font-weight: 500;
+}

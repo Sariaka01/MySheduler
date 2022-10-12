@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import Axios from 'axios'
 import { clearInputs } from './form-managing'
-import '../../form.css'
+
 
 function Login() {
     const [emailInput, passwordInput] = [useRef(null), useRef(null)]

@@ -93,8 +93,8 @@ function Registration() {
           </span>
         </div>
 
-        <div className="container-login-btn">
-          <input type="submit" className="login-btn" value="Register" />      
+        <div className="container-btn">
+          <input type="submit" className="btn" value="Register" />      
         </div>
         {errorMessage && <><br /><span className='error-message'>{ errorMessage }</span></>}
 

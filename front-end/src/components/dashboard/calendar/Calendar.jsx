@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useTransition } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend'
 import DropContainer from './DropContainer'
-import { VIEWS, dateBelongsTo, getWeek } from '../../utils/date'
+import Loading from '../../others/Loading'
+import { VIEWS, dateBelongsTo, getWeek, getLocaleDateTime } from '../../utils/date'
 import { LIST } from '../../../test/list'
 
-function Calendar({ view, year }) {
+function Calendar({ view, date }) {
     const [tasks, setTasks] = useState(LIST)
     const newView =  VIEWS[view]
     const onDrop = (item, _, date) => {
@@ -20,9 +21,8 @@ function Calendar({ view, year }) {
         let rows = []
         let remainder = tasks
         /****************************** Date manipulation *****************************/
-        const curDate = new Date();
-        let [year, month, day, hour] = curDate.toISOString().replace(/[:T.-]/ig, ' ').split(' ').map(el => +el)
-        hour= hour - (Math.round(curDate.getTimezoneOffset() / 60))
+        const curDate = new Date().toISOString();
+        let { year, month, day, hour } = getLocaleDateTime(curDate)
         const week = getWeek(curDate)
         console.log(year, month, day, hour, week)
         /***********************************************************************/
@@ -56,9 +56,16 @@ function Calendar({ view, year }) {
         }
         return rows
     }
-
+    // const [isPending, startTransition] = useTransition()
+    // useEffect(() => startTransition(() => {
+    //     for (let i = 0; i < 200000; i++){
+    //         console.log(i)
+    //     }
+    // }),
+    // [tasks])
     return (
-        <DndProvider backend= {Backend}>
+        <DndProvider backend={Backend}>
+            {/* {isPending && <Loading />} */}
             <table id = "calendar" cellSpacing = {0}>
                 <tbody>
                     { generateCalendar() }

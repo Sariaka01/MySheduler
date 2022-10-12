@@ -7,12 +7,12 @@ export const DashboardContext= createContext()
 
 function Dashboard() {
     const [view, setView] = useState('test')
-    const [year, setYear] = useState(new Date().getFullYear())
+    const [date, setDate] = useState(new Date().toISOString())  // Manipulate the date in ISO format
     return (
         <div id="dashboard">
             <DashboardContext.Provider value={{ setView }}>
                 <Sidebar />
-                <Calendar view={view} year= {year} />
+                <Calendar view={view} date= {date} />
             </DashboardContext.Provider>
         </div>
     )

@@ -1,10 +1,28 @@
-export function getWeek(date) {
-    // date is of Date type
-    const firstJanuary = new Date(date.getFullYear(), 0, 1)  // January 1st of the current year
-    const days = Math.floor((date - firstJanuary) / (24 * 60 * 60 * 1000))   // Operations on dates works with milliseconds
-    return Math.ceil(days / 7)
+export function getLocaleDateTime(ISOString) {
+    // Extracting year, month, day, hour, min, sec from ISO string to locale string
+    let [month, day, year, _, hour, min, sec, amPm] = new Date(ISOString).toLocaleString().split(/[,:\s/]/)
+    hour = +hour + (amPm == 'PM' ? 12 : 0)
+    // console.log(day, month, year, hour)
+    // console.log(new Date(year, month - 1, day, hour).toUTCString()) // This should display another date
+    /* Month - 1 because they are counted from 0 */
+    return {
+        year: +year,
+        month: month - 1,   // Starts from 0 to 11
+        day: +day,
+        hour: +hour,
+        offset: new Date().getTimezoneOffset()
+    }
 }
 
+export function getWeek(ISOString) {
+    const date = new Date(ISOString)
+    const localDate = getLocaleDateTime(ISOString)
+    const firstJanuary = new Date(localDate.year, 0, 1, 0 - localDate.offset/60)  // January 1st of the current year
+    // console.log(firstJanuary, localDate.offset)
+    const days = Math.floor((date - firstJanuary) / (24 * 60 * 60 * 1000))   // Operations on dates works with milliseconds
+    // console.log('Week is ' + Math.ceil(days / 7))
+    return Math.ceil(days / 7)
+}
 
 export const VIEWS = {
     year: {

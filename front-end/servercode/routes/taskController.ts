@@ -3,8 +3,6 @@ import { Request, Response } from "express"
 import { PrismaClient } from '@prisma/client'
 import { getPayload } from "./userController"
 import { getOperationTime } from "../globals/date-utils"
-import { findByEmail } from "./userController"
-import { GeneralObject } from "../globals/types"
 
 const SELECTOR = {
                     task_id: true,
@@ -42,29 +40,41 @@ export async function createTask(req: Request, res: Response) {
         console.log(`${payload.email} creating a new task...\n`)
 
         console.log('Creating...\n')
-        const { name, description, start, end, priority, beforeStart, participants } = req.body.data
-        
-        let unknown= []
-        let participantsId = []
-        for (let email of participants) {
+        const { name, description, start, end, priority, beforeStart } = req.body.data
+        let participants: string[] | null = req.body.data.participants
+
+        if (!participants) {
+            res.status(400).json({ message: `A task needs at least one participant`})
+        }
+
+        let unknown: string[]= []
+        let valid: string[] = []
+
+        // Filtering emails
+        for (let email of <string[]>participants) {
             let id= await prisma.user.findUnique({
                     where: {
                         email: email
-                    },
-                    select: {
-                        user_id: true
                     }
-            })
+                })
             if (id) {
-                participantsId.push(id)
+                valid.push(email)
             }
             else {
                 // For participants not in the database
                 unknown.push(email)
             }
         }   // End for
-        console.log(participantsId, unknown)
+
+        /*console.log(valid, unknown)
         console.log(name, start, end, beforeStart, priority, description)
+        console.log(participants)
+        
+        console.log('Done filtering')*/
+
+        if (!valid.length) {
+            res.status(400).json({ message: `No valid email`, data: unknown })
+        }
         const newTask = await prisma.task.create({
             data: {
                 name,
@@ -79,12 +89,16 @@ export async function createTask(req: Request, res: Response) {
                     }
                 },
                 participants: {
-                    connect: <any>participantsId
+                    connect: valid.map(participant => ({ email: participant }))
                 }
             },
             select: SELECTOR
         })
+        
         console.log(`Creation done, task id: ${newTask.task_id}`)
+
+        // Filter the inputs to see if there are any invalid given email in the inputs
+        /*let unknown = newTask.participants.filter(participant => !participants.includes(participant.email))*/
         if (unknown.length)
             return res.status(400).json({ unknown })
         return res.status(200).json(newTask)
@@ -203,7 +217,7 @@ export async function updateTask(req: Request, res: Response) {
             })
         }
         if (unknown.length)
-            return res.status(400).json({ message: `${unknown.length} participants not found\n\t${unknown.join('\n\t')}` })
+            return res.status(400).json({ message: `${unknown.length} participants not found\n\t${unknown.join('\n\t')}`, count: unknown.length })
         return res.status(200).json({ message: `${newTask.count} tasks(s) updated successfully` })
     }
     catch (e: any) {
@@ -237,9 +251,9 @@ export async function deleteTasks(req: Request, res: Response) {
             }
         })
         if (removedTask.count != taskIdList.length) {
-            return res.status(404).json({ message: `${taskIdList.length-removedTask.count} tasks(s) not found` })
+            return res.status(404).json({ message: `${taskIdList.length-removedTask.count} tasks(s) not found`, count: taskIdList.length-removedTask.count  })
         }
-        return res.status(200).json({ message: `${removedTask.count} task(s) removed successfully` })
+        return res.status(200).json({ message: `${removedTask.count} task(s) removed successfully`, count: removedTask.count })
     }
     catch {
         res.status(500)

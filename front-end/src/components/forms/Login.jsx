@@ -10,7 +10,7 @@ function Login() {
     const login = async (e) => {
         e.preventDefault()
         try {
-            const res = await Axios.post(`http://localhost:3001/user/login`, {
+            const res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/login`, {
             email: emailInput.current.value,
             password: passwordInput.current.value
             })

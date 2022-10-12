@@ -29,7 +29,7 @@ function Registration() {
       return
     }
     try {
-      const res = await Axios.post(`http://localhost:3001/user/create`, inputs)
+      const res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/create`, inputs)
       if (res.status == 201) {
         alert(`${inputs.email} added successfully to the database`)
         setInputs({

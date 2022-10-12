@@ -24,15 +24,15 @@ model User {
 }
 
 model Task {
-  task_id    String @id @default(uuid())
-  name       String
-  // description  String?
-  // priority     Priority
-  creator_id String
-  creator    User   @relation("fk_user_task", fields: [creator_id], references: [user_id])
-  // start        DateTime
-  // end          DateTime
-  // beforeStart  Int
+  task_id      String   @id @default(uuid())
+  name         String
+  description  String?
+  priority     Priority
+  creator_id   String
+  creator      User     @relation("fk_user_task", fields: [creator_id], references: [user_id])
+  start        DateTime
+  end          DateTime
+  beforeStart  Int
   participants User[]   @relation("participants_relation")
 }
 

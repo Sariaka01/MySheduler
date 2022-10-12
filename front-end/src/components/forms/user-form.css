@@ -1,0 +1,15 @@
+input {
+    display: block;
+    margin: 5px;
+}
+label {
+    cursor: pointer;
+}
+input[type=checkbox] {
+    display: inline;
+    cursor: pointer;
+}
+.error-message {
+    color: #f00;
+    font-weight: 500;
+}

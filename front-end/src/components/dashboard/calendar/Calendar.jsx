@@ -16,8 +16,7 @@ function Calendar({ view, year }) {
             return newList
         })
     }
-
-    function generateCalendar() {
+    const generateCalendar = () =>  {
         let rows = []
         let remainder = tasks
         /****************************** Date manipulation *****************************/

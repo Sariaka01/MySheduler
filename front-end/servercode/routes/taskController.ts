@@ -153,6 +153,46 @@ export async function getTasks(req: Request, res: Response) {
     }
 }
 
+export async function getTaskById(req: Request, res: Response) {
+    try {
+        const payload = getPayload(req)
+        const { taskId } = req.body
+        if (!payload || !taskId) 
+            return res.status(404).json({ message: `${payload? 'User': 'Task'} not found` })
+        console.log(getOperationTime() + ':\n')
+        console.log(`getting tasks of ${payload.email} with id ${taskId}}\n`)
+        const task = await prisma.task.findMany({
+            where: {
+                OR: [
+                    {
+                        creator: {
+                            email: payload.email
+                        }
+                    },
+                    {
+                        participants: {
+                            some: {
+                                email: payload.email
+                            }
+                        }
+                    }
+                ],
+                // If we have start date
+                task_id: taskId
+            },
+            select: SELECTOR,
+            take: 1
+        })
+        return res.status(200).json(task[0])
+    }
+    catch {
+        res.status(500)
+    }
+    finally {
+        prisma.$disconnect()
+    }
+}
+
 /*export async function getTasksBetween() {
     // let tas
 }*/

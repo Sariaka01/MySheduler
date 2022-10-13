@@ -114,6 +114,7 @@ export async function createTask(req: Request, res: Response) {
 export async function getTasks(req: Request, res: Response) {
     try {
         const payload = getPayload(req)
+        const { start, end } = req.body
         if (!payload) 
             return res.status(404).json({ message: 'User not found' })
         console.log(getOperationTime() + ':\n')
@@ -133,7 +134,11 @@ export async function getTasks(req: Request, res: Response) {
                             }
                         }
                     }
-                ]
+                ],
+                start: {
+                    gte: start,
+                    lte: end
+                }
             },
             select: SELECTOR
         })
@@ -146,6 +151,10 @@ export async function getTasks(req: Request, res: Response) {
         prisma.$disconnect()
     }
 }
+
+/*export async function getTasksBetween() {
+    // let tas
+}*/
 
 export async function updateTask(req: Request, res: Response) {
     try {

@@ -118,7 +118,7 @@ export async function getTasks(req: Request, res: Response) {
         if (!payload) 
             return res.status(404).json({ message: 'User not found' })
         console.log(getOperationTime() + ':\n')
-        console.log(`getting tasks of ${payload.email}\n`)
+        console.log(`getting tasks of ${payload.email} ${start != undefined? 'from ' + new Date(start).toUTCString() + ' to ' + new Date(end).toUTCString(): ''}\n`)
         const taskList = await prisma.task.findMany({
             where: {
                 OR: [
@@ -135,6 +135,7 @@ export async function getTasks(req: Request, res: Response) {
                         }
                     }
                 ],
+                // If we have start date
                 start: {
                     gte: start,
                     lte: end

@@ -101,7 +101,7 @@ export async function createTask(req: Request, res: Response) {
         /*let unknown = newTask.participants.filter(participant => !participants.includes(participant.email))*/
         if (unknown.length)
             return res.status(400).json({ unknown })
-        return res.status(200).json(newTask)
+        return res.status(201).json(newTask)
     }
     catch {
         res.status(500)

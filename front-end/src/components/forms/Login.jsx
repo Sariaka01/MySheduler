@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react'
 import Axios from 'axios'
 import { clearInputs } from './form-managing'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
+    const nav = useNavigate()
     const [emailInput, passwordInput] = [useRef(null), useRef(null)]
     const [isShowing, setIsShowing] = useState(false)
     
@@ -16,8 +18,10 @@ function Login() {
             })
             clearInputs(emailInput, passwordInput)
             setIsShowing(false)
+            console.log(res.status)
             if (res.status == 200) {
-
+                localStorage.setItem('token', res.data.token)
+                nav('dashboard')
             }
         }
         catch {

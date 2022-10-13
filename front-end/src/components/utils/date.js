@@ -10,8 +10,14 @@ export function getLocaleDateTime(ISOString) {
         month: month - 1,   // Starts from 0 to 11
         day: +day,
         hour: +hour,
+        min: +min,
+        sec: +sec,
         offset: new Date().getTimezoneOffset()
     }
+}
+
+export function getISOString(dateObject) {
+    return new Date(dateObject.year, dateObject.month, dateObject.day, dateObject.hour, dateObject.min, dateObject.sec).toISOString()
 }
 
 export function getWeek(ISOString) {
@@ -25,19 +31,20 @@ export function getWeek(ISOString) {
 }
 
 export const VIEWS = {
+    // We use LOCALE DATE to manipulate the dates here
     year: {
         list: [
             "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
         ],
         rowNumber: 31,   // Per month view
         getLabel(i, j, { year }) {
-            // i-th day element of j-th month
-            console.log(year)
+            // i-th day element of j-th
+            // console.log(year)
             return `${i}-${j}-${year}`  // day-month-year
         },
         setDate(curDate, date) {
             // Only month changes
-            const cur = new Date(curDate)
+            const cur = new Date(curDate)   // ISO string
             // console.log(cur.toTimeString().split(' '))
             const [day, month] = date.split('-')
             // console.log(day, month)

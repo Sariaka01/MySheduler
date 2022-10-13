@@ -1,0 +1,15 @@
+input[type="number"] {
+    display: inline;
+    width: 50px;
+}
+.priority-high {
+    background: red;
+    color: white;
+}
+.priority-medium {
+    background: forestgreen;
+    color: white;
+}
+.priority-low {
+    background: yellow;
+}

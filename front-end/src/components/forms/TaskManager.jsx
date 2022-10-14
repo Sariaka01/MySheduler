@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import './task-form.css'
 import { LIST } from '../../test/list'
 import { getLocaleDateTime } from '../utils/date'
+import { useLayoutEffect } from 'react'
+import ParticipantTable from './ParticipantTable'
 
 
-function TaskManager({ id }) {
+function TaskManager() {
+    const emailRef= useRef()
+    const { id } = useParams()
     const nav = useNavigate()
     const [taskId, setTaskId] = useState(id)
     const [taskInfo, setTaskInfo] = useState({
@@ -18,32 +22,39 @@ function TaskManager({ id }) {
         startTime: '00:00:00',
         endDate: '',
         endTime: '00:00:00',
-        beforeStart: 0
+        beforeStart: 0,
+        participants: []
     })
     let params = useParams()
-    if (taskId) {
-        Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/get`, {
-            token: localStorage.getItem('token'),   // Get the token
-            taskId
-        }).then(({ data }) => {
-            console.log()
-            let task = data
-            const { day: sDay, month: sMonth, year: sYear, hour: sHour, min: sMin, sec: sSec } = getLocaleDateTime(task.start)
-            const { day: eDay, month: eMonth, year: eYear, hour: eHour, min: eMin, sec: eSec } = getLocaleDateTime(task.end)
-            setTaskInfo({
-                name: task.name,
-                creator: `${task.creator.firstname} ${task.creator.lastname}`,
-                description: task.description,
-                priority: task.priority,
-                startDate: `${sYear}-${sMonth < 10 ? '0': ''}${sMonth}-${sDay < 10 ? '0': ''}${sDay}`,
-                startTime: `${sHour}:${sMin}:${sSec}`,
-                endDate: `${eYear}-${eMonth < 10 ? '0': ''}${eMonth}-${eDay < 10 ? '0': ''}${eDay}`,
-                endTime: `${eHour}:${eMin}:${eSec}`,
-                beforeStart: task.beforeStart
+    useLayoutEffect(() => {
+        if(taskId) {
+            Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/get`, {
+                token: localStorage.getItem('token'),   // Get the token
+                taskId
+            }).then(({ data }) => {
+                console.log(data)
+                let task = data
+                const { day: sDay, month: sMonth, year: sYear, hour: sHour, min: sMin, sec: sSec } = getLocaleDateTime(task.start)
+                const { day: eDay, month: eMonth, year: eYear, hour: eHour, min: eMin, sec: eSec } = getLocaleDateTime(task.end)
+                setTaskInfo({
+                    name: task.name,
+                    creator: `${task.creator.firstname} ${task.creator.lastname}`,
+                    description: task.description,
+                    priority: task.priority,
+                    // Months are counted from 0
+                    startDate: `${sYear}-${sMonth + 1 < 10 ? '0' : ''}${sMonth + 1}-${sDay < 10 ? '0' : ''}${sDay}`,
+                    startTime: `${sHour < 10 ? '0' : ''}${sHour}:${sMin < 10 ? '0' : ''}${sMin}:${sSec < 10 ? '0' : ''}${sSec}`,
+                    endDate: `${eYear}-${eMonth + 1 < 10 ? '0' : ''}${eMonth + 1}-${eDay < 10 ? '0' : ''}${eDay}`,
+                    endTime: `${eHour < 10 ? '0' : ''}${eHour}:${eMin < 10 ? '0' : ''}${eMin}:${sSec < 10 ? '0' : ''}${eSec}`,
+                    beforeStart: task.beforeStart,
+                    participants: task.participants.map(participant => participant.email)
+                })
+            }).catch(() => {
+                nav('/task')
             })
-        })
 
-    }
+        }
+    }, [])
 
     async function submit(e) {
         e.preventDefault()
@@ -55,7 +66,8 @@ function TaskManager({ id }) {
             return
         }
         const start = new Date(`${taskInfo.startDate} ${taskInfo.startTime}`).toISOString() // Start datetime
-        const end = new Date(`${taskInfo.endDate} ${taskInfo.endTime}`).toISOString() // End datetime
+        const end = new Date(`${taskInfo.endDate} ${taskInfo.endTime}`).toISOString() // End
+        console.log(start, end)
         let res
         try {
             if (!taskId) {
@@ -64,9 +76,10 @@ function TaskManager({ id }) {
                     token,
                     data: {
                         ...taskInfo,
+                        beforeStart: +taskInfo.beforeStart,
                         start,
                         end,
-                        participants: ["safidy.herinirina@gmail.com"]
+                        participants: ["safidy@gmail.com"]
                     }
                 })
                 console.log(res.data.task_id)
@@ -82,12 +95,12 @@ function TaskManager({ id }) {
                     taskId,
                     data: {
                         ...taskInfo,
+                        beforeStart: +taskInfo.beforeStart,
                         start,
                         end,
-                        participants: ["safidy.herinirina@gmail.com"]
+                        participants: ["safidy5@gmail.com"]
                     }
                 })
-                console.log(res.data.task_id)
                 if (res.status == 200) {
                     alert("Task updated successfully")
                 }
@@ -95,14 +108,24 @@ function TaskManager({ id }) {
             
         }
         catch(e) {
-            console.log(e)
+            alert(e.response.data.message)
         }
     }
     function handleInfos(e) {
+        console.log('Handling')
         setTaskInfo({
             ...taskInfo, [e.target.name]: e.target.value
         })
         // console.log(`Updated ${e.target.name} to ${e.target.value}`)
+    }
+    function addParticipants(e) {
+        e.preventDefault()
+        console.log("Adding: " + emailRef.current.value)
+        
+        let newList = [...taskInfo.participants, emailRef.current.value]
+        setTaskInfo({
+            ...taskInfo, participants: newList
+        })
     }
     function generateList(participants) {
         let i= 0
@@ -131,7 +154,9 @@ function TaskManager({ id }) {
             
             <label htmlFor="before-start">Notification timer: </label>
             <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
-            <button type= "submit">Create task</button>
+            
+            <ParticipantTable participants={taskInfo.participants} inputRef={emailRef} handler={addParticipants} />
+            <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}task</button>
         </form>
   )
 }

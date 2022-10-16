@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, createContext } from 'react'
 import Axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import './task-form.css'
@@ -7,6 +7,7 @@ import { getLocaleDateTime } from '../utils/date'
 import { useLayoutEffect } from 'react'
 import ParticipantTable from './ParticipantTable'
 
+export const ParticipantsContext = createContext(null)
 
 function TaskManager() {
     const emailRef= useRef()
@@ -118,13 +119,16 @@ function TaskManager() {
         })
         // console.log(`Updated ${e.target.name} to ${e.target.value}`)
     }
-    function addParticipants(e) {
-        e.preventDefault()
-        console.log("Adding: " + emailRef.current.value)
-        
-        let newList = [...taskInfo.participants, emailRef.current.value]
+    function handleParticipants(newParticipant, oldParticipant) {
+        // If idx is given then it's an edition
+        // console.log("Adding: " + emailRef.current.value)
+        let newList = taskInfo.participants
+            .map(p => p == oldParticipant ? newParticipant : p) // For edition
+            .concat(newParticipant) // If we have a new participant
+            .filter(p => p && p != oldParticipant)  // In case of remove or input left blank
+            .sort()
         setTaskInfo({
-            ...taskInfo, participants: newList
+            ...taskInfo, participants: [...new Set(newList)]    // No redudancy
         })
     }
     function generateList(participants) {
@@ -155,7 +159,10 @@ function TaskManager() {
             <label htmlFor="before-start">Notification timer: </label>
             <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
             
-            <ParticipantTable participants={taskInfo.participants} inputRef={emailRef} handler={addParticipants} />
+            <ParticipantsContext.Provider value={{ handleParticipants }}>
+                {/* To handle the values from different users */}
+                <ParticipantTable participants={ taskInfo.participants } />
+            </ParticipantsContext.Provider>
             <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}task</button>
         </form>
   )

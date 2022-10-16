@@ -1,65 +1,52 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useContext } from 'react'
+import Participant from './Participant'
+import { ParticipantsContext } from './TaskManager'
+
 
 function ParticipantTable({ participants, inputRef, handler }) {
 	console.log(participants)
 	// console.log('Participants loading')
-	const [adderOn, setAdder] = useState(false)
+	const [addButton, setAddButton] = useState(true)
+	const [createMode, setCreateMode] = useState(false)
 	// const emailInput = useRef(null)
-	const [list, setList] = useState(participants)
+	/*const [list, setList] = useState(participants)
 	// console.log(list)
-	const [newEmail, setNewEmail] = useState('')
+	const [newEmail, setNewEmail] = useState('')*/
 	let row = []
 	if (participants.length) {
 		// console.log(participants)
 		let i= 0
 		for (let participant of participants) {
-			row.push(<tr key={i++}>
-				<td>{participant}</td>
-				<td>
-					<button>Edit</button>
-					<button>Remove</button>
-				</td>
-			</tr>)
+			row.push(<Participant key={ i++ } participant={participant} createMode= {false} adderHandler = { setAdder } />)
 		}
 	}
-	function showAdder(e) {
-		e.preventDefault()
-		setAdder(true)
-		setTimeout(() => {
-			inputRef.current.focus()
-		}, 100)
+	function setAdder(button, create) {
+		setAddButton(button)
+		setCreateMode(create)
 	}
-	function add(e) {
+	/*function add(e) {
 		e.preventDefault()
 		setList(prev => {
 			console.log(prev)
 			return [newEmail]
 		})
 		setAdder(false)
-	}
+	}*/
 	return (
 		<table>
 			<thead>
 				<tr>
 					<th>Participants List</th>
 					<td>
-						{!adderOn && <button onClick={showAdder}>Add</button>}
+						{addButton && <button onClick={(e) => {
+							e.preventDefault()
+							setAdder(false, true)
+						}}>Add</button>}
 					</td>
 				</tr>
 			</thead>
 			<tbody>
-				{adderOn && <tr>
-					<td>
-						<input ref= {inputRef} type = "email" />
-					</td>
-					<td colSpan={2}>
-						<button onClick={(e) => {
-							setAdder(false)
-							handler(e)
-							inputRef.current.value = ''
-						} }>Add</button>
-					</td>
-				</tr>}
+				{createMode && <Participant createMode = { true } adderHandler = { setAdder } />}
 				{row}
 			</tbody>
 		</table>

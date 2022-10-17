@@ -1,20 +1,17 @@
 import React, {createContext, useState} from 'react'
 import Calendar from './calendar/Calendar'
 import Sidebar from './sidebar/Sidebar'
-import Header from './header/Header'
 import './table.css'
 
 export const DashboardContext= createContext()
 
 function Dashboard() {
-    const [view, setView] = useState('year')
-    const [date, setDate] = useState(new Date())
+    const [view, setView] = useState('weekly')
     return (
         <div id="dashboard">
-            <DashboardContext.Provider value={{ setView, setDate }}>
-                <Header view = { view } date = { date } />
+            <DashboardContext.Provider value={{ setView }}>
                 <Sidebar />
-                <Calendar view={ view } date = { date } />
+                <Calendar view={view} />
             </DashboardContext.Provider>
         </div>
     )

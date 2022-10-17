@@ -11,12 +11,8 @@ function App() {
       <Routes>
         <Route path='/'>
           <Route index element={ <UserForm /> } />
-<<<<<<< Updated upstream
-          <Route path= 'dashboard' element= {<Dashboard />}/>
-=======
           <Route path='dashboard' element={<Dashboard />} />
           <Route path='task' element={ <TaskManager /> } />
->>>>>>> Stashed changes
           <Route path= 'task/:id' element= {<TaskManager />}/>
         </Route>
       <Route path='*' element={ <h1>Error 404: Page not found</h1>} />

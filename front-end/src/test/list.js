@@ -24,10 +24,9 @@ const LIST= [
         "name": "Tache 3",
         "creator": "Sariaka",
         "priority": "MEDIUM",
-        "description": "lorem ipsum task 3",
         "start": "2021-12-31T20:59:00.000Z",
         "end": "2022-12-12T17:00:00",
-        "description": "BOnjour le monde, voici task manager",
+        "description": "lorem ipsum task 3",
         "participants": ["Sariaka", "Tsiory", "Kevin"],
         "date": "2-2"
     },

@@ -33,16 +33,21 @@ export function getWeek(ISOString) {
 
 
 export const VIEWS = {
-    year: {
+    yearly: {
+        start: 1,
+        end: 31,
+        set: (date) => {
+            return new Date(date.getFullYear(), 0)
+        },
         getList: () => [
             "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
         ],
         getLabel(i, j, { year }) {
             // i-th day element of j-th month
-            console.log(year)
+            // console.log(year)
             return `${i}-${j}-${year}`  // i-th day of the j-th month of year year
         },
-        rowNumber: 31,
+        // rowNumber: 31,
         belongsTo(date, matrixIndex) {
             // Return if dates belongs to matrixIndex
             // i for rows, j for columns
@@ -55,10 +60,105 @@ export const VIEWS = {
             return date.getFullYear()
         },
         next(date) {
-            return date.getFullYear() + 1
+            return new Date(date.getFullYear() + 1, 0)  // January first
         },
         previous(date) {
-            return date.getFullYear() - 1
+            return new Date(date.getFullYear() - 1, 0)  // January first
+        }
+    },
+    monthly: {
+        start: 0,
+        end: 23,
+        set: (date) => {
+            return new Date(date.getFullYear(), date.getMonth())
+        },
+        getList: (date) => {
+            let limit = 0
+            switch (date.getMonth()) {
+                case 1: 
+                    // February
+                    if (new Date(date.getFullYear(), 1, 29).getMonth() == 1)
+                        limit = 29
+                    else
+                        limit = 28
+                    break
+                case 0, 2, 4, 6, 7, 9, 11:
+                    limit = 31
+                    break
+                default:
+                    limit = 30
+            }
+            let list = []
+            for (let i = 1; i <= limit; i++)
+                list.push(i)
+            return list
+        },
+        getLabel(i, j, { month, year }) {
+            // i-th hour of j-th day
+            return `${i}-${j}-${month}-${year}`  // i-th day of the j-th month of year year
+        },  // 24 hours
+        belongsTo(date, matrixIndex) {
+            // Return if dates belongs to matrixIndex
+            // i for rows, j for columns
+            const [i, j, month, year] = matrixIndex.split('-')
+            // console.log(`Hours ${i} compared to ${date.getHours()}`)
+            // console.log(`${j} compared to ${date.getDate()}`)
+            // console.log(`${month} compared to ${date.getMonth()}`)
+            // console.log(`${year} compared to ${date.getFullYear()}`)
+            // In year, we have i, the day number (1-31) and j, the month number (1, 12)
+            // return false
+            return date.getHours() == i && date.getDate() == j && date.getMonth() == month && date.getFullYear() == year
+        },
+        getTitle(date) {
+            return `${date.getMonth() + 1}/${date.getFullYear()}`
+        },
+        next(date) {
+            return new Date(date.getFullYear(), date.getMonth() + 1)
+        },
+        previous(date) {
+            return new Date(date.getFullYear(), date.getMonth() - 1)
+        }
+    },
+    weekly: {
+        start: 0,
+        end: 24,
+        set: (date) => {
+            const monday = date.getDate() - date.getDay() + 1
+            console.log(date.getDate() + ' and ' + date.getDay() + ', monday is ', monday < 0? monday + 7: monday)
+            const newDate = new Date(date.getFullYear(), date.getMonth(), monday < 0? monday + 7: monday)
+            console.log(newDate)
+            return newDate
+        },
+        getList: function(date) {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            const monday = this.set(date).getDate()
+            let list = []
+            for (let i = 0; i < 7; i++) {
+                list.push(`${days[i]} ${monday + i}`)
+            }
+            return list
+        },
+        getLabel(i, j, { year }) {
+            // i-th day element of j-th month
+            console.log(year)
+            return `${i}-${j}-${year}`  // i-th day of the j-th month of year year
+        },
+        belongsTo(date, matrixIndex) {
+            // Return if dates belongs to matrixIndex
+            // i for rows, j for columns
+            const [i, j, year] = matrixIndex.split('-')
+            // In year, we have i, the day number (1-31) and j, the month number (1, 12)
+            // return false
+            return date.getDate() == i && date.getMonth() == j - 1 && date.getFullYear() == year
+        },
+        getTitle(date) {
+            return `${date.getMonth() + 1}/${date.getFullYear()}`
+        },
+        next(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7)
+        },
+        previous(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7)
         }
     }
 }

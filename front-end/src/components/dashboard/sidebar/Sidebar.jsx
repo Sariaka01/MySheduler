@@ -11,19 +11,19 @@ function Sidebar() {
             {/* }>Test</button>*/}
             <button onClick={
                 () => {
-                    setView('year')
+                    setView('yearly')
                 }
             }>Yearly</button>
             <button onClick={
                 () => {
-                    setView('month')
+                    setView('monthly')
                 }
             }>Monthly</button>
             <button onClick= {
-                () => setView('week')
+                () => setView('weekly')
             }>Weekly</button>
             <button onClick= {
-                () => setView('day')
+                () => setView('daily')
             }>Daily</button>
         </div>
     )

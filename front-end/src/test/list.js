@@ -2,34 +2,36 @@ const LIST= [
     {
         "id": 1,
         "name": "Tache 1",
-        "creator": "Mendika",
-        "start": "2022-10-11T04:04",
+        "creator": "Mendrika",
+        "start": "2021-12-31T21:00:00.000Z",
         "end": "12-12-2022T17:00",
+        "priority": "HIGH",
         "description": "BOnjour le monde, voici task manager",
         "participants": ["Mendrika", "Faniry", "Safidy", "Sariaka", "Tsiory", "Kevin"],
-        "date": "1-2"
     },
     {
         "id": 2,
         "name": "Tache 2",
         "creator": "Faniry",
-        "start": "2022-12-12T09:30",
+        "start": "2022-12-31T20:59:59.999Z",
+        "priority": "LOW",
         "end": "2022-12-12T17:00",
         "description": "BOnjour le monde, voici task manager",
         "participants": ["Sariaka", "Tsiory", "Kevin"],
-        "date": "2-1"
     },
     {
         "id": 3,
         "name": "Tache 3",
         "creator": "Sariaka",
-        "start": "2022-12-12T09:30:00",
+        "priority": "MEDIUM",
+        "description": "lorem ipsum task 3",
+        "start": "2021-12-31T20:59:00.000Z",
         "end": "2022-12-12T17:00:00",
         "description": "BOnjour le monde, voici task manager",
         "participants": ["Sariaka", "Tsiory", "Kevin"],
         "date": "2-2"
     },
-    {
+    /*{
         "id": 4,
         "name": "Tache 4",
         "creator": "Safidy",
@@ -48,7 +50,7 @@ const LIST= [
         "description": "Bonjour le monde, voici task manager",
         "participants": ["Mendrika", "Faniry", "Safidy", "Sariaka", "Tsiory", "Kevin"],
         "date": "1-2"
-    },
+    },*/
 ]
 
 export {LIST}

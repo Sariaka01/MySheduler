@@ -1,32 +1,111 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useTransition } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend'
 import DropContainer from './DropContainer'
-import { VIEWS, dateBelongsTo, getWeek } from '../../utils/date'
+import Loading from '../../others/Loading'
+import Axios from 'axios'
+import { VIEWS, dateBelongsTo, getWeek, getLocaleDateTime } from '../../utils/date'
 import { LIST } from '../../../test/list'
+import { useLayoutEffect } from 'react'
+import Preview from './Preview'
 
-function Calendar({ view, year }) {
-    const [tasks, setTasks] = useState(LIST)
-    const newView =  VIEWS[view]
-    const onDrop = (item, _, date) => {
-        setTasks(prev => {
-            let newList = prev
-                .filter(el => el.id != item.id)
-                .concat(view != 'test'? { ...item, start: newView.setDate(item.start, date) }: { ...item, date })
-            return newList
-        })
+function Calendar({ view, date }) {
+    // The date is UTC date (Date.now by default)
+    const [tasks, setTasks] = useState([])
+    let rows = []
+    /*switch (view) {
+        case 'year':
+            break
+        case 'month':
+            break
+        case 'week': 
+            break
+        case 'day':
+            break
+    }*/
+    useLayoutEffect(() => {
+        /*Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/list`, {
+            token: localStorage.getItem('token'),
+            start: new Date(date.getFullYear()).toISOString(),
+            end: new Date(date.getFullYear(), 11, 31).toISOString(),
+            // year: date.getUTCFullYear() // Dates are stored in UTC
+        }).then((res) => {
+            setTasks(res.data)
+            console.log(res.data)
+        }).catch((e) => {
+            console.log(e)
+        })*/
+        console.log('Layout effect')
+        setTasks(LIST)
+    }, [])
+
+    useEffect(() => {
+        generateCalendar()
+    }, [view])
+    function next() {
+
     }
-    const generateCalendar = () =>  {
+    function previous() {
+
+    }
+    function generateCalendar() {
+        let newView = VIEWS[view]
         let rows = []
-        let remainder = tasks
-        /****************************** Date manipulation *****************************/
-        const curDate = new Date();
-        let [year, month, day, hour] = curDate.toISOString().replace(/[:T.-]/ig, ' ').split(' ').map(el => +el)
-        hour= hour - (Math.round(curDate.getTimezoneOffset() / 60))
-        const week = getWeek(curDate)
-        console.log(year, month, day, hour, week)
-        /***********************************************************************/
+        let remainingTasks = tasks  // To filter tasks
+        const list = newView.getList()
+        const { day, year, month, week, hour, min, sec } = getLocaleDateTime(date.toISOString())
+        console.log(day, month, year, hour, min, sec, week)
+        // console.log(newView)
         for (let i = 0; i <= newView.rowNumber; i ++) {
+            // Row creation
+            let cols = []
+            if (i == 0) {
+                // First row with the names
+                cols.push(<td key={'nbsp'+i} className="row-number nbsp">&nbsp;</td>, ...list.map(el => <td key={`${el}`} className="title"><h3>{el}</h3></td>))
+            }
+            else {
+                // Row numbers
+                cols.push(<td key={`row-number-${i}`} className="row-number drop-container"><h3>{i}</h3></td>)
+                for (let j = 1; j <= list.length; j ++) {
+                    // Push boxes
+                    const key = newView.getLabel(i, j, { day, month, year, hour, min, sec, week })  // TO be managed in the date module
+                    // Filter tasks
+                    let previewTask = []
+                    let newRemainder = []
+                    if (remainingTasks.length) {
+                        console.log('Remaining: ', remainingTasks.length)
+                        for (let task of remainingTasks) {
+                        const taskStartDate = new Date(task.start)  // task.start is in ISO format
+                        if (newView.belongsTo(taskStartDate, key))
+                            previewTask.push(<div>{ taskStartDate.toLocaleString() }</div>)
+                        else
+                            newRemainder.push(task)
+                        }
+                        remainingTasks = newRemainder
+                    }
+                    cols.push(<td key={key}>{ previewTask }</td>)
+                }
+            }
+            rows.push(<tr key= {`${i}`}>{cols}</tr>)    // -1 because of the first row
+        }
+        return rows
+    }
+    /*const generateCalendar = () => {
+        return tasks.map((task, i) => <tr key={i}>
+            <Preview task={ task } />
+        </tr>)
+    }*/
+
+    /*const generateCalendar = () =>  {
+        let rows = []
+        let remainder = tasks*/
+        /****************************** Date manipulation *****************************/
+        /*const curDate = new Date().toISOString();
+        let { year, month, day, hour } = getLocaleDateTime(curDate)
+        const week = getWeek(curDate)
+        console.log(year, month, day, hour, week)*/
+        /***********************************************************************/
+        /*for (let i = 0; i <= newView.rowNumber; i ++) {
             // Row creation
             let cols = []
             if (i == 0) {
@@ -55,10 +134,24 @@ function Calendar({ view, year }) {
             rows.push(<tr key= {`${i}`}>{cols}</tr>)    // -1 because of the first row
         }
         return rows
+<<<<<<< Updated upstream
     }
 
     return (
         <DndProvider backend= {Backend}>
+=======
+    }*/
+    // const [isPending, startTransition] = useTransition()
+    // useEffect(() => startTransition(() => {
+    //     for (let i = 0; i < 200000; i++){
+    //         console.log(i)
+    //     }
+    // }),
+    // [tasks])
+    return (
+        <DndProvider backend={Backend}>
+            {/* {isPending && <Loading />} */}
+            <h1>{ view }</h1>
             <table id = "calendar" cellSpacing = {0}>
                 <tbody>
                     { generateCalendar() }

@@ -1,21 +1,30 @@
-import React, {useContext} from 'react'
+import React, { useState, useContext } from 'react'
+import { VIEWS } from '../../utils/date'
 import { DashboardContext } from '../Dashboard'
 
-function Header() {
-    const { year, setYear } = useContext(DashboardContext)
-    console.log('Year from header = ' + year)
-    function decrementYear() {
-        setYear(year-1)
+function Header({ view, date }) {
+    const { setDate } =  useContext(DashboardContext)
+    const [title, setTitle] = useState(VIEWS[view].getTitle(date))
+    function decrement() {
+        switch (view) {
+            case 'year':
+                // Decrement the year
+                const newDate = new Date(date.getFullYear() - 1, 0)
+                setTitle(new Date(date.getFullYear()-1, 0).toLocaleDateString())
+                setDate(new Date(date.getFullYear()-1, 0))
+                break
+            default:
+                
+        }
     }
-    function incrementYear() {
-        setYear(year+1)
+    function increment() {
+        setTitle(VIEWS[view].next(date))
     }
-    console.log(year)
     return (
         <header>
-            <button onClick = {decrementYear}>{"<"}</button>
-            <h4>{ year }</h4>
-            <button onClick = {incrementYear}>{">"}</button>
+            <button onClick = {decrement}>{"<"}</button>
+            <h4>{ title }</h4>
+            <button onClick = {increment}>{">"}</button>
         </header>
 )}
 

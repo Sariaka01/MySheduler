@@ -51,12 +51,15 @@ export const VIEWS = {
     yearly: {
         start: 1,
         end: 31,
-        set: (date) => {
+        set(date) {
+            // set the start date
             return new Date(date.getFullYear(), 0)
         },
-        getList: () => [
-            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-        ],
+        getList() {
+            return [
+                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+            ]
+        },
         getLabel(i, j, { year }) {
             // i-th day element of j-th month
             // console.log(year)
@@ -88,10 +91,10 @@ export const VIEWS = {
     monthly: {
         start: 0,
         end: 23,
-        set: (date) => {
+        set(date) {
             return new Date(date.getFullYear(), date.getMonth())
         },
-        getList: (date) => {
+        getList(date) {
             let limit = getLastDay(date)
             let list = []
             for (let i = 1; i <= limit; i++)
@@ -131,14 +134,14 @@ export const VIEWS = {
     weekly: {
         start: 0,
         end: 24,
-        set: (date) => {
+        set(date) {
             const monday = date.getDate() - date.getDay() + 1
             console.log(date.getDate() + ' and ' + date.getDay() + ', monday is ', monday < 0? monday + 7: monday)
             const newDate = new Date(date.getFullYear(), date.getMonth(), monday < 0? monday + 7: monday)
             console.log(newDate)
             return newDate
         },
-        getList: function(date) {
+        getList(date) {
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
             const monday = this.set(date).getDate()
             let list = []

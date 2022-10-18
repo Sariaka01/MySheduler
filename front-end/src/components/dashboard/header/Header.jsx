@@ -1,8 +1,12 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { VIEWS } from '../../utils/date'
 
 function Header({ view, date, setDate }) {
     const [title, setTitle] = useState(VIEWS[view].getTitle(date))
+    useEffect(() => {
+        setTitle(VIEWS[view].getTitle(date))
+    }, [view, date])
+    
     function handleDate(handler) {
         switch (view) {
             case 'yearly':
@@ -17,12 +21,10 @@ function Header({ view, date, setDate }) {
     function decrement() {
         const newDate = VIEWS[view].previous(date)
         setDate(newDate)
-        setTitle(VIEWS[view].getTitle(newDate))
     }
     function increment() {
         const newDate = VIEWS[view].next(date)
         setDate(newDate)
-        setTitle(VIEWS[view].getTitle(newDate))
     }
     return (
         <header>

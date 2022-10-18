@@ -48,6 +48,11 @@ function Calendar({ view }) {
         setTasks(newTasks)
     }, [date])
 
+    useLayoutEffect(() => {
+        console.log(view + ' is ready')
+        setDate(VIEWS[view].set(new Date()))
+    }, [view])
+
     useEffect(() => {
         generateCalendar()
     }, [view])

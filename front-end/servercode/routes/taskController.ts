@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import { PrismaClient } from '@prisma/client'
 import { getPayload } from "./userController"
 import { getOperationTime } from "../globals/date-utils"
+import { GeneralObject } from "../globals/types"
 
 const SELECTOR = {
                     task_id: true,
@@ -49,13 +50,15 @@ export async function createTask(req: Request, res: Response) {
 
         let unknown: string[]= []
         let valid: string[] = []
-
+        console.log('Filtering participants')
         // Filtering emails
         for (let email of <string[]>participants) {
             let id= await prisma.user.findUnique({
                     where: {
                         email: email
                     }
+            }).catch(e => {
+                    console.log('From filtering participants ' + e.message)
                 })
             if (id) {
                 valid.push(email)
@@ -66,6 +69,7 @@ export async function createTask(req: Request, res: Response) {
             }
         }   // End for
 
+        console.log(unknown)
         /*console.log(valid, unknown)
         console.log(name, start, end, beforeStart, priority, description)
         console.log(participants)
@@ -93,9 +97,11 @@ export async function createTask(req: Request, res: Response) {
                 }
             },
             select: SELECTOR
+        }).catch(e => {
+            console.log(e.message)
         })
         
-        console.log(`Creation done, task id: ${newTask.task_id}`)
+        console.log(`Creation done, task id: ${(<GeneralObject>newTask)['task_id']}`)
 
         // Filter the inputs to see if there are any invalid given email in the inputs
         /*let unknown = newTask.participants.filter(participant => !participants.includes(participant.email))*/

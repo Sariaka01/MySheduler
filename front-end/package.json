@@ -18,6 +18,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "populate-db": "npm run clear-db && node ./test/test.js",
+    "clear-db": "node ./test/clear.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

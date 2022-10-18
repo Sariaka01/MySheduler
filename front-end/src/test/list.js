@@ -12,7 +12,7 @@ export const LIST =[
     {
         "name": "Task 2 (Happy new year)",
         "creator": "Faniry",
-        "start": "2022-12-31T21:00:00.000Z",
+        "start": "2021-12-31T21:00:00.000Z",
         "priority": "LOW",
         "end": "2022-12-12T17:00",
         "description": "Task 2 description",
@@ -22,7 +22,7 @@ export const LIST =[
         "name": "Task 3 (2023 new year's eve)",
         "creator": "Mendrika",
         "priority": "MEDIUM",
-        "start": "2021-12-31T20:59:00.000Z",
+        "start": "2022-12-31T20:59:00.000Z",
         "end": "2022-12-12T17:00:00",
         "description": "lorem ipsum task 3",
         "participants": ["mendrika@gmail.com", "faniry@gmail.com"]
@@ -31,7 +31,7 @@ export const LIST =[
         "name": "Tache 4 (Independance Day)",
         "creator": "Sariaka",
         "priority": "MEDIUM",
-        "start": "2021-06-25T21:00:00.000Z",
+        "start": "2022-06-25T21:00:00.000Z",
         "end": "2022-12-12T17:00:00",
         "description": "lorem ipsum task 3",
         "participants": ["safidy@gmail.com", "tsiory@gmail.com"]

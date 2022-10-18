@@ -17,6 +17,21 @@ export function getLocaleDateTime(ISOString) {
     }
 }
 
+export function getLastDay(date) {
+    switch (date.getMonth()) {
+        case 1: 
+            // February
+            if (new Date(date.getFullYear(), 1, 29).getMonth() == 1)
+                return 29
+            else
+                return 28
+        case 0, 2, 4, 6, 7, 9, 11:
+            return 31
+        default:
+            return 30
+    }
+}
+
 export function getISOString(dateObject) {
     return new Date(dateObject.year, dateObject.month, dateObject.day, dateObject.hour, dateObject.min, dateObject.sec).toISOString()
 }
@@ -64,6 +79,10 @@ export const VIEWS = {
         },
         previous(date) {
             return new Date(date.getFullYear() - 1, 0)  // January first
+        },
+        getLimits(date) {
+            // return lower and upper dates
+            return [new Date(date.getFullYear(), 0, 1), new Date(date.getFullYear(), 11, 31, 23, 59, 59, 999)]  // Get first january
         }
     },
     monthly: {
@@ -73,21 +92,7 @@ export const VIEWS = {
             return new Date(date.getFullYear(), date.getMonth())
         },
         getList: (date) => {
-            let limit = 0
-            switch (date.getMonth()) {
-                case 1: 
-                    // February
-                    if (new Date(date.getFullYear(), 1, 29).getMonth() == 1)
-                        limit = 29
-                    else
-                        limit = 28
-                    break
-                case 0, 2, 4, 6, 7, 9, 11:
-                    limit = 31
-                    break
-                default:
-                    limit = 30
-            }
+            let limit = getLastDay(date)
             let list = []
             for (let i = 1; i <= limit; i++)
                 list.push(i)
@@ -117,6 +122,10 @@ export const VIEWS = {
         },
         previous(date) {
             return new Date(date.getFullYear(), date.getMonth() - 1)
+        },
+        getLimits(date) {
+            // return lower and upper dates
+            return [new Date(date.getFullYear(), date.getMonth(), 1), new Date(date.getFullYear(), date.getMonth(), getLastDay(date), 23, 59, 59, 999)]  // Get first january
         }
     },
     weekly: {

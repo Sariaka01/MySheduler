@@ -6,7 +6,7 @@ import './table.css'
 export const DashboardContext= createContext()
 
 function Dashboard() {
-    const [view, setView] = useState('weekly')
+    const [view, setView] = useState('yearly')
     return (
         <div id="dashboard">
             <DashboardContext.Provider value={{ setView }}>

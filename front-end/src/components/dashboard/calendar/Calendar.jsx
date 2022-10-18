@@ -10,9 +10,9 @@ import Preview from './Preview'
 
 function Calendar({ view }) {
     // The date is UTC date (Date.now by default)
-    const [date, setDate] = useState(VIEWS[view].set(new Date(2022, 0, 1)))
+    const [date, setDate] = useState(VIEWS[view].set(new Date()))   // Take the now
     const [tasks, setTasks] = useState([])
-    const [year, setYear] = useState(date.getFullYear())
+    // const [year, setYear] = useState(date.getFullYear())
     // console.log(date, year)
     let rows = []
     /*switch (view) {
@@ -38,8 +38,15 @@ function Calendar({ view }) {
             console.log(e)
         })*/
         console.log('Layout effect')
-        setTasks(LIST)
-    }, [year])
+        const [lower, upper] = VIEWS[view].getLimits(date)
+        // console.log(date)
+        let newTasks = LIST.filter(task => {
+            let start = new Date(task.start)
+            return start >= lower && start <= upper
+        })
+        console.log(newTasks)
+        setTasks(newTasks)
+    }, [date])
 
     useEffect(() => {
         generateCalendar()
@@ -54,11 +61,11 @@ function Calendar({ view }) {
         let newView = VIEWS[view]
         let rows = []
         let remainingTasks = tasks  // To filter tasks
-        const list = newView.getList(date)
+        const list = newView.getList(date)  // List for columns
         const { day, year, month, week, hour, min, sec } = getLocaleDateTime(date.toISOString())
         // console.log(day, month, year, hour, min, sec, week)
         // console.log(newView)
-        for (let i = VIEWS[view].start - 1; i <= VIEWS[view].end; i ++) {
+        for (let i = VIEWS[view].start - 1; i <= VIEWS[view].end; i++) {
             // Row creation
             let cols = []
             if (i < VIEWS[view].start) {
@@ -71,6 +78,7 @@ function Calendar({ view }) {
                 for (let j = 1; j <= list.length; j ++) {
                     // Push boxes
                     const key = newView.getLabel(i, j, { day, month, year, hour, min, sec, week })  // TO be managed in the date module
+                    let className = "cols"
                     // Filter tasks
                     // console.log(key)
                     let previewTask = []
@@ -86,7 +94,7 @@ function Calendar({ view }) {
                         }
                         remainingTasks = newRemainder
                     }
-                    cols.push(<td key={key}>{ previewTask }</td>)
+                    cols.push(<td id={(newView.belongsTo(new Date(), key)) && "today" || undefined} key={key}>{ previewTask }</td>)
                 }
             }
             rows.push(<tr key= {`${i}`}>{cols}</tr>)    // -1 because of the first row
@@ -155,7 +163,7 @@ function Calendar({ view }) {
         <DndProvider backend={Backend}>
             {/* {isPending && <Loading />} */}
             <h1>{view}</h1>
-            <Header view = { view } date = { date } setYear = { setYear } setDate = { setDate } />
+            <Header view = { view } date = { date } setDate = { setDate } />
             <table id = "calendar" cellSpacing = {0}>
                 <tbody>
                     { generateCalendar() }

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { VIEWS } from '../../utils/date'
 
-function Header({ view, date, setYear, setDate }) {
+function Header({ view, date, setDate }) {
     const [title, setTitle] = useState(VIEWS[view].getTitle(date))
     function handleDate(handler) {
         switch (view) {

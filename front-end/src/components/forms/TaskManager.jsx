@@ -159,13 +159,13 @@ function TaskManager() {
                 <label htmlFor='start-date'>Start date: </label>
                 <input id='start-date' type="date" name='startDate' value={taskInfo.startDate} onChange={handleInfos} required />
                 <br/>
-                <label htmlFor='start-time'>Start date: </label>
+                <label htmlFor='start-time'>Start time: </label>
                 <input id='start-time' type="time" name="startTime" value={taskInfo.startTime} onChange={handleInfos} />
                 <br/>
-                <label htmlFor='end-date'>Start date: </label>
+                <label htmlFor='end-date'>End date: </label>
                 <input id='end-date' type="date" name='endDate' value={taskInfo.endDate} onChange={handleInfos} required />
                 <br/>
-                <label htmlFor='end-time'>Start date: </label>
+                <label htmlFor='end-time'>End time: </label>
                 <input id='end-time' type="time" name="endTime" value={taskInfo.endTime} onChange={handleInfos} />
                 <br/>
                 <label htmlFor="before-start">Notification timer: </label>

@@ -80,7 +80,7 @@ export const VIEWS = {
         },
         getList() {
             return [
-                "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+                "Days", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
             ]
         },
         belongsTo(date, day, month) {
@@ -139,7 +139,7 @@ export const VIEWS = {
                 let label = new Date(date.getFullYear(), date.getMonth(), i)
                 list.push(Intl.DateTimeFormat('en-GB', options).format(label))
             }
-            return list
+            return ["Hours", ...list]
         },
         belongsTo(date, hour, day) {
             // i-th hour of j-th day
@@ -200,7 +200,7 @@ export const VIEWS = {
                 // console.log(labelDate)
                 list.push(`${Intl.DateTimeFormat('en-GB', options).format(labelDate)}`)
             }
-            return list
+            return ["Hours", ...list]
         },
         isToday(hour, day, date) {
             const today = new Date()
@@ -254,7 +254,7 @@ export const VIEWS = {
                 day: 'numeric'
             }
             // console.log('from getList: ' + date)
-            return [Intl.DateTimeFormat('en-GB', options).format(date)]
+            return ["Hours", Intl.DateTimeFormat('en-GB', options).format(date)]
         },
         isToday(hour, day, date) {
             const today = new Date()

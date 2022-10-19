@@ -1,0 +1,71 @@
+a {
+    text-decoration: none;
+}
+
+tr:nth-child(even) {
+    background: var(--secondary);
+}
+
+#calendar td {
+    padding: 10px;
+    border-collapse: collapse;
+    border-right: solid 1px var(--border);
+    border-left: solid 1px var(--border);
+}
+
+#calendar tr:first-child {
+    position: sticky;
+    background: var(--light);
+    z-index: 2;
+    top: 0;
+}
+
+#calendar td:first-child {
+    position: sticky;
+    left: 0;
+}
+
+#calendar td {
+    background: var(--light);
+}
+
+#calendar tr:nth-child(even) td {
+    background: var(--secondary);
+}
+
+#calendar tr:first-child td {
+    border: solid 1px var(--border);
+}
+
+.preview {
+    border-radius: 5px;
+    padding: 10px;
+    display: block;
+    background: var(--primary);
+    color: var(--light);
+    width: 200px;
+    text-align: center;
+    margin: 5px;
+}
+
+.preview span {
+    display: block;
+}
+
+.preview.high {
+    background: red;
+    color: white;
+}
+
+.preview.medium {
+    background: forestgreen;
+    color: white;
+}
+
+.preview.low {
+    background: yellow;
+}
+
+.drop-container-over {
+    background: var(--hover) !important;
+}

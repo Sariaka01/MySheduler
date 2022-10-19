@@ -8,7 +8,7 @@ import { DashboardContext } from '../Dashboard'
 import DropContainer from './DropContainer'
 import Loader from './Loader'
 
-function Calendar({ view, date }) {
+function Calendar({ view, date, sorter }) {
     const [isPending, startTransition] = useTransition()
     const { viewController, userInfo } = useContext(DashboardContext)
     const [tasks, setTasks] = useState([])
@@ -75,12 +75,12 @@ function Calendar({ view, date }) {
             let cols = []
             if (i < viewController.start) {
                 // First row with the names
-                cols.push(<td key={'nbsp'+i} className="row-number nbsp">&nbsp;</td>, ...list.map(el => <td key={`${el}`} className="title"><h3>{el}</h3></td>))
+                cols.push(...list.map(el => <td key={`${el}`} className="title"><h3>{el}</h3></td>))
             }
             else {
                 // Row numbers
                 cols.push(<td key={`row-number-${i}`} className="row-number drop-container"><h3>{i}</h3></td>)
-                for (let j = 1; j <= list.length; j ++) {
+                for (let j = 1; j < list.length; j ++) {
                     // Push boxes
                     // const key = viewController.getLabel(i, j, { day, month, year, hour, min, sec, week })  // TO be managed in the date module
                     // Filter tasks
@@ -98,7 +98,7 @@ function Calendar({ view, date }) {
                         }
                         remainingTasks = newRemainder
                     }
-                    cols.push(<DropContainer isToday={viewController.isToday(i, j, date)} tasks= {previewTask} key={`${i}-${j}`} date = {viewController.getDate(i, j, date)} onDrop = {onDrop} />)
+                    cols.push(<DropContainer isToday={viewController.isToday(i, j, date)} tasks= {previewTask.sort(sorter)} key={`${i}-${j}`} date = {viewController.getDate(i, j, date)} onDrop = {onDrop} />)
                 }
             }
             rows.push(<tr key= {`${i}`}>{cols}</tr>)    // -1 because of the first row

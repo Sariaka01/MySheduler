@@ -8,14 +8,14 @@ import './table.css'
 export const DashboardContext= createContext()
 
 function Dashboard() {
-    const [view, setView] = useState('yearly')
+    const [view, setView] = useState('weekly')
     const [viewController, setViewController] = useState(VIEWS[view])
-    const [date, setDate] = useState(VIEWS[view].set(new Date()))
+    const [date, setDate] = useState(VIEWS[view].set(new Date(2022, 5, 20)))
     useEffect(() => {
-        console.log('effect')
+        // console.log('effect')
         setViewController(VIEWS[view])
         setDate(VIEWS[view].set(date))
-        console.log(date)
+        // console.log(date)
     }, [view])
     return (
         <div id="dashboard">

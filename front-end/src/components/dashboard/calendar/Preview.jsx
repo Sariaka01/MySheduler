@@ -18,10 +18,10 @@ function Preview({ task }) {
     task &&
     <Link ref= { drag } className={'preview'} to= {`/task/${task.id}`}>
       <div>
-        <span>Name: {task.name}</span>
-        <span>Creator: {task.creator}</span>
+        {/* <span>Name: {task.name}</span> */}
+        {/* <span>Creator: {task.creator}</span> */}
         <span>Start: {new Date(task.start).toLocaleString()}</span>
-        <span>End: {new Date(task.end).toLocaleString()}</span>
+        {/* <span>End: {new Date(task.end).toLocaleString()}</span> */}
       </div>
     </Link>
     

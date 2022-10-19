@@ -59,6 +59,8 @@ next(date): returns the next date
 previous(date): returns the previous date
 getLimits(date): returns an array of [lower, upper] date to filter queries
 isToday(i, j): returns if a given label represents today
+getDate(i, j, date): return the ISO string of a given cell according to the actual date state
+setDate(prev, next): return the ISO string of a new date from previous to next while keeping some previous date infos
 
 ============== WEEKS START FROM MONDAY SO THE INDEX OF SUNDAY IS 7 ===================
 */
@@ -91,6 +93,15 @@ export const VIEWS = {
         isToday(day, month, date) {
             const today = new Date()
             return date.getFullYear() == today.getFullYear() && this.belongsTo(today, day, month)
+        },
+        getDate(day, month, date) {
+            date = new Date(date.getFullYear(), month - 1, day)
+            // console.log(date)
+            return date.toISOString()
+        },
+        setDate(previous, next) {
+            let date= new Date(next.getFullYear(), next.getMonth(), next.getDate(), previous.getHours(), previous.getMinutes())
+            return date.toISOString()
         },
         next(date) {
             date = new Date(date.getFullYear() + 1, 0)  // January first
@@ -141,6 +152,15 @@ export const VIEWS = {
             const today = new Date()
             return date.getFullYear() == today.getFullYear() && date.getMonth() == today.getMonth() && today.getDate() == day
         },
+        getDate(hour, day, date) {
+            date = new Date(date.getFullYear(), date.getMonth(), day, hour)
+            // console.log(date)
+            return date.toISOString()
+        },
+        setDate(previous, next) {
+            let date= new Date(next.getFullYear(), next.getMonth(), next.getDate(), next.getHours(), previous.getMinutes())
+            return date.toISOString()
+        },
         next(date) {
             date = new Date(date.getFullYear(), date.getMonth() + 1)
             return this.set(date)
@@ -186,9 +206,20 @@ export const VIEWS = {
             const today = new Date()
             return date.getFullYear() == today.getFullYear() && getWeek(date) == getWeek(today) && (today.getDay() || 7) == day
         },
+        getDate(hour, day, date) {
+            date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + ((day+6)%7), hour)
+            // console.log(date)
+            return date.toISOString()
+        },
+        setDate(previous, next) {
+            // console.log(previous, next)
+            let date= new Date(next.getFullYear(), next.getMonth(), next.getDate(), next.getHours(), previous.getMinutes())
+            return date.toISOString()
+        },
         belongsTo(date, hour, weekday) {
             // i-th hour of j-th day
-            return date.getDay()? date.getDay(): 7 == weekday && date.getHours() == hour
+            // console.log(date.getDay(), weekday)
+            return (date.getDay()? date.getDay(): 7) == weekday && date.getHours() == hour
         },
         getTitle(date) {
             return `Week of ${Intl.DateTimeFormat('en-US', {day: '2-digit', month: 'long', year: 'numeric'}).format(date)}`
@@ -201,7 +232,7 @@ export const VIEWS = {
         },
         getLimits(date) {
             // return lower and upper dates
-            return [new Date(date.getFullYear(), date.getMonth(), date.getDate()), new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7, 23, 59, 59, 999)]  // Get first january
+            return [new Date(date.getFullYear(), date.getMonth(), date.getDate()), new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6, 23, 59, 59, 999)]  // Get first january
         }
     },
     daily: {
@@ -228,6 +259,15 @@ export const VIEWS = {
         isToday(hour, day, date) {
             const today = new Date()
             return date.getFullYear() == today.getFullYear() && date.getMonth() == today.getMonth() && date.getDate() == today.getDate()
+        },
+        getDate(hour, day, date) {
+            date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour)
+            // console.log(date)
+            return date.toISOString()
+        },
+        setDate(previous, next) {
+            let date= new Date(next.getFullYear(), next.getMonth(), next.getDate(), next.getHours(), previous.getMinutes())
+            return date.toISOString()
         },
         belongsTo(date, hour) {
             // i-th hour of j-th day

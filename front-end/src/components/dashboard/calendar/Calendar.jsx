@@ -30,10 +30,19 @@ function Calendar({ view, date }) {
             let start = new Date(task.start)
             return start >= lower && start <= upper
         })
+        // console.log(newTasks)
         setTasks(newTasks)
     }, [date])
 
+    function onDrop(item, monitor, date) {
+        const [prev, next] = [new Date(item.start), new Date(date)]
+        setTasks(previous => previous
+            .filter(task => task["task_id"] != item["task_id"])
+            .concat({ ...item, start: viewController.setDate(prev, next) })
+        )
+    }
     function generateCalendar() {
+        // console.log('Generating calendar')
         let rows = []
         let remainingTasks = tasks  // To filter tasks
         // console.log(date)
@@ -63,13 +72,13 @@ function Calendar({ view, date }) {
                         for (let task of remainingTasks) {
                         const taskStartDate = new Date(task.start)  // task.start is in ISO format
                         if (viewController.belongsTo(taskStartDate, i, j))
-                            previewTask.push(<div>{ taskStartDate.toLocaleString() }</div>)
+                            previewTask.push(task)
                         else
                             newRemainder.push(task)
                         }
                         remainingTasks = newRemainder
                     }
-                    cols.push(<td id={viewController.isToday(i, j, date) && "today" || undefined} key={`${i}-${j}`}>{ previewTask }</td>)
+                    cols.push(<DropContainer id={viewController.isToday(i, j, date) && "today" || undefined} tasks= {previewTask} key={`${i}-${j}`} date = {viewController.getDate(i, j, date)} onDrop = {onDrop} />)
                 }
             }
             rows.push(<tr key= {`${i}`}>{cols}</tr>)    // -1 because of the first row

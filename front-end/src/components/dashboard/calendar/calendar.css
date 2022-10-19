@@ -2,6 +2,10 @@ a {
     text-decoration: none;
 }
 
+#calendar-container {
+    margin-left: 50px;
+}
+
 tr:nth-child(even) {
     background: var(--secondary);
 }
@@ -9,20 +13,21 @@ tr:nth-child(even) {
 #calendar td {
     padding: 10px;
     border-collapse: collapse;
-    border-right: solid 1px var(--border);
-    border-left: solid 1px var(--border);
+    border-right: solid 1px var(--dark);
+    border-left: solid 1px var(--dark);
 }
 
 #calendar tr:first-child {
     position: sticky;
     background: var(--light);
     z-index: 2;
-    top: 0;
+    height: 20px;
+    top: 62px;
 }
 
 #calendar td:first-child {
     position: sticky;
-    left: 0;
+    left: 150px;
 }
 
 #calendar td {
@@ -34,7 +39,7 @@ tr:nth-child(even) {
 }
 
 #calendar tr:first-child td {
-    border: solid 1px var(--border);
+    border: solid 1px var(--dark);
 }
 
 .preview {
@@ -53,17 +58,18 @@ tr:nth-child(even) {
 }
 
 .preview.high {
-    background: red;
-    color: white;
+    background: var(--high);
+    color: var(--light);
 }
 
 .preview.medium {
-    background: forestgreen;
-    color: white;
+    background: var(--medium);
+    color: var(--light);
 }
 
 .preview.low {
-    background: yellow;
+    color: var(--dark);
+    background: var(--low);
 }
 
 .drop-container-over {

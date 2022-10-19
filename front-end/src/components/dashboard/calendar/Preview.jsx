@@ -20,7 +20,8 @@ function Preview({ task }) {
     <Link ref= { drag } className = {`preview ${task.priority.toLowerCase()}`} to= {`/task/${task['task_id']}`}>
       <div>
         <h3>{task.name}</h3>
-        <span>{`${task.creator.firstname} ${task.creator.lastname}`}</span>
+        <span>---***---</span>
+        <h4>{`${task.creator.firstname} ${task.creator.lastname}`}</h4>
         <span>{new Date(task.start).toString().split('GMT')[0].trim().slice(0, -3)}</span>
         <span>{new Date(task.end).toString().split('GMT')[0].trim().slice(0, -3)}</span>
       </div>

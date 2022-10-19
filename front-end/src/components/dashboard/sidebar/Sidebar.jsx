@@ -1,6 +1,8 @@
 import React, {useContext} from 'react'
 import { useNavigate } from 'react-router'
 import {DashboardContext} from '../Dashboard'
+import './sidebar.css'
+
 
 function Sidebar() {
     const nav = useNavigate()

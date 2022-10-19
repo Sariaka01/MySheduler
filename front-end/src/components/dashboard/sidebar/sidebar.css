@@ -1,0 +1,13 @@
+#sidebar-container {
+    position: fixed;
+    left: 0;
+    top: 61px;
+    z-index: 3;
+    background: var(--light);
+    height: 100vh;
+    width: 150px;
+    padding: 25px 0;
+}
+#sidebar-container button {
+    width: 100%;
+}

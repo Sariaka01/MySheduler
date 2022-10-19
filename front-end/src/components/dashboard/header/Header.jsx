@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { useCallback } from 'react';
+import SortOptionSelector from './SortOptionSelector'
 import { DashboardContext } from '../Dashboard'
+import './header.css'
 
 function Header({ view, date }) {
-    const { viewController, setDate, userInfo, setSortBy } = useContext(DashboardContext)
+    // console.log(date)
+    const { viewController, setDate, userInfo } = useContext(DashboardContext)
     const [title, setTitle] = useState(viewController.getTitle(date))
     useEffect(() => {
         // console.log('Setting title for date ' + date)
@@ -19,20 +22,27 @@ function Header({ view, date }) {
     }
     return (
         <div id="header-container">
-            <label htmlFor = "sort-select">Sort by: </label>
-            <select defaultValue = "priority" id="sort-select" onChange={(e) => {
-                setSortBy(e.target.value)
-            }}>
-                <option value="priority">Priority</option>
-                <option value="start">Start Date</option>
-                <option value="end">End Date</option>
-                <option value="creator">Creator</option>
-                <option value="name">Task name</option>
-            </select>
-            <h3>{ `${userInfo.firstname} ${userInfo.lastname}` }</h3>
-            <button onClick = { decrement }>Previous</button>
-            <h2>{ title }</h2>
-            <button onClick = { increment }>Next</button>
+            <h2>{`${userInfo.firstname}'s Scheduler`}</h2>
+            <div className="nav">
+                <button onClick = { decrement }>Previous</button>
+                <h1>{ title }</h1>
+                <button onClick = { increment }>Next</button>
+            </div>
+            <div className="controller">
+                <label htmlFor="sort-select">Sort by: </label>
+                <SortOptionSelector />
+                <label htmlFor='go-to'>Go to: </label>
+                {/*<select defaultValue= {viewController.getTitle(date)}  id='go-to' onChange={(e) => {
+                    setDate(viewController.goTo(e.target.value))
+                }}>
+                    {viewController.getPreviews(date).map(preview => {
+                        let label = viewController.getTitle(preview)
+                        return (<option value={label}>
+                                {label}
+                        </option>)
+                    })}
+                </select>*/}
+            </div>
         </div>
     )
 }

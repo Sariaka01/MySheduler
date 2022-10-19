@@ -3,7 +3,10 @@
   --secondary: #868688;
   --hover: #9b91f1;
   --light: #fff;
-  --border: #08083b;
+  --dark: #08083b;
+  --high: #aa0000;
+  --medium: #007700;
+  --low: #ffaa00;
 }
 * {
   margin: 0;

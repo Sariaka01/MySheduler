@@ -78,6 +78,9 @@ export const VIEWS = {
                 return new Date(today.getFullYear(), today.getMonth(), today.getDate())
             return new Date(date.getFullYear(), 0)  // Else return first january
         },
+        goTo(year) {
+            return this.set(new Date(year, 0))
+        },
         getList() {
             return [
                 "Days", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
@@ -114,6 +117,12 @@ export const VIEWS = {
         getLimits(date) {
             // return lower and upper dates
             return [new Date(date.getFullYear(), 0, 1), new Date(date.getFullYear(), 11, 31, 23, 59, 59, 999)]  // Get first january
+        },
+        getPreviews(date) {
+            let list = []
+            for (let i = date.getFullYear() - 5; i < date.getFullYear() + 5; i++)
+                list.push(new Date(i, 0))
+            return list
         }
     },
     monthly: {

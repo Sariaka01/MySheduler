@@ -68,7 +68,6 @@ function TaskManager() {
         }
         const start = new Date(`${taskInfo.startDate} ${taskInfo.startTime}`).toISOString() // Start datetime
         const end = new Date(`${taskInfo.endDate} ${taskInfo.endTime}`).toISOString() // End
-        console.log(start, end)
         let res
         try {
             if (!taskId) {
@@ -79,8 +78,7 @@ function TaskManager() {
                         ...taskInfo,
                         beforeStart: +taskInfo.beforeStart,
                         start,
-                        end,
-                        participants: ["safidy@gmail.com"]
+                        end
                     }
                 })
                 console.log(res.data.task_id)
@@ -98,8 +96,7 @@ function TaskManager() {
                         ...taskInfo,
                         beforeStart: +taskInfo.beforeStart,
                         start,
-                        end,
-                        participants: ["safidy5@gmail.com"]
+                        end
                     }
                 })
                 if (res.status == 200) {

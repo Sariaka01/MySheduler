@@ -76,3 +76,7 @@ a {
 #calendar .drop-container-over {
     background: pink;
 }
+
+#calendar #today {
+    background: yellow;
+}

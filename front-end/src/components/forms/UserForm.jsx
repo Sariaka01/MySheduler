@@ -5,6 +5,7 @@ import Login from './Login'
 import './user-form.css'
 
 function UserForm() {
+    console.log('Rendering form')
     const [isLogin, setIsLogin] = useState(true)
     return (
         <div>

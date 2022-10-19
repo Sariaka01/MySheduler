@@ -1,22 +1,29 @@
-import React, {useContext} from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import { useCallback } from 'react';
 import { DashboardContext } from '../Dashboard'
 
-function Header() {
-    const { year, setYear } = useContext(DashboardContext)
-    console.log('Year from header = ' + year)
-    function decrementYear() {
-        setYear(year-1)
+function Header({ view, date }) {
+    const { viewController, setDate } = useContext(DashboardContext)
+    const [title, setTitle] = useState(viewController.getTitle(date))
+    useEffect(() => {
+        // console.log('Setting title for date ' + date)
+        setTitle(viewController.getTitle(date))
+    }, [date, view]);
+    function increment(e) {
+        e.preventDefault()
+        setDate(viewController.next(date))
     }
-    function incrementYear() {
-        setYear(year+1)
+    function decrement(e) {
+        e.preventDefault()
+        setDate(viewController.previous(date))
     }
-    console.log(year)
     return (
-        <header>
-            <button onClick = {decrementYear}>{"<"}</button>
-            <h4>{ year }</h4>
-            <button onClick = {incrementYear}>{">"}</button>
-        </header>
-)}
+        <div>
+            <button onClick = { decrement }>Previous</button>
+            <div>{ title }</div>
+            <button onClick = { increment }>Next</button>
+        </div>
+    )
+}
 
 export default Header

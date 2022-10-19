@@ -6,17 +6,25 @@ function Sidebar() {
     
     return (
         <div className="sidebar">
-            <button onClick= {
-                () => setView('test')
-            }>Test</button>
+            {/* <button onClick= { */}
+                {/* () => setView('test') */}
+            {/* }>Test</button>*/}
             <button onClick={
                 () => {
-                    setView('year')
+                    setView('yearly')
                 }
-            }>Year</button>
+            }>Yearly</button>
+            <button onClick={
+                () => {
+                    setView('monthly')
+                }
+            }>Monthly</button>
             <button onClick= {
-                () => setView('week')
-            }>Week</button>
+                () => setView('weekly')
+            }>Weekly</button>
+            <button onClick= {
+                () => setView('daily')
+            }>Daily</button>
         </div>
     )
 }

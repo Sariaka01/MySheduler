@@ -18,9 +18,9 @@ function Header({ view, date }) {
         setDate(viewController.previous(date))
     }
     return (
-        <div>
+        <div id= "header-container">
             <button onClick = { decrement }>Previous</button>
-            <div>{ title }</div>
+            <h3>{ title }</h3>
             <button onClick = { increment }>Next</button>
         </div>
     )

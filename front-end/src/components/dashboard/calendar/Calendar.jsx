@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useContext, useTransition, useCallback } from 'react'
+import React, { useState, useLayoutEffect, useContext, useTransition, useCallback, startTransition } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend'
 import Axios from 'axios'
@@ -6,32 +6,36 @@ import { VIEWS, dateBelongsTo, getWeek, getLocaleDateTime } from '../../utils/da
 import { LIST } from '../../../test/list'
 import { DashboardContext } from '../Dashboard'
 import DropContainer from './DropContainer'
-import Preview from './Preview'
+import Loader from './Loader'
 
 function Calendar({ view, date }) {
+    const [isPending, startTransition] = useTransition()
     const { viewController } = useContext(DashboardContext)
     const [tasks, setTasks] = useState([])
     useLayoutEffect(() => {
-        /*Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/list`, {
-            token: localStorage.getItem('token'),
-            start: new Date(date.getFullYear()).toISOString(),
-            end: new Date(date.getFullYear(), 11, 31).toISOString(),
-            // year: date.getUTCFullYear() // Dates are stored in UTC
-        }).then((res) => {
-            setTasks(res.data)
-            console.log(res.data)
-        }).catch((e) => {
-            console.log(e)
-        })*/
+        startTransition(() => {
+            const [lower, upper] = viewController.getLimits(date)
+            Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/list`, {
+                token: localStorage.getItem('token'),
+                start: lower.toISOString(),
+                end: upper.toISOString(),
+                // year: date.getUTCFullYear() // Dates are stored in UTC
+            }).then((res) => {
+                setTasks(res.data)
+                // console.log(res.data)
+            }).catch((e) => {
+                console.log(e)
+            })
+        })
+        
         // console.log('Layout effect' + date)
-        const [lower, upper] = viewController.getLimits(date)
         // console.log(date)
-        let newTasks = LIST.filter(task => {
+        /*let newTasks = LIST.filter(task => {
             let start = new Date(task.start)
             return start >= lower && start <= upper
         })
         // console.log(newTasks)
-        setTasks(newTasks)
+        setTasks(newTasks)*/
     }, [date])
 
     function onDrop(item, monitor, date) {
@@ -78,7 +82,7 @@ function Calendar({ view, date }) {
                         }
                         remainingTasks = newRemainder
                     }
-                    cols.push(<DropContainer id={viewController.isToday(i, j, date) && "today" || undefined} tasks= {previewTask} key={`${i}-${j}`} date = {viewController.getDate(i, j, date)} onDrop = {onDrop} />)
+                    cols.push(<DropContainer isToday={viewController.isToday(i, j, date)} tasks= {previewTask} key={`${i}-${j}`} date = {viewController.getDate(i, j, date)} onDrop = {onDrop} />)
                 }
             }
             rows.push(<tr key= {`${i}`}>{cols}</tr>)    // -1 because of the first row
@@ -87,15 +91,18 @@ function Calendar({ view, date }) {
     }
 
     return (
-        <DndProvider backend={Backend}>
-            {/* {isPending && <Loading />} */}
-            <h1>{view}</h1>
-            <table id = "calendar" cellSpacing = {0}>
-                <tbody>
-                    { generateCalendar() }
-                </tbody>
-            </table>
-        </DndProvider>
+        <div id="calendar-container">
+            <DndProvider backend={Backend}>
+                {/* {isPending && <Loading />} */}
+                {isPending && <Loader />}
+                <h1>{view}</h1>
+                <table id = "calendar" cellSpacing = {0}>
+                    <tbody>
+                        { generateCalendar() }
+                    </tbody>
+                </table>
+            </DndProvider>
+        </div>
     )
 }
 

@@ -1,37 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { VIEWS } from '../../utils/date'
+import React, { useContext, useState, useEffect } from 'react'
+import { useCallback } from 'react';
+import { DashboardContext } from '../Dashboard'
 
-function Header({ view, date, setDate }) {
-    const [title, setTitle] = useState(VIEWS[view].getTitle(date))
+function Header({ view, date }) {
+    const { viewController, setDate } = useContext(DashboardContext)
+    const [title, setTitle] = useState(viewController.getTitle(date))
     useEffect(() => {
-        setTitle(VIEWS[view].getTitle(date))
-    }, [view, date])
-    
-    function handleDate(handler) {
-        switch (view) {
-            case 'yearly':
-                // Decrement the year
-                const newDate = handler(date)
-                setTitle(handler(date))
-                setDate(new Date(date.getFullYear()-1, 0))
-                break
-            default: 
-        }
+        // console.log('Setting title for date ' + date)
+        setTitle(viewController.getTitle(date))
+    }, [date, view]);
+    function increment(e) {
+        e.preventDefault()
+        setDate(viewController.next(date))
     }
-    function decrement() {
-        const newDate = VIEWS[view].previous(date)
-        setDate(newDate)
-    }
-    function increment() {
-        const newDate = VIEWS[view].next(date)
-        setDate(newDate)
+    function decrement(e) {
+        e.preventDefault()
+        setDate(viewController.previous(date))
     }
     return (
-        <header>
-            <button onClick = {decrement}>{"<"}</button>
-            <h4>{ title }</h4>
-            <button onClick = {increment}>{">"}</button>
-        </header>
-)}
+        <div>
+            <button onClick = { decrement }>Previous</button>
+            <div>{ title }</div>
+            <button onClick = { increment }>Next</button>
+        </div>
+    )
+}
 
 export default Header

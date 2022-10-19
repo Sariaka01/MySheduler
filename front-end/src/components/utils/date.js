@@ -46,6 +46,20 @@ export function getWeek(ISOString) {
     return Math.ceil(days / 7) - (date.getDay() == 0? 1: 0) // To start a week on monday
 }
 
+/* THIS VIEWS CONCEPT */
+/*
+VIEW COMPONENT HAS
+start: starting row notation
+end: ending row notation
+set(date): to set the date state
+getList(date): get the list of rows
+belongsTo(date, i, j): returns either a date belongs to column j of row i
+getTitle(date): returns the title for the header
+next(date): returns the next date
+previous(date): returns the previous date
+getLimits(date): returns an array of [lower, upper] date to filter queries
+*/
+
 
 export const VIEWS = {
     yearly: {
@@ -53,110 +67,87 @@ export const VIEWS = {
         end: 31,
         set(date) {
             // set the start date
-            return new Date(date.getFullYear(), 0)
+            const today = new Date()
+            if (date.getFullYear() == today.getFullYear())
+                // If the year includes us
+                return new Date(today.getFullYear(), today.getMonth(), today.getDate())
+            return new Date(date.getFullYear(), 0)  // Else return first january
         },
         getList() {
             return [
                 "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
             ]
         },
-        getLabel(i, j, { year }) {
+        belongsTo(date, i, j) {
             // i-th day element of j-th month
-            // console.log(year)
-            return `${i}-${j}-${year}`  // i-th day of the j-th month of year year
-        },
-        // rowNumber: 31,
-        belongsTo(date, matrixIndex) {
-            // Return if dates belongs to matrixIndex
-            // i for rows, j for columns
-            const [i, j, year] = matrixIndex.split('-')
-            // In year, we have i, the day number (1-31) and j, the month number (1, 12)
-            // return false
-            return date.getDate() == i && date.getMonth() == j - 1 && date.getFullYear() == year
+            return date.getMonth()+1 == j && date.getDate() == i
         },
         getTitle(date) {
             return date.getFullYear()
         },
         next(date) {
-            return new Date(date.getFullYear() + 1, 0)  // January first
+            date = new Date(date.getFullYear() + 1, 0)  // January first
+            return this.set(date)
         },
         previous(date) {
-            return new Date(date.getFullYear() - 1, 0)  // January first
+            date = new Date(date.getFullYear() - 1, 0)  // January first
+            return this.set(date)
         },
         getLimit(date) {
             // return lower and upper dates
-            return new Date(date.getFullYear(), 11, 31, 23, 59, 59, 999)  // Get first january
+            return [new Date(date.getFullYear(), 0, 1), new Date(date.getFullYear(), 11, 31, 23, 59, 59, 999)]  // Get first january
         }
     },
     monthly: {
         start: 0,
         end: 23,
         set(date) {
+            // console.log(date.getDate())
+            // console.log(date)
+            const today = new Date()
+            if (date.getFullYear() == today.getFullYear() && date.getMonth() == today.getMonth())
+                // If the month includes us
+                return new Date(today.getFullYear(), today.getMonth(), today.getDate())
             return new Date(date.getFullYear(), date.getMonth())
         },
         getList(date) {
+            console.log('Date from getList: ' + date)
             let limit = getLastDay(date)
             let list = []
             for (let i = 1; i <= limit; i++)
                 list.push(i)
             return list
         },
-        getLabel(i, j, { month, year }) {
+        belongsTo(date, i, j) {
             // i-th hour of j-th day
-            return `${i}-${j}-${month}-${year}`  // i-th day of the j-th month of year year
-        },  // 24 hours
-        belongsTo(date, matrixIndex) {
-            // Return if dates belongs to matrixIndex
-            // i for rows, j for columns
-            const [i, j, month, year] = matrixIndex.split('-')
-            // console.log(`Hours ${i} compared to ${date.getHours()}`)
-            // console.log(`${j} compared to ${date.getDate()}`)
-            // console.log(`${month} compared to ${date.getMonth()}`)
-            // console.log(`${year} compared to ${date.getFullYear()}`)
-            // In year, we have i, the day number (1-31) and j, the month number (1, 12)
-            // return false
-            return date.getHours() == i && date.getDate() == j && date.getMonth() == month && date.getFullYear() == year
+            return date.getDate() == j && date.getHours() == i 
         },
         getTitle(date) {
-            return `${date.getMonth() + 1}/${date.getFullYear()}`
+            return `${Intl.DateTimeFormat('en-US', {month: 'long', year: 'numeric'}).format(date)}`
         },
         next(date) {
-            return new Date(date.getFullYear(), date.getMonth() + 1)
+            date = new Date(date.getFullYear(), date.getMonth() + 1)
+            return this.set(date)
         },
         previous(date) {
-            return new Date(date.getFullYear(), date.getMonth() - 1)
+            date = new Date(date.getFullYear(), date.getMonth() - 1)
+            return this.set(date)
         },
         getLimit(date) {
             // return lower and upper dates
-            return new Date(date.getFullYear(), date.getMonth(), getLastDay(date), 23, 59, 59, 999)  // Get first january
+            return [new Date(date.getFullYear(), date.getFullMonth()), new Date(date.getFullYear(), date.getMonth(), getLastDay(date), 23, 59, 59, 999)]  // Get first january
         }
     },
     weekly: {
         start: 0,
         end: 23,
         set(date) {
-            // const monday = date.getDate() - date.getDay() + 1
-            // console.log(date.getDate() + ' and ' + date.getDay() + ', monday is ', monday < 0? monday + 7: monday)
-            // const newDate = new Date(date.getFullYear(), date.getMonth(), monday < 0? monday + 7: monday)
-            // console.log(newDate)
-            // return newDate
-            // const { year, week } = getLocaleDateTime(date.toISOString())
-            // let today = new Date()
-            // let { year: todayYear, week: todayWeek } = getLocaleDateTime(today)
-            // let newDate
-            // if (year == todayYear && week == todayWeek) {
-            //     // console.log('week is now')
-            //     // console.log(today)
-            //     newDate= new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1)
-            //     // console.log(date)
-            // }
-            // else {
-            //     newDate= new Date(date.toISOString())
-            // }
-            // // newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1)
-            // console.log('newDate ==============> ' + newDate)
-            // return newDate
-            return new Date(date.getFullYear(), date.getMonth(). date.getDate() - date.getDay() + 1)
+            const today = new Date()
+            // Weeks starts on mondays so Sunday(index 0) will be considered 7
+            if (date.getFullYear() == today.getFullYear() && getWeek(date.toISOString()) == getWeek(today.toISOString()))
+                // If the month includes us
+                return new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDay()? today.getDay(): 7) + 1)
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate() - (date.getDay()? date.getDay(): 7) + 1)
         },
         getList(date) {
             // const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -167,26 +158,17 @@ export const VIEWS = {
                 day: 'numeric'
             }
             // console.log('from getList: ' + date)
-            console.log('Date from getList: ' + date)
+            date = this.set(date)
             for (let i = 0; i < 7; i++) {
                 let labelDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + i)
-                console.log(labelDate)
+                // console.log(labelDate)
                 list.push(`${Intl.DateTimeFormat('en-US', options).format(labelDate)}`)
             }
             return list
         },
-        getLabel(i, j, { year }) {
-            // i-th day element of j-th month
-            // console.log(year)
-            return `${i}-${j}-${year}`  // i-th day of the j-th month of year year
-        },
-        belongsTo(date, matrixIndex) {
-            // Return if dates belongs to matrixIndex
-            // i for rows, j for columns
-            const [i, j, year] = matrixIndex.split('-')
-            // In year, we have i, the day number (1-31) and j, the month number (1, 12)
-            // return false
-            return date.getDate() == i && date.getMonth() == j - 1 && date.getFullYear() == year
+        belongsTo(date, i, j) {
+            // i-th hour of j-th day
+            return date.getDay() == j && date.getHours() == i
         },
         getTitle(date) {
             return `Week of ${Intl.DateTimeFormat('en-US', {day: '2-digit', month: 'long', year: 'numeric'}).format(date)}`
@@ -200,6 +182,52 @@ export const VIEWS = {
         getLimit(date) {
             // return lower and upper dates
             return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7, 23, 59, 59, 999)  // Get first january
+        }
+    },
+    daily: {
+        start: 0,
+        end: 23,
+        set(date) {
+            const today = new Date()
+            // Weeks starts on mondays so Sunday(index 0) will be considered 7
+            if (date.getFullYear() == today.getFullYear() && (date.getMonth() == today.getMonth() || getWeek(date) == getWeek(today)))
+                // If the month or week includes us
+                return new Date(today.getFullYear(), today.getMonth(), today.getDate())
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate()) // Return the first day
+        },
+        getList(date) {
+            // const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            // const monday = this.set(date).getDate()
+            let list = []
+            let options = {
+                weekday: 'long',
+                day: 'numeric'
+            }
+            // console.log('from getList: ' + date)
+            date = this.set(date)
+            for (let i = 0; i < 7; i++) {
+                let labelDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + i)
+                // console.log(labelDate)
+                list.push(`${Intl.DateTimeFormat('en-US', options).format(labelDate)}`)
+            }
+            return list
+        },
+        belongsTo(date, i) {
+            // i-th hour of j-th day
+            return date.getHours() == i
+        },
+        getTitle(date) {
+            return Intl.DateTimeFormat('en-US', {day: 'numeric', year: 'numeric', month: 'long', weekday: 'long'}).format(date)
+        },
+        next(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+        },
+        previous(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1)
+        },
+        getLimit(date) {
+            // return lower and upper dates
+            return [new Date(date.getFullYear(), date.getMonth(), date.getDate()), new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999)]  // Get first january
         }
     }
 }

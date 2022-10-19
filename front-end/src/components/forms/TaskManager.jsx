@@ -1,10 +1,9 @@
-import React, { useState, useRef, createContext } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 import Axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import './task-form.css'
 import { LIST } from '../../test/list'
 import { getLocaleDateTime } from '../utils/date'
-import { useLayoutEffect } from 'react'
 import ParticipantTable from './ParticipantTable'
 
 export const ParticipantsContext = createContext(null)
@@ -12,6 +11,7 @@ export const ParticipantsContext = createContext(null)
 function TaskManager() {
     const { id } = useParams()
     const nav = useNavigate()
+    const token = localStorage.getItem('my-scheduler-token')
     const [taskId, setTaskId] = useState(id)
     const [taskInfo, setTaskInfo] = useState({
         name: '',
@@ -25,11 +25,15 @@ function TaskManager() {
         beforeStart: 0,
         participants: []
     })
-    let params = useParams()
-    useLayoutEffect(() => {
+    useEffect(() => {
+
+        console.log(token)
+
+        if (!token)
+            return nav('/')
         if(taskId) {
             Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/get`, {
-                token: localStorage.getItem('my-scheduler-token'),   // Get the token
+                token,   // Get the token
                 taskId
             }).then(({ data }) => {
                 console.log(data)
@@ -58,8 +62,8 @@ function TaskManager() {
 
     async function submit(e) {
         e.preventDefault()
+        // const token = localStorage.getItem('my-scheduler-token')
         // Those are locals
-        const token = localStorage.getItem('my-scheduler-token')
         if (!token) {
             alert('Session expired')
             nav('/')

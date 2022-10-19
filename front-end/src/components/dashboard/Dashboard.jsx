@@ -5,10 +5,12 @@ import Sidebar from './sidebar/Sidebar'
 import TaskManager from '../forms/TaskManager'
 import { VIEWS } from '../utils/date'
 import './dashboard.css'
+import { useNavigate } from 'react-router'
 
 export const DashboardContext= createContext()
 
 function Dashboard() {
+    const nav = useNavigate()
     const [view, setView] = useState('yearly')
     const [viewController, setViewController] = useState(VIEWS[view])
     const [date, setDate] = useState(VIEWS[view].set(new Date(2022, 5, 20)))
@@ -18,9 +20,10 @@ function Dashboard() {
         firstname: localStorage.getItem('my-scheduler-firstname'),
         lastname: localStorage.getItem('my-scheduler-lastname')
     }
-    console.log(userInfo)
     useEffect(() => {
         // console.log('effect')
+        if (!userInfo.token)
+            return nav('/')
         setViewController(VIEWS[view])
         setDate(VIEWS[view].set(date))
         // console.log(date)

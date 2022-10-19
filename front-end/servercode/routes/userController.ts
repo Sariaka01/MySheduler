@@ -69,7 +69,7 @@ export async function createUser(req: Request, res: Response){
 
 export async function logUser(req: Request, res: Response) {
     const { email, password } = req.body
-    const user = await findByEmail(email, "email", "password")
+    const user = await findByEmail(email, "email", "password", "firstname", "lastname")
 
     switch (user) {
         case 0:
@@ -81,7 +81,14 @@ export async function logUser(req: Request, res: Response) {
                 let token = jwt.sign({ email }, TOKEN_SECRET)   // Sign the email with the token
                 console.log(`${getOperationTime()}: connected ${email}`)
                 res.set('Set-Cookie', `session=${token}`)
-                res.status(200).json({ token })
+                res.status(200).json({
+                    user: {
+                        token,
+                        email,
+                        firstname: (<GeneralObject>user)["firstname"],
+                        lastname: (<GeneralObject>user)["lastname"]
+                    }
+                })
             }
             else {
                 res.status(404).json({ message: 'Wrong email or password'})    

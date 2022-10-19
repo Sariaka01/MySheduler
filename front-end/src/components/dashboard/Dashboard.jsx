@@ -22,7 +22,7 @@ function Dashboard() {
             <DashboardContext.Provider value={{viewController, view, date, setView, setDate }}>
                 <Header view = {view} date = {date} />
                 <Sidebar />
-                <Calendar />
+                <Calendar date = {date} />
             </DashboardContext.Provider>
         </div>
     )

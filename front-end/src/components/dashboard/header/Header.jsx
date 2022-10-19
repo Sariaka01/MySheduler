@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import SortOptionSelector from './SortOptionSelector'
 import { DashboardContext } from '../Dashboard'
 import './header.css'
+import { Link } from 'react-router-dom';
 
 function Header({ view, date }) {
     // console.log(date)
@@ -31,8 +32,8 @@ function Header({ view, date }) {
             <div className="controller">
                 <label htmlFor="sort-select">Sort by: </label>
                 <SortOptionSelector />
-                <label htmlFor='go-to'>Go to: </label>
-                {/*<select defaultValue= {viewController.getTitle(date)}  id='go-to' onChange={(e) => {
+                {/*<label htmlFor='go-to'>Go to: </label>
+                <select defaultValue= {viewController.getTitle(date)}  id='go-to' onChange={(e) => {
                     setDate(viewController.goTo(e.target.value))
                 }}>
                     {viewController.getPreviews(date).map(preview => {

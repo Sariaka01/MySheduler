@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import {DashboardContext} from '../Dashboard'
 import './sidebar.css'
 
@@ -35,7 +36,10 @@ function Sidebar() {
             <button onClick= {
                 () => setView('daily')
             }>Daily</button>
-            <button className='logout-btn' onClick = {logout}>Log out</button>
+            <Link to='/task'>
+                <button>Create</button>
+            </Link>
+            <button className='logout-btn' onClick={logout}>Log out</button>
         </div>
     )
 }

@@ -20,7 +20,11 @@ function Login() {
             setIsShowing(false)
             console.log(res.status)
             if (res.status == 200) {
-                localStorage.setItem('token', res.data.token)
+                localStorage.setItem('my-scheduler-token', res.data.user.token)
+                localStorage.setItem('my-scheduler-email', res.data.user.email)
+                localStorage.setItem('my-scheduler-firstname', res.data.user.firstname)
+                localStorage.setItem('my-scheduler-lastname', res.data.user.lastname)
+                // console.log(res.data.user)
                 nav('dashboard')
             }
         }

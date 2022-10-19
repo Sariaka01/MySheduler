@@ -10,7 +10,6 @@ import ParticipantTable from './ParticipantTable'
 export const ParticipantsContext = createContext(null)
 
 function TaskManager() {
-    const emailRef= useRef()
     const { id } = useParams()
     const nav = useNavigate()
     const [taskId, setTaskId] = useState(id)
@@ -30,7 +29,7 @@ function TaskManager() {
     useLayoutEffect(() => {
         if(taskId) {
             Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/get`, {
-                token: localStorage.getItem('token'),   // Get the token
+                token: localStorage.getItem('my-scheduler-token'),   // Get the token
                 taskId
             }).then(({ data }) => {
                 console.log(data)
@@ -60,7 +59,7 @@ function TaskManager() {
     async function submit(e) {
         e.preventDefault()
         // Those are locals
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('my-scheduler-token')
         if (!token) {
             alert('Session expired')
             nav('/')
@@ -137,31 +136,44 @@ function TaskManager() {
 
     // console.log('first log ', new Date(2022, 0, 1))
     return (
-        <form onSubmit={submit}>
-            <input type = "text" name = "name" value= { taskInfo.name } onChange = { handleInfos } required />
-            <textarea rows= {3} cols= {10} type = "text" name = "description" value= { taskInfo.description } onChange = { handleInfos } /><br />
-            
-            <select className= {`priority-${taskInfo.priority.toLowerCase()}`} name = "priority" value= {taskInfo.priority} onChange= { handleInfos }>
-                <option value= "HIGH">HIGH</option>
-                <option value= "MEDIUM">MEDIUM</option>
-                <option value= "LOW">LOW</option>
-            </select>
+        <div id= 'task-manager'>
+            <form onSubmit={submit}>
+                <h3>Creator: {  }</h3>
+                <label htmlFor='task-name'>Name: </label>
+                <input id='task-name' type="text" name="name" value={taskInfo.name} onChange={handleInfos} required />
+                <br/>
+                <label htmlFor='task-desc'>Description: </label>
+                <textarea id='task-desc' rows={3} cols={10} type="text" name="description" value={taskInfo.description} onChange={handleInfos} /><br />
+                <br/>
+                <label htmlFor='priority'>Priority</label>
+                <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()}`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
+                    <option value= "HIGH">HIGH</option>
+                    <option value= "MEDIUM">MEDIUM</option>
+                    <option value= "LOW">LOW</option>
+                </select><br/>
 
-            <input type= "date" name = 'startDate' value= { taskInfo.startDate } onChange= { handleInfos } required />
-            <input type= "time" name = "startTime" value= { taskInfo.startTime } onChange= { handleInfos } />
-            
-            <input type = "date" name = 'endDate' value= { taskInfo.endDate } onChange= { handleInfos } required />
-            <input type = "time" name="endTime" value={ taskInfo.endTime } onChange={handleInfos} />
-            
-            <label htmlFor="before-start">Notification timer: </label>
-            <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
-            
-            <ParticipantsContext.Provider value={{ handleParticipants }}>
-                {/* To handle the values from different users */}
-                <ParticipantTable participants={ taskInfo.participants } />
-            </ParticipantsContext.Provider>
-            <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}task</button>
-        </form>
+                <label htmlFor='start-date'>Start date: </label>
+                <input id='start-date' type="date" name='startDate' value={taskInfo.startDate} onChange={handleInfos} required />
+                <br/>
+                <label htmlFor='start-time'>Start date: </label>
+                <input id='start-time' type="time" name="startTime" value={taskInfo.startTime} onChange={handleInfos} />
+                <br/>
+                <label htmlFor='end-date'>Start date: </label>
+                <input id='end-date' type="date" name='endDate' value={taskInfo.endDate} onChange={handleInfos} required />
+                <br/>
+                <label htmlFor='end-time'>Start date: </label>
+                <input id='end-time' type="time" name="endTime" value={taskInfo.endTime} onChange={handleInfos} />
+                <br/>
+                <label htmlFor="before-start">Notification timer: </label>
+                <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
+                
+                <ParticipantsContext.Provider value={{ handleParticipants }}>
+                    {/* To handle the values from different users */}
+                    <ParticipantTable participants={ taskInfo.participants } />
+                </ParticipantsContext.Provider>
+                <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}task</button>
+            </form>
+        </div>
   )
 }
 

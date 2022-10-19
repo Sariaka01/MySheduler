@@ -16,7 +16,7 @@ function Preview({ task }) {
   
   return (
     task &&
-    <Link ref= { drag } className={'preview'} to= {`/task/${task.id}`}>
+    <Link ref= { drag } className = 'preview' to= {`/task/${task['task_id']}`}>
       <div>
         {/* <span>Name: {task.name}</span> */}
         {/* <span>Creator: {task.creator}</span> */}

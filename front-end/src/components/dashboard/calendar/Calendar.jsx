@@ -10,13 +10,13 @@ import Loader from './Loader'
 
 function Calendar({ view, date }) {
     const [isPending, startTransition] = useTransition()
-    const { viewController } = useContext(DashboardContext)
+    const { viewController, userInfo } = useContext(DashboardContext)
     const [tasks, setTasks] = useState([])
     useLayoutEffect(() => {
         startTransition(() => {
             const [lower, upper] = viewController.getLimits(date)
             Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/list`, {
-                token: localStorage.getItem('token'),
+                token: userInfo.token,
                 start: lower.toISOString(),
                 end: upper.toISOString(),
                 // year: date.getUTCFullYear() // Dates are stored in UTC
@@ -40,10 +40,26 @@ function Calendar({ view, date }) {
 
     function onDrop(item, monitor, date) {
         const [prev, next] = [new Date(item.start), new Date(date)]
+        let newItem = { ...item, start: viewController.setDate(prev, next) }
         setTasks(previous => previous
             .filter(task => task["task_id"] != item["task_id"])
-            .concat({ ...item, start: viewController.setDate(prev, next) })
+            .concat(newItem)
         )
+        /*console.log({
+                ...newItem,
+                participants: newItem.participants.map(user => user.email)
+            })*/
+        Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/update`, {
+            token: userInfo.token,
+            taskId: item["task_id"],
+            data: {
+                ...newItem,
+                participants: newItem.participants.map(user => user.email)
+            }
+        }).then(e => {
+        }).catch(e => {
+            console.log(e)
+        })
     }
     function generateCalendar() {
         // console.log('Generating calendar')

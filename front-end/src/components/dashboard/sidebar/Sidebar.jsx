@@ -6,7 +6,10 @@ function Sidebar() {
     const nav = useNavigate()
     const { setView } = useContext(DashboardContext)
     function logout() {
-        localStorage.removeItem('token')
+        localStorage.removeItem('my-scheduler-token')
+        localStorage.removeItem('my-scheduler-email')
+        localStorage.removeItem('my-scheduler-firstname')
+        localStorage.removeItem('my-scheduler-lastname')
         nav('/')
     }
     return (

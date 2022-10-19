@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { DashboardContext } from '../Dashboard'
 
 function Header({ view, date }) {
-    const { viewController, setDate } = useContext(DashboardContext)
+    const { viewController, setDate, userInfo } = useContext(DashboardContext)
     const [title, setTitle] = useState(viewController.getTitle(date))
     useEffect(() => {
         // console.log('Setting title for date ' + date)
@@ -18,9 +18,10 @@ function Header({ view, date }) {
         setDate(viewController.previous(date))
     }
     return (
-        <div id= "header-container">
+        <div id="header-container">
+            <h3>{ `${userInfo.firstname} ${userInfo.lastname}` }</h3>
             <button onClick = { decrement }>Previous</button>
-            <h3>{ title }</h3>
+            <h2>{ title }</h2>
             <button onClick = { increment }>Next</button>
         </div>
     )

@@ -25,7 +25,7 @@ const sorter = {
     },
     priority(taskA, taskB) {
         const priority = ["LOW", "MEDIUM", "HIGH"]
-        return priority.indexOf(taskA.priority) > priority.indexOf(taskB.priority)? 1: priority.indexOf(taskA.priority) < priority.indexOf(taskB.priority)? -1: 0 
+        return priority.indexOf(taskA.priority) > priority.indexOf(taskB.priority)? -1: priority.indexOf(taskA.priority) < priority.indexOf(taskB.priority)? 1: 0 
     }
 }
 

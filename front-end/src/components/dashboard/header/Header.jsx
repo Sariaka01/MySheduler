@@ -23,10 +23,10 @@ function Header({ view, date }) {
     }
     return (
         <div id="header-container">
-            <h2>{`${userInfo.firstname}'s Scheduler`}</h2>
+            <h3>{`${userInfo.firstname}'s Scheduler`}</h3>
             <div className="nav">
                 <button onClick = { decrement }>Previous</button>
-                <h1>{ title }</h1>
+                <h3>{ title }</h3>
                 <button onClick = { increment }>Next</button>
             </div>
             <div className="controller">

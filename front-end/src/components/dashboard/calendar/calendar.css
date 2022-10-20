@@ -42,7 +42,12 @@ tr:nth-child(even) {
     border: solid 1px var(--dark);
 }
 
+#calendar td.today {
+    background: var(--marker);
+}
+
 .preview {
+    position: relative;
     border-radius: 5px;
     padding: 10px;
     display: block;
@@ -53,23 +58,36 @@ tr:nth-child(even) {
     margin: 5px;
 }
 
+.preview input {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 20px;
+    width: 20px;
+}
+
 .preview span {
     display: block;
 }
 
 .preview.high {
     background: var(--high);
-    color: var(--light);
 }
 
 .preview.medium {
     background: var(--medium);
-    color: var(--light);
 }
 
 .preview.low {
-    color: var(--dark);
     background: var(--low);
+}
+
+.preview.low a {
+    color: var(--dark);
+}
+
+.preview.high a, .preview.medium a {
+    color: var(--light);
 }
 
 .drop-container-over {

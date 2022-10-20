@@ -10,8 +10,7 @@ import Loader from './Loader'
 
 function Calendar({ view, date, sorter }) {
     const [isPending, startTransition] = useTransition()
-    const { viewController, userInfo } = useContext(DashboardContext)
-    const [tasks, setTasks] = useState([])
+    const { viewController, userInfo, tasks, setTasks } = useContext(DashboardContext)
     useLayoutEffect(() => {
         startTransition(() => {
             const [lower, upper] = viewController.getLimits(date)
@@ -39,6 +38,10 @@ function Calendar({ view, date, sorter }) {
     }, [date])
 
     function onDrop(item, monitor, date) {
+        if (userInfo.email != item.creator.email) {
+            alert("You can't modify this task")
+            return
+        }
         const [prev, next] = [new Date(item.start), new Date(date)]
         let newItem = { ...item, start: viewController.setDate(prev, next) }
         setTasks(previous => previous

@@ -12,10 +12,14 @@ function TaskManager() {
     const { id } = useParams()
     const nav = useNavigate()
     const token = localStorage.getItem('my-scheduler-token')
+    const userEmail = localStorage.getItem('my-scheduler-email')
+    const userFirstname = localStorage.getItem('my-scheduler-firstname')
+    const userLastname = localStorage.getItem('my-scheduler-lastname')
     const [taskId, setTaskId] = useState(id)
+    const [readOnly, setReadOnly] = useState(false)
     const [taskInfo, setTaskInfo] = useState({
         name: '',
-        creator: '',
+        creator: `${userFirstname} ${userLastname}`,
         description: '',
         priority: 'LOW',
         startDate: '',
@@ -23,11 +27,11 @@ function TaskManager() {
         endDate: '',
         endTime: '00:00:00',
         beforeStart: 0,
-        participants: []
+        participants: [userEmail]
     })
     useEffect(() => {
 
-        console.log(token)
+        // console.log(token)
 
         if (!token)
             return nav('/')
@@ -53,6 +57,7 @@ function TaskManager() {
                     beforeStart: task.beforeStart,
                     participants: task.participants.map(participant => participant.email)
                 })
+                setReadOnly(task.creator.email != userEmail)
             }).catch(() => {
                 nav('/task')
             })
@@ -92,6 +97,7 @@ function TaskManager() {
             }
             else {
                 console.log('Updating task...')
+                console.log(taskInfo)
                 res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/update`, {
                     token,
                     taskId,
@@ -130,6 +136,7 @@ function TaskManager() {
         setTaskInfo({
             ...taskInfo, participants: [...new Set(newList)]    // No redudancy
         })
+        console.log('Participants : ', [...new Set(newList)])
     }
     function generateList(participants) {
         let i= 0
@@ -137,17 +144,31 @@ function TaskManager() {
             {participants.map(participant => <li key= {i++}>{participant}</li>)}
         </ul>
     }
-
+    async function deleteTask(e) {
+        e.preventDefault()
+        if (window.confirm('Remove task?')) {
+            try {
+                const res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/delete`, {
+                    token,
+                    taskIdList: [taskId]
+                })
+                nav('/dashboard')
+            }
+            catch {
+                alert('Couldn\'t delete the task')
+            }
+        }
+    }
     // console.log('first log ', new Date(2022, 0, 1))
     return (
         <div id= 'task-manager'>
             <form onSubmit={submit}>
-                <h3>Creator: {  }</h3>
+                <h3>Creator: { taskInfo.creator }</h3>
                 <label htmlFor='task-name'>Name: </label>
                 <input id='task-name' type="text" name="name" value={taskInfo.name} onChange={handleInfos} required />
                 <br/>
                 <label htmlFor='task-desc'>Description: </label>
-                <textarea id='task-desc' rows={3} cols={10} type="text" name="description" value={taskInfo.description} onChange={handleInfos} /><br />
+                <textarea id='task-desc' rows={3} cols={20} type="text" name="description" value={taskInfo.description} onChange={handleInfos} /><br />
                 <br/>
                 <label htmlFor='priority'>Priority</label>
                 <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()}`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
@@ -173,9 +194,12 @@ function TaskManager() {
                 
                 <ParticipantsContext.Provider value={{ handleParticipants }}>
                     {/* To handle the values from different users */}
-                    <ParticipantTable participants={ taskInfo.participants } />
+                    <ParticipantTable participants={taskInfo.participants} participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
                 </ParticipantsContext.Provider>
-                <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}task</button>
+                {!readOnly && <>
+                    <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
+                    {taskId && <button onClick = {deleteTask}>Delete</button>}
+                </>}
             </form>
         </div>
   )

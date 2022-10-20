@@ -1,5 +1,5 @@
 #header-container {
-    background: var(--primary);
+    background: var(--dark);
     color: var(--light);
     position: fixed;
     left: 0;
@@ -22,7 +22,7 @@
     margin: 10px;
 }
 
-#header-container h2 {
+#header-container h3 {
     margin: 0 20px;
 }
 

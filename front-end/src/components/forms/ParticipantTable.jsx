@@ -3,11 +3,13 @@ import Participant from './Participant'
 import { ParticipantsContext } from './TaskManager'
 
 
-function ParticipantTable({ participants, inputRef, handler }) {
+function ParticipantTable({ participants, participates, readOnly }) {
 	console.log(participants)
 	// console.log('Participants loading')
 	const [addButton, setAddButton] = useState(true)
 	const [createMode, setCreateMode] = useState(false)
+	const userEmail = localStorage.getItem('my-scheduler-email')
+	const { handleParticipants } = useContext(ParticipantsContext)
 	// const emailInput = useRef(null)
 	/*const [list, setList] = useState(participants)
 	// console.log(list)
@@ -17,7 +19,10 @@ function ParticipantTable({ participants, inputRef, handler }) {
 		// console.log(participants)
 		let i= 0
 		for (let participant of participants) {
-			row.push(<Participant key={ i++ } participant={participant} createMode= {false} adderHandler = { setAdder } />)
+			{
+				userEmail != participant &&
+				row.push(<Participant key={i++} participant={participant} createMode={false} adderHandler={setAdder} readOnly={readOnly} />)
+			}
 		}
 	}
 	function setAdder(button, create) {
@@ -33,23 +38,38 @@ function ParticipantTable({ participants, inputRef, handler }) {
 		setAdder(false)
 	}*/
 	return (
-		<table>
-			<thead>
-				<tr>
-					<th>Participants List</th>
-					<td>
-						{addButton && <button onClick={(e) => {
-							e.preventDefault()
-							setAdder(false, true)
-						}}>Add</button>}
-					</td>
-				</tr>
-			</thead>
-			<tbody>
-				{createMode && <Participant createMode = { true } adderHandler = { setAdder } />}
-				{row}
-			</tbody>
-		</table>
+		<>
+			<div>
+				<label htmlFor="participate">Participate to this task: </label>
+				<input checked = {participates} id = "participate" type="checkbox" onChange={(e) => {
+					if (e.target.checked) {
+						handleParticipants(userEmail)
+						// setParticipates(true)
+					}
+					else {
+						handleParticipants('', userEmail)
+						// setParticipates(false)
+					}
+				}} />
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Participants List</th>
+						<td>
+							{!readOnly && addButton && <button onClick={(e) => {
+								e.preventDefault()
+								setAdder(false, true)
+							}}>Add</button>}
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					{createMode && <Participant createMode = { true } adderHandler = { setAdder } readOnly = { readOnly } />}
+					{row}
+				</tbody>
+			</table>
+		</>
   )
 }
 

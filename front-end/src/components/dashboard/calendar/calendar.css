@@ -4,6 +4,7 @@ a {
 
 #calendar-container {
     margin-left: 50px;
+    
 }
 
 /* tr:nth-child(even) {
@@ -15,6 +16,7 @@ a {
     border-collapse: collapse;
     border-right: solid 1px var(--dark);
     border-left: solid 1px var(--dark);
+
 }
 
 #calendar tr:first-child {

@@ -37,9 +37,9 @@ function Sidebar() {
                 () => setView('daily')
             }>Daily</button>
             <Link to='/task'>
-                <button>Create</button>
+                <button><i className="fa fa-plus"></i> Create</button>
             </Link>
-            <button className='logout-btn' onClick={logout}>Log out</button>
+            <button className='logout-btn' onClick={logout}><i className="fa fa-chevron-left"></i> Log out</button>
         </div>
     )
 }

@@ -40,6 +40,14 @@
     padding-right: 10px ;
 }
 
+.btn-arrow{
+	background: none;
+	border: none;
+	font-size: xx-large;
+	color: white;
+	margin-bottom: 17px;
+}
+
 select {
 	background-color: rgb(255, 255, 255);
 	border: none;

@@ -1,11 +1,12 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react'
+import Axios from 'axios'
 import Header from './header/Header'
 import Calendar from './calendar/Calendar'
 import Sidebar from './sidebar/Sidebar'
-import TaskManager from '../forms/TaskManager'
 import { VIEWS } from '../utils/date'
-import './dashboard.css'
 import { useNavigate } from 'react-router'
+import { AppContext } from '../../App'
+import './dashboard.css'
 
 export const DashboardContext= createContext()
 
@@ -31,6 +32,7 @@ const sorter = {
 
 function Dashboard() {
     const nav = useNavigate()
+    const { updateTimer } = useContext(AppContext)
     const [view, setView] = useState('yearly')
     const [viewController, setViewController] = useState(VIEWS[view])
     const [date, setDate] = useState(VIEWS[view].set(new Date(2022, 5, 20)))
@@ -43,9 +45,7 @@ function Dashboard() {
         firstname: localStorage.getItem('my-scheduler-firstname'),
         lastname: localStorage.getItem('my-scheduler-lastname')
     }
-    useEffect(() => {
-        console.log(selected)
-    }, [selected])
+    useEffect(updateTimer, [])  // Update timer at entries
     useEffect(() => {
         // console.log('effect')
         if (!userInfo.token)

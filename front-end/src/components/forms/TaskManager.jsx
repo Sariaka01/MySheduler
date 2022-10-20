@@ -1,14 +1,16 @@
-import React, { useState, useEffect, createContext } from 'react'
+import React, { useState, useEffect, createContext, useContext } from 'react'
 import Axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import './task-form.css'
 import { LIST } from '../../test/list'
 import { getLocaleDateTime } from '../utils/date'
 import ParticipantTable from './ParticipantTable'
+import { AppContext } from '../../App'
 
 export const ParticipantsContext = createContext(null)
 
 function TaskManager() {
+    const { updateTimer } = useContext(AppContext);
     const { id } = useParams()
     const nav = useNavigate()
     const token = localStorage.getItem('my-scheduler-token')
@@ -112,7 +114,7 @@ function TaskManager() {
                     alert("Task updated successfully")
                 }
             }
-            
+            updateTimer()   // Update the timers
         }
         catch(e) {
             alert(e.response.data.message)

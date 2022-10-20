@@ -18,8 +18,19 @@ A web app for managing your tasks
     - Go to ./front-end and run npm install
     - Go to ./front-end/servercode and run npm install
 
-## In ./front-end
+## To run in development mode
 
-    - npm run migrate
+    - Go to ./front-end
+    - npm run migrate-db
     - npm run populate-db
     - npm run dev
+
+## Features
+
+    - Multiview calendar built from scratch using Date API
+    - Task creation, edition and deletion
+    - Drag and drop tasks on the calendar
+    - Sort tasks
+    - View task information
+    - Multiple task deletion
+    - Notification before a tasks starts

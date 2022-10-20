@@ -55,9 +55,9 @@ function Sidebar() {
             <Link to='/task'>
                 <button>Create</button>
             </Link>
-            <button onClick={deleteTasks}>
+            {selected.length != 0 && <button onClick={deleteTasks}>
                 Delete
-            </button>
+            </button>}
             <button className='logout-btn' onClick={logout}>Log out</button>
         </div>
     )

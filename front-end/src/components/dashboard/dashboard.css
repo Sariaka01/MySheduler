@@ -1,6 +1,5 @@
 #dashboard {
     position: relative;
-    /* background: red; */
     display: grid;
     grid-template-columns: 100px 1fr;
     grid-template-rows: 70px 1fr;

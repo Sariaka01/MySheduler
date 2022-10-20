@@ -1,7 +1,10 @@
 import React, { useRef, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useDrag, useDrop } from 'react-dnd'
+// <<<<<<< HEAD
 import { DashboardContext } from '../Dashboard'
+// =======
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
 import './calendar.css'
 
 function Preview({ task }) {
@@ -26,6 +29,7 @@ function Preview({ task }) {
   }
   return (
     task &&
+// <<<<<<< HEAD
     
     <div ref={drag} className={`preview ${task.priority.toLowerCase()}`}>
       {userInfo.email == task.creator.email && <input type="checkbox" onChange={toggleSelection} />}
@@ -39,6 +43,17 @@ function Preview({ task }) {
         </div>
       </Link>
     </div>
+// =======
+//     <Link ref= { drag } className = {`preview ${task.priority.toLowerCase()}`} to= {`/task/${task['task_id']}`}>
+//       <div>
+//         <h3>{task.name}</h3>
+//         <span>---***---</span>
+//         <h4>{`${task.creator.firstname} ${task.creator.lastname}`}</h4>
+//         <span>{new Date(task.start).toString().split('GMT')[0].trim().slice(0, -3)}</span>
+//         <span>{new Date(task.end).toString().split('GMT')[0].trim().slice(0, -3)}</span>
+//       </div>
+//     </Link>
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
     
   )
 }

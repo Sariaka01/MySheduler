@@ -1,7 +1,11 @@
 import React, { useState, useContext, useRef } from 'react'
 import { ParticipantsContext } from './TaskManager';
 
+// <<<<<<< HEAD
 function Participant({ participant, createMode, adderHandler, readOnly }) {
+// =======
+// function Participant({ participant, createMode, adderHandler }) {
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
     const [editMode, setEditMode] = useState(createMode)
     const newParticipant = useRef()
     const { handleParticipants } = useContext(ParticipantsContext)
@@ -27,7 +31,7 @@ function Participant({ participant, createMode, adderHandler, readOnly }) {
     return (
         <tr>
             <td>
-                {editMode && <input type="email" ref={newParticipant} onKeyDown={
+                {editMode && <input className = 'small-input' type="email" ref={newParticipant} onKeyDown={
                     (e) => {
                         if (e.code == "Enter") {
                             setParticipants(e)
@@ -35,25 +39,31 @@ function Participant({ participant, createMode, adderHandler, readOnly }) {
                     }
                 } /> || <span>{participant}</span>}
             </td>
-            {!readOnly && <td colSpan={editMode ? 2 : 1}>
-                {
-                    editMode && <button onClick={setParticipants}>Save
-                    </button> ||
-                    <>
-                        <button onClick={(e) => {
+{/* <<<<<<< HEAD */}
+            {!readOnly && ((editMode &&
+                <td colSpan={editMode ? 2 : 1}>
+                    <button className='small-btn' onClick={setParticipants}>Save
+                    </button>
+                </td>)
+                ||
+                <>
+                    <td>
+                        <button className='small-btn' onClick={(e) => {
                             e.preventDefault()
                             setEditMode(true)
                             setFocus()
                             adderHandler(false, false) // To go out from adding elements
                         }}>Edit</button>
-                        <button onClick={(e) => {
+                    </td>
+                    <td>
+                        <button className='small-btn' onClick={(e) => {
                             e.preventDefault()
                             console.log('removing ' + participant)
                             handleParticipants('', participant)
                         }}>Remove</button>
-                    </>
-                }
-            </td>}
+                    </td>
+                </>)
+            }
         </tr>
     )
 }

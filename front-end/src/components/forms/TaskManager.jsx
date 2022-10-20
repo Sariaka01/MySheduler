@@ -1,15 +1,24 @@
+// <<<<<<< HEAD
 import React, { useState, useEffect, createContext, useContext } from 'react'
+// =======
+// import React, { useState, useEffect, createContext } from 'react'
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
 import Axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import './task-form.css'
 import { LIST } from '../../test/list'
 import { getLocaleDateTime } from '../utils/date'
 import ParticipantTable from './ParticipantTable'
+// <<<<<<< HEAD
 import { AppContext } from '../../App'
+// =======
+// import Login from './Login'
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
 
 export const ParticipantsContext = createContext(null)
 
 function TaskManager() {
+// <<<<<<< HEAD
     const { updateTimer } = useContext(AppContext);
     const { id } = useParams()
     const nav = useNavigate()
@@ -22,6 +31,15 @@ function TaskManager() {
     const [taskInfo, setTaskInfo] = useState({
         name: '',
         creator: `${userFirstname} ${userLastname}`,
+// =======
+//     const { id } = useParams()
+//     const nav = useNavigate()
+//     const token = localStorage.getItem('my-scheduler-token')
+//     const [taskId, setTaskId] = useState(id)
+//     const [taskInfo, setTaskInfo] = useState({
+//         name: '',
+//         creator: '',
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
         description: '',
         priority: 'LOW',
         startDate: '',
@@ -29,11 +47,19 @@ function TaskManager() {
         endDate: '',
         endTime: '00:00:00',
         beforeStart: 0,
+// <<<<<<< HEAD
         participants: [userEmail]
     })
     useEffect(() => {
 
         // console.log(token)
+// =======
+//         participants: []
+//     })
+//     useEffect(() => {
+
+//         console.log(token)
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
 
         if (!token)
             return nav('/')
@@ -59,7 +85,10 @@ function TaskManager() {
                     beforeStart: task.beforeStart,
                     participants: task.participants.map(participant => participant.email)
                 })
+// <<<<<<< HEAD
                 setReadOnly(task.creator.email != userEmail)
+// =======
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
             }).catch(() => {
                 nav('/task')
             })
@@ -99,7 +128,10 @@ function TaskManager() {
             }
             else {
                 console.log('Updating task...')
-                console.log(taskInfo)
+// <<<<<<< HEAD
+//                 console.log(taskInfo)
+// =======
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
                 res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/update`, {
                     token,
                     taskId,
@@ -114,7 +146,11 @@ function TaskManager() {
                     alert("Task updated successfully")
                 }
             }
+// <<<<<<< HEAD
             updateTimer()   // Update the timers
+// =======
+            
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
         }
         catch(e) {
             alert(e.response.data.message)
@@ -138,7 +174,10 @@ function TaskManager() {
         setTaskInfo({
             ...taskInfo, participants: [...new Set(newList)]    // No redudancy
         })
-        console.log('Participants : ', [...new Set(newList)])
+// <<<<<<< HEAD
+//         console.log('Participants : ', [...new Set(newList)])
+// =======
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
     }
     function generateList(participants) {
         let i= 0
@@ -146,6 +185,8 @@ function TaskManager() {
             {participants.map(participant => <li key= {i++}>{participant}</li>)}
         </ul>
     }
+// <<<<<<< HEAD
+    
     async function deleteTask(e) {
         e.preventDefault()
         if (window.confirm('Remove task?')) {
@@ -162,48 +203,129 @@ function TaskManager() {
         }
     }
     // console.log('first log ', new Date(2022, 0, 1))
-    return (
-        <div id= 'task-manager'>
-            <form onSubmit={submit}>
-                <h3>Creator: { taskInfo.creator }</h3>
-                <label htmlFor='task-name'>Name: </label>
-                <input id='task-name' type="text" name="name" value={taskInfo.name} onChange={handleInfos} required />
-                <br/>
-                <label htmlFor='task-desc'>Description: </label>
-                <textarea id='task-desc' rows={3} cols={20} type="text" name="description" value={taskInfo.description} onChange={handleInfos} /><br />
-                <br/>
-                <label htmlFor='priority'>Priority</label>
-                <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()}`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
-                    <option value= "HIGH">HIGH</option>
-                    <option value= "MEDIUM">MEDIUM</option>
-                    <option value= "LOW">LOW</option>
-                </select><br/>
+//     return (
+//         <div id= 'task-manager'>
+//             <form onSubmit={submit}>
+//                 <h3>Creator: { taskInfo.creator }</h3>
+//                 <label htmlFor='task-name'>Name: </label>
+//                 <input id='task-name' type="text" name="name" value={taskInfo.name} onChange={handleInfos} required />
+//                 <br/>
+//                 <label htmlFor='task-desc'>Description: </label>
+//                 <textarea id='task-desc' rows={3} cols={20} type="text" name="description" value={taskInfo.description} onChange={handleInfos} /><br />
+//                 <br/>
+//                 <label htmlFor='priority'>Priority</label>
+//                 <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()}`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
+//                     <option value= "HIGH">HIGH</option>
+//                     <option value= "MEDIUM">MEDIUM</option>
+//                     <option value= "LOW">LOW</option>
+//                 </select><br/>
 
-                <label htmlFor='start-date'>Start date: </label>
-                <input id='start-date' type="date" name='startDate' value={taskInfo.startDate} onChange={handleInfos} required />
-                <br/>
-                <label htmlFor='start-time'>Start time: </label>
-                <input id='start-time' type="time" name="startTime" value={taskInfo.startTime} onChange={handleInfos} />
-                <br/>
-                <label htmlFor='end-date'>End date: </label>
-                <input id='end-date' type="date" name='endDate' value={taskInfo.endDate} onChange={handleInfos} required />
-                <br/>
-                <label htmlFor='end-time'>End time: </label>
-                <input id='end-time' type="time" name="endTime" value={taskInfo.endTime} onChange={handleInfos} />
-                <br/>
-                <label htmlFor="before-start">Notification timer: </label>
-                <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
+//                 <label htmlFor='start-date'>Start date: </label>
+//                 <input id='start-date' type="date" name='startDate' value={taskInfo.startDate} onChange={handleInfos} required />
+//                 <br/>
+//                 <label htmlFor='start-time'>Start time: </label>
+//                 <input id='start-time' type="time" name="startTime" value={taskInfo.startTime} onChange={handleInfos} />
+//                 <br/>
+//                 <label htmlFor='end-date'>End date: </label>
+//                 <input id='end-date' type="date" name='endDate' value={taskInfo.endDate} onChange={handleInfos} required />
+//                 <br/>
+//                 <label htmlFor='end-time'>End time: </label>
+//                 <input id='end-time' type="time" name="endTime" value={taskInfo.endTime} onChange={handleInfos} />
+//                 <br/>
+//                 <label htmlFor="before-start">Notification timer: </label>
+//                 <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
                 
-                <ParticipantsContext.Provider value={{ handleParticipants }}>
-                    {/* To handle the values from different users */}
-                    <ParticipantTable participants={taskInfo.participants} participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
-                </ParticipantsContext.Provider>
-                {!readOnly && <>
-                    <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
-                    {taskId && <button onClick = {deleteTask}>Delete</button>}
-                </>}
-            </form>
-        </div>
+//                 <ParticipantsContext.Provider value={{ handleParticipants }}>
+//                     {/* To handle the values from different users */}
+//                     <ParticipantTable participants={taskInfo.participants} participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
+//                 </ParticipantsContext.Provider>
+//                 {!readOnly && <>
+//                     <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
+//                     {taskId && <button onClick = {deleteTask}>Delete</button>}
+//                 </>}
+//             </form>
+//         </div>
+// =======
+
+    // console.log('first log ', new Date(2022, 0, 1))
+    return (
+        <div className="container-login">
+            <div className="wrap-login">
+                <form className="login-form flex create-form" onSubmit={submit}>
+                    <div className="left">
+                        <h5>By:</h5>
+                        <h3>{taskInfo.creator}</h3>
+                        <br/>
+                        <div className="wrap-input">
+                            <label htmlFor='task-name'>Name: </label>
+                            <input id='task-name' type="text" className="input" name="name" value={taskInfo.name} onChange={handleInfos} required />
+                        </div>
+                    
+                        <div className="wrap-input">
+                            <label htmlFor='task-desc'>Description: </label>
+                            <textarea id='task-desc' rows={5} className="input" cols={10} type="text" name="description" value={taskInfo.description} onChange={handleInfos} />
+                        </div>
+
+                        <div className="wrap-input">
+                            <label htmlFor='priority'>Priority</label>
+                            <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()} classic input`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
+                                <option value= "HIGH">HIGH</option>
+                                <option value= "MEDIUM">MEDIUM</option>
+                                <option value= "LOW">LOW</option>
+                            </select><br/>
+                        </div>
+                    </div>
+
+
+                    <div className="right">
+
+                        <div className="wrap-input">
+                            <label htmlFor='start-date'>Start date: </label>
+                            <input id='start-date' type="date" className="input" name='startDate' value={taskInfo.startDate} onChange={handleInfos} required />
+                        </div>
+
+                        <div className="wrap-input">
+                            <label htmlFor='start-time'>Start time: </label>
+                            <input id='start-time' type="time" className="input" name="startTime" value={taskInfo.startTime} onChange={handleInfos} />
+                        </div>
+
+                        <div className="wrap-input">
+                            <label htmlFor='end-date'>End date: </label>
+                            <input id='end-date' type="date" className="input" name='endDate' value={taskInfo.endDate} onChange={handleInfos} required />
+                        </div>
+
+                        <div className="wrap-input">
+                            <label htmlFor='end-time'>End time: </label>
+                            <input id='end-time' type="time" name="endTime" value={taskInfo.endTime} onChange={handleInfos} />
+                        </div>
+
+                        <div className="wrap-input">
+                            <label htmlFor="before-start">Notification (in minutes): </label>
+                            <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} />
+                        </div>
+
+                        <div className="wrap-input">
+
+                        </div>
+                        
+                        {/* <button type="submit" className="btn">{`${taskId ? 'Update ' : 'Create '}`}task</button> */}
+                        
+                    </div>
+                    <ParticipantsContext.Provider value={{ handleParticipants }}>
+                        {/* To handle the values from different users */}
+                        <ParticipantTable participants={ taskInfo.participants } participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
+                    </ParticipantsContext.Provider>
+                    {!readOnly && <div className='controllers'>
+                        <button className = "btn" type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
+                        {taskId && <button className = "btn delete" onClick = {deleteTask}>Delete</button>}
+                    </div>}
+                </form>
+
+            </div>
+        </div>     
+
+
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
   )
 }
 

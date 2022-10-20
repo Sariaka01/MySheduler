@@ -57,7 +57,7 @@ export async function createTask(req: Request, res: Response) {
                     where: {
                         email: email
                     }
-            }).catch(e => {
+            }).catch((e:any) => {
                     console.log('From filtering participants ' + e.message)
                 })
             if (id) {
@@ -97,7 +97,7 @@ export async function createTask(req: Request, res: Response) {
                 }
             },
             select: SELECTOR
-        }).catch(e => {
+        }).catch((e:any) => {
             console.log(e.message)
         })
         
@@ -243,8 +243,10 @@ export async function updateTask(req: Request, res: Response) {
                 unknown.push(email)
             }
         }   // End for
+
         if (!participantsId.length)
-            return res.status(400).json({ message: `No valid participants found in list\n\t${unknown.join('\n\t')}`, emails: unknown })
+            return res.status(400).json({ message: `No valid participants found in list\n\t${unknown.join('\n\t')}`, emails: unknown })    
+
         console.log(getOperationTime() + ':\n')
         console.log(`${payload.email} updating task id ${taskId}\n`)
         

@@ -10,7 +10,12 @@ import Loader from './Loader'
 
 function Calendar({ view, date, sorter }) {
     const [isPending, startTransition] = useTransition()
+// <<<<<<< HEAD
     const { viewController, userInfo, tasks, setTasks } = useContext(DashboardContext)
+// =======
+//     const { viewController, userInfo } = useContext(DashboardContext)
+//     const [tasks, setTasks] = useState([])
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
     useLayoutEffect(() => {
         startTransition(() => {
             const [lower, upper] = viewController.getLimits(date)
@@ -25,6 +30,15 @@ function Calendar({ view, date, sorter }) {
             }).catch((e) => {
                 console.log(e)
             })
+// <<<<<<< HEAD
+// =======
+            // let newTasks = LIST.filter(task => {
+            //     let start = new Date(task.start)
+            //     return start >= lower && start <= upper
+            // })
+            // // console.log(newTasks)
+            // setTasks(newTasks)
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
         })
         
         // console.log('Layout effect' + date)
@@ -38,10 +52,13 @@ function Calendar({ view, date, sorter }) {
     }, [date])
 
     function onDrop(item, monitor, date) {
+// <<<<<<< HEAD
         if (userInfo.email != item.creator.email) {
             alert("You can't modify this task")
             return
         }
+// =======
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
         const [prev, next] = [new Date(item.start), new Date(date)]
         let newItem = { ...item, start: viewController.setDate(prev, next) }
         setTasks(previous => previous
@@ -70,6 +87,10 @@ function Calendar({ view, date, sorter }) {
         let remainingTasks = tasks  // To filter tasks
         // console.log(date)
         const list = viewController.getList(date)  // List for columns
+// <<<<<<< HEAD
+// =======
+//         const { day, year, month, week, hour, min, sec } = getLocaleDateTime(date.toISOString())
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
         // console.log(day, month, year, hour, min, sec, week)
         // console.log(viewController)
         for (let i = viewController.start - 1; i <= viewController.end; i++) {
@@ -77,7 +98,11 @@ function Calendar({ view, date, sorter }) {
             let cols = []
             if (i < viewController.start) {
                 // First row with the names
-                cols.push(...list.map((el, i) => <td key={`${el}`} className='title'><h3>{el}</h3></td>))
+// <<<<<<< HEAD
+//                 cols.push(...list.map((el, i) => <td key={`${el}`} className='title'><h3>{el}</h3></td>))
+// =======
+                cols.push(...list.map(el => <td key={`${el}`} className="title"><h3>{el}</h3></td>))
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
             }
             else {
                 // Row numbers

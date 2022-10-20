@@ -20,6 +20,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "migrate": "cd ./servercode && npx prisma migrate dev --name 'test-db' && cd ../",
+    "dev": "concurrently --kill-others \"nodemon ./servercode/main.ts\" \"npm start\"",
+    "populate-db": "npm run clear-db && node ./test/test.js",
+    "clear-db": "node ./test/clear.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

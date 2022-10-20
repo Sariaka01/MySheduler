@@ -1,0 +1,80 @@
+a {
+    text-decoration: none;
+}
+
+#calendar-container {
+    margin-left: 50px;
+}
+
+/* tr:nth-child(even) {
+    background: var(--secondary);
+} */
+
+#calendar td {
+    padding: 10px;
+    border-collapse: collapse;
+    border-right: solid 1px var(--dark);
+    border-left: solid 1px var(--dark);
+}
+
+#calendar tr:first-child {
+    position: sticky;
+    background: var(--light);
+    z-index: 2;
+    height: 20px;
+    top: 62px;
+}
+
+#calendar td:first-child {
+    position: sticky;
+    left: 150px;
+}
+
+#calendar td {
+    background: var(--light);
+}
+
+ #calendar tr:nth-child(even) td {
+    background: var(--secondary);
+}
+/*#calendar tr:nth-child(odd) td {
+    background: rgb(139, 138, 138);
+} */
+
+#calendar tr:first-child td {
+    border: solid 1px var(--dark);
+}
+
+.preview {
+    border-radius: 5px;
+    padding: 10px;
+    display: block;
+    background: var(--primary);
+    color: var(--light);
+    width: 200px;
+    text-align: center;
+    margin: 5px;
+}
+
+.preview span {
+    display: block;
+}
+
+.preview.high {
+    background: var(--high);
+    color: var(--light);
+}
+
+.preview.medium {
+    background: var(--medium);
+    color: var(--light);
+}
+
+.preview.low {
+    color: var(--dark);
+    background: var(--low);
+}
+
+.drop-container-over {
+    background: var(--hover) !important;
+}

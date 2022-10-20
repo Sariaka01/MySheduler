@@ -5,14 +5,18 @@ import Login from './Login'
 import './user-form.css'
 
 function UserForm() {
+    console.log('Rendering form')
     const [isLogin, setIsLogin] = useState(true)
     return (
-        <div>
-            <div>
-                <button onClick = {() => setIsLogin(true)}>LOGIN</button>
-                <button onClick = {() => setIsLogin(false)}>REGISTER</button>
+        <div className="container-login">
+            
+            <div className="wrap-login">
+            <div className="choice">
+                <button className="btn-choice" onClick = {() => setIsLogin(true)}>LOGIN</button>
+                <button className="btn-choice" onClick = {() => setIsLogin(false)}>REGISTER</button>
             </div>
-            {isLogin && <Login /> || <Registration />}
+                {isLogin && <Login /> || <Registration />}
+            </div>
         </div>
     )
 }

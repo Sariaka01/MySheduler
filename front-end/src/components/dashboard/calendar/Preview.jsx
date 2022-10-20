@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useDrag, useDrop } from 'react-dnd'
+import './calendar.css'
 
 function Preview({ task }) {
   const [{ isDragging }, drag] = useDrag({
@@ -16,12 +17,13 @@ function Preview({ task }) {
   
   return (
     task &&
-    <Link ref= { drag } className={'preview'} to= {`/task/${task.id}`}>
+    <Link ref= { drag } className = {`preview ${task.priority.toLowerCase()}`} to= {`/task/${task['task_id']}`}>
       <div>
-        <span>Name: {task.name}</span>
-        <span>Creator: {task.creator}</span>
-        <span>Start: {new Date(task.start).toLocaleString()}</span>
-        <span>End: {new Date(task.end).toLocaleString()}</span>
+        <h3>{task.name}</h3>
+        <span>---***---</span>
+        <h4>{`${task.creator.firstname} ${task.creator.lastname}`}</h4>
+        <span>{new Date(task.start).toString().split('GMT')[0].trim().slice(0, -3)}</span>
+        <span>{new Date(task.end).toString().split('GMT')[0].trim().slice(0, -3)}</span>
       </div>
     </Link>
     

@@ -1,0 +1,27 @@
+#sidebar-container {
+    position: fixed;
+    left: 0;
+    top: 61px;
+    z-index: 3;
+    background: rgb(48, 47, 47);
+    height: 100vh;
+    width: 150px;
+    padding: 25px 0;
+}
+#sidebar-container button {
+    width: 80%;
+    height: 5.5%;
+    margin-left: 12px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(9, 179, 113);
+    color: white;
+    font-weight: medium;
+    animation: ease-in-out 500ms;
+}
+
+#sidebar-container button:hover{
+    background-color: rgb(11, 121, 79);
+    animation: ease-in-out 500ms;
+}

@@ -1,0 +1,20 @@
+#dashboard {
+    position: relative;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 70px 1fr;
+    grid-template-areas: 'header header'
+                        'sidebar calendar';
+}
+
+#header-container {
+    grid-area: header;
+}
+
+#calendar-container {
+    grid-area: calendar;    
+}
+
+#sidebar-container {
+    grid-area: sidebar;
+}

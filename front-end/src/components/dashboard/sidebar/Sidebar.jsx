@@ -1,47 +1,46 @@
 import React, {useContext} from 'react'
+import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import {DashboardContext} from '../Dashboard'
-import '../../../sidebar.css'
+import './sidebar.css'
+
 
 function Sidebar() {
+    const nav = useNavigate()
     const { setView } = useContext(DashboardContext)
-    
+    function logout() {
+        localStorage.removeItem('my-scheduler-token')
+        localStorage.removeItem('my-scheduler-email')
+        localStorage.removeItem('my-scheduler-firstname')
+        localStorage.removeItem('my-scheduler-lastname')
+        nav('/')
+    }
     return (
-       
-
-        <div className="nav">
-           
-
-            {/* <!-- Left-aligned --> */}
-            <button onClick= {
-            () => setView('test')
-            }>Test</button>
-
+        <div id="sidebar-container">
+            {/* <button onClick= { */}
+                {/* () => setView('test') */}
+            {/* }>Test</button>*/}
             <button onClick={
                 () => {
-                    setView('year')
+                    setView('yearly')
                 }
-            }>Year</button>
-
+            }>Yearly</button>
+            <button onClick={
+                () => {
+                    setView('monthly')
+                }
+            }>Monthly</button>
             <button onClick= {
-                () => setView('week')
-            }>Week</button>
-            
-
-            {/* <!-- Centered --> */}
-            <div className="nav-centered">
-                <span className="active">
-                   2022
-                </span>
-            </div>
-
-            {/* <!-- Right-aligned --> */}
-            <div className="nav-right">
-                <span>Lorem</span>
-                <span>Lorem</span>
-            </div>
-
-    </div>
-
+                () => setView('weekly')
+            }>Weekly</button>
+            <button onClick= {
+                () => setView('daily')
+            }>Daily</button>
+            <Link to='/task'>
+                <button>Create</button>
+            </Link>
+            <button className='logout-btn' onClick={logout}>Log out</button>
+        </div>
     )
 }
 

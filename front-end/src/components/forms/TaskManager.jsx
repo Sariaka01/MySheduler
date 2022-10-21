@@ -1,22 +1,27 @@
-import React, { useState, useEffect, createContext } from 'react'
+import React, { useState, useEffect, createContext, useContext } from 'react'
 import Axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import './task-form.css'
 import { LIST } from '../../test/list'
 import { getLocaleDateTime } from '../utils/date'
 import ParticipantTable from './ParticipantTable'
-import Login from './Login'
+import { AppContext } from '../../App'
 
 export const ParticipantsContext = createContext(null)
 
 function TaskManager() {
+    const { updateTimer } = useContext(AppContext);
     const { id } = useParams()
     const nav = useNavigate()
     const token = localStorage.getItem('my-scheduler-token')
+    const userEmail = localStorage.getItem('my-scheduler-email')
+    const userFirstname = localStorage.getItem('my-scheduler-firstname')
+    const userLastname = localStorage.getItem('my-scheduler-lastname')
     const [taskId, setTaskId] = useState(id)
+    const [readOnly, setReadOnly] = useState(false)
     const [taskInfo, setTaskInfo] = useState({
         name: '',
-        creator: '',
+        creator: `${userFirstname} ${userLastname}`,
         description: '',
         priority: 'LOW',
         startDate: '',
@@ -24,11 +29,11 @@ function TaskManager() {
         endDate: '',
         endTime: '00:00:00',
         beforeStart: 0,
-        participants: []
+        participants: [userEmail]
     })
     useEffect(() => {
 
-        console.log(token)
+        // console.log(token)
 
         if (!token)
             return nav('/')
@@ -54,6 +59,7 @@ function TaskManager() {
                     beforeStart: task.beforeStart,
                     participants: task.participants.map(participant => participant.email)
                 })
+                setReadOnly(task.creator.email != userEmail)
             }).catch(() => {
                 nav('/task')
             })
@@ -93,6 +99,7 @@ function TaskManager() {
             }
             else {
                 console.log('Updating task...')
+                console.log(taskInfo)
                 res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/update`, {
                     token,
                     taskId,
@@ -107,7 +114,7 @@ function TaskManager() {
                     alert("Task updated successfully")
                 }
             }
-            
+            updateTimer()   // Update the timers
         }
         catch(e) {
             alert(e.response.data.message)
@@ -131,6 +138,7 @@ function TaskManager() {
         setTaskInfo({
             ...taskInfo, participants: [...new Set(newList)]    // No redudancy
         })
+        console.log('Participants : ', [...new Set(newList)])
     }
     function generateList(participants) {
         let i= 0
@@ -138,14 +146,28 @@ function TaskManager() {
             {participants.map(participant => <li key= {i++}>{participant}</li>)}
         </ul>
     }
-
+    async function deleteTask(e) {
+        e.preventDefault()
+        if (window.confirm('Remove task?')) {
+            try {
+                const res = await Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/delete`, {
+                    token,
+                    taskIdList: [taskId]
+                })
+                nav('/dashboard')
+            }
+            catch {
+                alert('Couldn\'t delete the task')
+            }
+        }
+    }
     // console.log('first log ', new Date(2022, 0, 1))
     return (
         <div className="container-login">
         <div className="wrap-login">
             <form className="login-form flex create-form" onSubmit={submit}>
                 <div className="left">
-                    <h3>Creator: {  }</h3>
+                    <h3>Creator: { taskInfo.creator }</h3>
                     <br/>
                     <div className="wrap-input">
                         <label htmlFor='task-name'>Name: </label>
@@ -225,3 +247,43 @@ function TaskManager() {
 }
 
 export default TaskManager
+
+{/* <div id= 'task-manager'>
+            <form onSubmit={submit}>
+                <h3>Creator: { taskInfo.creator }</h3>
+                <label htmlFor='task-name'>Name: </label>
+                <input id='task-name' type="text" name="name" value={taskInfo.name} onChange={handleInfos} required />
+                <br/>
+                <label htmlFor='task-desc'>Description: </label>
+                <textarea id='task-desc' rows={3} cols={20} type="text" name="description" value={taskInfo.description} onChange={handleInfos} /><br />
+                <br/>
+                <label htmlFor='priority'>Priority</label>
+                <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()}`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
+                    <option value= "HIGH">HIGH</option>
+                    <option value= "MEDIUM">MEDIUM</option>
+                    <option value= "LOW">LOW</option>
+                </select><br/>
+
+                <label htmlFor='start-date'>Start date: </label>
+                <input id='start-date' type="date" name='startDate' value={taskInfo.startDate} onChange={handleInfos} required />
+                <br/>
+                <label htmlFor='start-time'>Start time: </label>
+                <input id='start-time' type="time" name="startTime" value={taskInfo.startTime} onChange={handleInfos} />
+                <br/>
+                <label htmlFor='end-date'>End date: </label>
+                <input id='end-date' type="date" name='endDate' value={taskInfo.endDate} onChange={handleInfos} required />
+                <br/>
+                <label htmlFor='end-time'>End time: </label>
+                <input id='end-time' type="time" name="endTime" value={taskInfo.endTime} onChange={handleInfos} />
+                <br/>
+                <label htmlFor="before-start">Notification timer: </label>
+                <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes<br />
+                
+                <ParticipantsContext.Provider value={{ handleParticipants }}>
+                    {/* To handle the values from different users */}
+                    // <ParticipantTable participants={taskInfo.participants} participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
+                // </ParticipantsContext.Provider>
+                // {!readOnly && <>
+                    // <button type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
+                    // {taskId && <button onClick = {deleteTask}>Delete</button>}
+                // </>} 

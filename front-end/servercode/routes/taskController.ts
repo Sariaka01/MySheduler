@@ -214,24 +214,26 @@ export async function getTaskById(req: Request, res: Response) {
 export async function updateTask(req: Request, res: Response) {
     try {
         const payload = getPayload(req)
-        if (!payload) 
+        if (!payload)
             return res.status(404).json({ message: 'User not found' })
         const { taskId } = req.body
         if (!taskId)
             return res.status(400).json({ message: 'Task not found' })
         const { name, description, start, end, priority, beforeStart, participants } = req.body.data
+        
+        console.log(participants)
 
         // Get participants email list
-        let unknown= []
-        let participantsId = []
+        let unknown = []
+        let participantsId: any[] = []
         for (let email of participants) {
-            let id= await prisma.user.findUnique({
-                    where: {
-                        email: email
-                    },
-                    select: {
-                        user_id: true
-                    }
+            let id = await prisma.user.findUnique({
+                where: {
+                    email: email
+                },
+                select: {
+                    user_id: true
+                }
             })
             if (id) {
                 participantsId.push(id)
@@ -241,13 +243,25 @@ export async function updateTask(req: Request, res: Response) {
                 unknown.push(email)
             }
         }   // End for
-
         if (!participantsId.length)
-            return res.status(400).json({ message: `No valid participants found in list\n\t${unknown.join('\n\t')}`, emails: unknown })    
+            return res.status(400).json({ message: `No valid participants found in list\n\t${unknown.join('\n\t')}`, emails: unknown })
         console.log(getOperationTime() + ':\n')
         console.log(`${payload.email} updating task id ${taskId}\n`)
         
         // Use updateMany to allow match of task_id and creator
+        const oldParticipants = await prisma.task.findUnique({
+            where: {
+                task_id: taskId
+            },
+            select: {
+                participants: {
+                    select: {
+                        user_id: true
+                    }
+                }
+            }
+        })
+        console.log(oldParticipants?.participants)
         const newTask = await prisma.task.updateMany({
             where: {
                 task_id: taskId,
@@ -264,11 +278,16 @@ export async function updateTask(req: Request, res: Response) {
                 beforeStart
             }
         })
+
         // Use update many to find if we have an updated item
         if (!newTask.count) {
             return res.status(404).json({ message: 'Task not found' })
         }
         // Update paricipants if there is any update to be made
+        console.log('participants id ', participantsId)
+        const unlinkParticipants = oldParticipants?.participants.filter(p => {
+            return !participantsId.some(user => user.user_id == p.user_id)
+        })
         if (participantsId.length) {
             await prisma.task.update({
             where: {
@@ -276,7 +295,8 @@ export async function updateTask(req: Request, res: Response) {
             },
             data: {
                 participants: {
-                    connect: <any>participantsId
+                    connect: participantsId,
+                    disconnect: unlinkParticipants
                 }
             },
 

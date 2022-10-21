@@ -8,6 +8,11 @@
     width: 150px;
     padding: 25px 0;
 }
+
+#sidebar-container button .delete{
+    background-color: rgb(218, 49, 49) !important;
+}
+
 #sidebar-container button {
     width: 80%;
     height: 5.5%;
@@ -20,6 +25,7 @@
     font-weight: medium;
     animation: ease-in-out 500ms;
 }
+
 
 #sidebar-container button:hover{
     background-color: rgb(11, 121, 79);

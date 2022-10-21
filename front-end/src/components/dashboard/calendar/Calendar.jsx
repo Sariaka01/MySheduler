@@ -10,8 +10,7 @@ import Loader from './Loader'
 
 function Calendar({ view, date, sorter }) {
     const [isPending, startTransition] = useTransition()
-    const { viewController, userInfo } = useContext(DashboardContext)
-    const [tasks, setTasks] = useState([])
+    const { viewController, userInfo, tasks, setTasks } = useContext(DashboardContext)
     useLayoutEffect(() => {
         startTransition(() => {
             const [lower, upper] = viewController.getLimits(date)
@@ -45,6 +44,10 @@ function Calendar({ view, date, sorter }) {
     }, [date])
 
     function onDrop(item, monitor, date) {
+        if (userInfo.email != item.creator.email) {
+            alert("You can't modify this task")
+            return
+        }
         const [prev, next] = [new Date(item.start), new Date(date)]
         let newItem = { ...item, start: viewController.setDate(prev, next) }
         setTasks(previous => previous
@@ -73,7 +76,6 @@ function Calendar({ view, date, sorter }) {
         let remainingTasks = tasks  // To filter tasks
         // console.log(date)
         const list = viewController.getList(date)  // List for columns
-        const { day, year, month, week, hour, min, sec } = getLocaleDateTime(date.toISOString())
         // console.log(day, month, year, hour, min, sec, week)
         // console.log(viewController)
         for (let i = viewController.start - 1; i <= viewController.end; i++) {
@@ -81,7 +83,7 @@ function Calendar({ view, date, sorter }) {
             let cols = []
             if (i < viewController.start) {
                 // First row with the names
-                cols.push(...list.map(el => <td key={`${el}`} className="title"><h3>{el}</h3></td>))
+                cols.push(...list.map((el, i) => <td key={`${el}`} className='title'><h3>{el}</h3></td>))
             }
             else {
                 // Row numbers

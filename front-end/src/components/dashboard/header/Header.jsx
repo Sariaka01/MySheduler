@@ -4,7 +4,7 @@ import SortOptionSelector from './SortOptionSelector'
 import { DashboardContext } from '../Dashboard'
 import './header.css'
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function Header({ view, date }) {
     // console.log(date)
@@ -24,7 +24,7 @@ function Header({ view, date }) {
     }
     return (
         <div id="header-container">
-            <h2>{`${userInfo.firstname}'s Scheduler`}</h2>
+            <h3>{`${userInfo.firstname}'s Scheduler`}</h3>
             <div className="nav">
                 <button onClick = { decrement } className="btn-arrow"><i className="fa fa-chevron-left"></i></button>
                 <h1>{ title }</h1>

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react'
 import { ParticipantsContext } from './TaskManager';
 
-function Participant({ participant, createMode, adderHandler }) {
+function Participant({ participant, createMode, adderHandler, readOnly }) {
     const [editMode, setEditMode] = useState(createMode)
     const newParticipant = useRef()
     const { handleParticipants } = useContext(ParticipantsContext)
@@ -35,9 +35,9 @@ function Participant({ participant, createMode, adderHandler }) {
                     }
                 } /> || <span>{participant}</span>}
             </td>
-            <td colSpan={editMode ? 2 : 1}>
+            {!readOnly && <td colSpan={editMode ? 2 : 1}>
                 {
-                    editMode && <button onClick = {setParticipants}>Save
+                    editMode && <button onClick={setParticipants}>Save
                     </button> ||
                     <>
                         <button onClick={(e) => {
@@ -52,8 +52,8 @@ function Participant({ participant, createMode, adderHandler }) {
                             handleParticipants('', participant)
                         }}>Remove</button>
                     </>
-            }
-            </td>
+                }
+            </td>}
         </tr>
     )
 }

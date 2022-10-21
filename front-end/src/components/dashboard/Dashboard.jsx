@@ -1,11 +1,12 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react'
+import Axios from 'axios'
 import Header from './header/Header'
 import Calendar from './calendar/Calendar'
 import Sidebar from './sidebar/Sidebar'
-import TaskManager from '../forms/TaskManager'
 import { VIEWS } from '../utils/date'
-import './dashboard.css'
 import { useNavigate } from 'react-router'
+import { AppContext } from '../../App'
+import './dashboard.css'
 
 export const DashboardContext= createContext()
 
@@ -31,16 +32,20 @@ const sorter = {
 
 function Dashboard() {
     const nav = useNavigate()
+    const { updateTimer } = useContext(AppContext)
     const [view, setView] = useState('yearly')
     const [viewController, setViewController] = useState(VIEWS[view])
     const [date, setDate] = useState(VIEWS[view].set(new Date(2022, 5, 20)))
     const [sortBy, setSortBy] = useState('priority')    // Sort by priority by default
+    const [selected, setSelected] = useState([])
+    const [tasks, setTasks] = useState([])
     const userInfo = {
         token: localStorage.getItem('my-scheduler-token'),
         email: localStorage.getItem('my-scheduler-email'),
         firstname: localStorage.getItem('my-scheduler-firstname'),
         lastname: localStorage.getItem('my-scheduler-lastname')
     }
+    useEffect(updateTimer, [])  // Update timer at entries
     useEffect(() => {
         // console.log('effect')
         if (!userInfo.token)
@@ -51,7 +56,7 @@ function Dashboard() {
     }, [view])
     return (
         <div id="dashboard">
-            <DashboardContext.Provider value={{viewController, setView, setDate, userInfo, setSortBy }}>
+            <DashboardContext.Provider value={{tasks, setTasks , viewController, setView, setDate, userInfo, setSortBy, selected, setSelected }}>
                 <Header view = {view} date = {date} />
                 <Sidebar />
                 <Calendar date={date} sorter = {sorter[sortBy]} />

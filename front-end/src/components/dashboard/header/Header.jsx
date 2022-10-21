@@ -5,7 +5,6 @@ import { DashboardContext } from '../Dashboard'
 import './header.css'
 import { Link } from 'react-router-dom';
 
-
 function Header({ view, date }) {
     // console.log(date)
     const { viewController, setDate, userInfo } = useContext(DashboardContext)
@@ -31,6 +30,7 @@ function Header({ view, date }) {
                 <button onClick = { increment } className="btn-arrow"><i className="fa fa-chevron-right"></i></button>
             </div>
             <div className="sort">
+{/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */}
                 <label htmlFor="sort-select">Sort by: </label>
                 <SortOptionSelector />
                 {/*<label htmlFor='go-to'>Go to: </label>

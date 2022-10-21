@@ -10,6 +10,7 @@ a {
 /* tr:nth-child(even) {
     background: var(--secondary);
 } */
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2*/
 
 #calendar td {
     padding: 10px;
@@ -23,6 +24,10 @@ a {
 #calendar tr:first-child {
     position: sticky;
     background: var(--light);
+/* <<<<<<< HEAD
+======= */
+    z-index: 2;
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
     height: 20px;
     top: 62px;
 }
@@ -34,18 +39,25 @@ a {
 #calendar td:first-child {
     position: sticky;
     left: 150px;
+    z-index: 1;
 }
 
 #calendar td {
     background: var(--light);
 }
 
+/* <<<<<<< HEAD
+#calendar tr:nth-child(even) td {
+    background: var(--secondary);
+}
+======= */
  #calendar tr:nth-child(even) td {
     background: var(--secondary);
 }
 /*#calendar tr:nth-child(odd) td {
     background: rgb(139, 138, 138);
 } */
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
 
 #calendar tr:first-child td {
     border: solid 1px var(--dark);
@@ -75,6 +87,7 @@ a {
     width: 20px;
 }
 
+/* >>>>>>> 91923343e325e01086276d9d55e9ba42d1c28620 */
 .preview span {
     display: block;
 }
@@ -89,6 +102,7 @@ a {
 
 .preview.low {
     background: var(--low);
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
 }
 
 .preview.low a {

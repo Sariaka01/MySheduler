@@ -36,7 +36,7 @@ export async function createTask(req: Request, res: Response) {
     try {
         const payload = getPayload(req)
         if (!payload) 
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ message: 'User not found; unable to create task' })
         console.log(getOperationTime() + ':\n')
         console.log(`${payload.email} creating a new task...\n`)
 
@@ -123,7 +123,7 @@ export async function getTasks(req: Request, res: Response) {
         const payload = getPayload(req)
         const { start, end } = req.body
         if (!payload) 
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ message: 'User not found: unable get task' })
         // if (!year)
         //     return res.status(400).json({ message: 'Year is missing' })
         
@@ -215,7 +215,7 @@ export async function updateTask(req: Request, res: Response) {
     try {
         const payload = getPayload(req)
         if (!payload)
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ message: 'User not found: unable to update' })
         const { taskId } = req.body
         if (!taskId)
             return res.status(400).json({ message: 'Task not found' })
@@ -244,7 +244,8 @@ export async function updateTask(req: Request, res: Response) {
             }
         }   // End for
         if (!participantsId.length)
-            return res.status(400).json({ message: `No valid participants found in list\n\t${unknown.join('\n\t')}`, emails: unknown })
+            return res.status(400).json({ message: `No valid participants found in list\n\t${unknown.join('\n\t')}`, emails: unknown })    
+
         console.log(getOperationTime() + ':\n')
         console.log(`${payload.email} updating task id ${taskId}\n`)
         
@@ -319,7 +320,7 @@ export async function deleteTasks(req: Request, res: Response) {
     try {
         const payload = getPayload(req)
         if (!payload) 
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ message: 'User not found: unable to delete' })
         const { taskIdList } = req.body
 
         if (!taskIdList.length)

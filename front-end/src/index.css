@@ -8,6 +8,17 @@
   --high: #d31414;
   --medium: #4b884b;
   --low: #ffee00;
+  --hover: #9b91f1;
+  --light: #fff;
+  --dark: #08083b;
+  --high: #aa0000;
+/* <<<<<<< HEAD
+  --medium: #4f644f;
+======= */
+  --medium: #007700;
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
+  --low: #ffaa00;
+/* >>>>>>> 91923343e325e01086276d9d55e9ba42d1c28620 */
 }
 * {
   margin: 0;
@@ -24,7 +35,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button, label {
+button, label, input[type="checkbox"] {
   cursor: pointer
 }
 

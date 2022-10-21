@@ -25,12 +25,15 @@ function Calendar({ view, date, sorter }) {
             }).catch((e) => {
                 console.log(e)
             })
+// <<<<<<< HEAD
+// =======
             // let newTasks = LIST.filter(task => {
             //     let start = new Date(task.start)
             //     return start >= lower && start <= upper
             // })
             // // console.log(newTasks)
             // setTasks(newTasks)
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
         })
         
         // console.log('Layout effect' + date)
@@ -83,7 +86,7 @@ function Calendar({ view, date, sorter }) {
             let cols = []
             if (i < viewController.start) {
                 // First row with the names
-                cols.push(...list.map((el, i) => <td key={`${el}`} className='title'><h3>{el}</h3></td>))
+                cols.push(...list.map(el => <td key={`${el}`} className='title'><h3>{el}</h3></td>))
             }
             else {
                 // Row numbers

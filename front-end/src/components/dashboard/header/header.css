@@ -1,5 +1,9 @@
 #header-container {
+/* <<<<<<< HEAD
+    background: var(--dark);
+======= */
     background: rgb(66, 66, 66);
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
     color: var(--light);
     position: fixed;
     left: 0;
@@ -29,6 +33,8 @@
 #header-container .nav button {
     height: 20px;
     width: 70px;
+/* <<<<<<< HEAD
+======= */
 }
 
 .sort{
@@ -46,6 +52,11 @@
 	font-size: xx-large;
 	color: white;
 	margin-bottom: 17px;
+    transition: ease-in .2s;
+}
+
+.btn-arrow:hover {
+    filter: drop-shadow(0 0 2px #00df89);
 }
 
 select {
@@ -83,4 +94,5 @@ select.classic {
 }
 option:hover{
 	background-color: green;
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
 }

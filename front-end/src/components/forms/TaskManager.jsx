@@ -29,6 +29,7 @@ function TaskManager() {
         endDate: '',
         endTime: '00:00:00',
         beforeStart: 0,
+// <<<<<<< HEAD
         participants: [userEmail]
     })
     useEffect(() => {
@@ -174,29 +175,23 @@ function TaskManager() {
                         <input id='task-name' type="text" className="input" name="name" value={taskInfo.name} onChange={handleInfos} required />
                     </div>
                     
-                    <div className="wrap-input">
-                        <label htmlFor='task-desc'>Description: </label>
-                        <textarea id='task-desc' rows={3} className="input" cols={10} type="text" name="description" value={taskInfo.description} onChange={handleInfos} />
+                        <div className="wrap-input">
+                            <label htmlFor='task-desc'>Description: </label>
+                            <textarea id='task-desc' rows={5} className="input" cols={10} type="text" name="description" value={taskInfo.description} onChange={handleInfos} />
+                        </div>
+
+                        <div className="wrap-input">
+                            <label htmlFor='priority'>Priority</label>
+                            <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()} classic input`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
+                                <option value= "HIGH">HIGH</option>
+                                <option value= "MEDIUM">MEDIUM</option>
+                                <option value= "LOW">LOW</option>
+                            </select><br/>
+                        </div>
                     </div>
 
-                    <div className="wrap-input">
-                        <label htmlFor='priority'>Priority</label>
-                        <select id='priority' className={`priority-${taskInfo.priority.toLowerCase()} classic input`} name="priority" value={taskInfo.priority} onChange={handleInfos}>
-                            <option value= "HIGH">HIGH</option>
-                            <option value= "MEDIUM">MEDIUM</option>
-                            <option value= "LOW">LOW</option>
-                        </select><br/>
-                    </div>
 
-                    <ParticipantsContext.Provider value={{ handleParticipants }}>
-                            {/* To handle the values from different users */}
-                            <ParticipantTable participants={ taskInfo.participants } />
-                    </ParticipantsContext.Provider>
-
-                </div>
-
-
-                <div className="right">
+                    <div className="right">
 
                         <div className="wrap-input">
                             <label htmlFor='start-date'>Start date: </label>
@@ -219,30 +214,32 @@ function TaskManager() {
                         </div>
 
                         <div className="wrap-input">
-                            <label htmlFor="before-start">Notification timer: </label>
-                            <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} /> minutes
+                            <label htmlFor="before-start">Notification (in minutes):&nbsp;</label>
+                            <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} />
                         </div>
 
                         <div className="wrap-input">
 
                         </div>
-
-
                         
+                        {/* <button type="submit" className="btn">{`${taskId ? 'Update ' : 'Create '}`}task</button> */}
                         
-                        <button type="submit" className="btn">{`${taskId ? 'Update ' : 'Create '}`}task</button>
+                    </div>
+                    <ParticipantsContext.Provider value={{ handleParticipants }}>
+                        {/* To handle the values from different users */}
+                        <ParticipantTable participants={ taskInfo.participants } participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
+                    </ParticipantsContext.Provider>
+                    {!readOnly && <div className='controllers'>
+                        <button className = "btn" type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
+                        {taskId && <button className = "btn delete" onClick = {deleteTask}>Delete</button>}
+                    </div>}
+                </form>
 
-                </div>
-
-                
-
-               
-            </form>
-
-        </div>
-    </div>     
+            </div>
+        </div>     
 
 
+// >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2
   )
 }
 

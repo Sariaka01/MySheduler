@@ -12,6 +12,8 @@ input[type="number"] {
 }
 .priority-low {
     background: yellow;
+/* <<<<<<< HEAD
+======= */
 }
 
 .flex{
@@ -19,7 +21,7 @@ input[type="number"] {
     
 }
 .right{
-    margin-left: 10%;
+    margin-left: 20px;
 }
 
 .create-form {
@@ -28,4 +30,5 @@ input[type="number"] {
     padding: 50px 40px 50px 40px;
     border-radius: 5px;
     background: #fff;
+/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
 }

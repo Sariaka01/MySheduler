@@ -38,9 +38,15 @@ function ParticipantTable({ participants, participates, readOnly }) {
 		setAdder(false)
 	}*/
 	return (
+// <<<<<<< HEAD
 		<>
 			<div>
 				<label htmlFor="participate">Participate to this task: </label>
+{/* =======
+// <<<<<<< HEAD
+		<div className = 'participants'>
+			<div className = 'check-me'>
+>>>>>>> 91923343e325e01086276d9d55e9ba42d1c28620 */}
 				<input checked = {participates} id = "participate" type="checkbox" onChange={(e) => {
 					if (e.target.checked) {
 						handleParticipants(userEmail)

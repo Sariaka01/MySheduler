@@ -57,6 +57,7 @@ function Dashboard() {
     return (
         <div id="dashboard">
             <DashboardContext.Provider value={{tasks, setTasks , viewController, setView, setDate, userInfo, setSortBy, selected, setSelected }}>
+{/* >>>>>>> 91923343e325e01086276d9d55e9ba42d1c28620 */}
                 <Header view = {view} date = {date} />
                 <Sidebar />
                 <Calendar date={date} sorter = {sorter[sortBy]} />

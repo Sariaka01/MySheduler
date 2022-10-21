@@ -1,13 +1,13 @@
 :root {
   --primary: #2814da;
   --secondary: #afafaf;
-  --marker:#4195f5 ;
-  --hover: #9b91f1;
+  --marker:#6ebeff ;
+  --hover: #666666;
   --light: #fff;
   --dark: #08083b;
-  --high: #aa0000;
-  --medium: #4f644f;
-  --low: #ffaa00;
+  --high: #d31414;
+  --medium: #4b884b;
+  --low: #ffee00;
 }
 * {
   margin: 0;

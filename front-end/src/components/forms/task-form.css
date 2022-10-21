@@ -23,7 +23,7 @@ input[type="number"] {
 }
 
 .create-form {
-    width: 670px !important;
+    width: 115% !important;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.2); 
     padding: 50px 40px 50px 40px;
     border-radius: 5px;

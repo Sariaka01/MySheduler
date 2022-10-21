@@ -52,21 +52,23 @@ function ParticipantTable({ participants, participates, readOnly }) {
 					}
 				}} />
 			</div>
-			<table>
+			<table className="participant-list">
 				<thead>
 					<tr>
-						<th>Participants List</th>
-						<td>
-							{!readOnly && addButton && <button onClick={(e) => {
+						<th >Participants List</th>
+						<td >
+							{!readOnly && addButton && <button className="btn-par add" onClick={(e) => {
 								e.preventDefault()
 								setAdder(false, true)
-							}}>Add</button>}
+							}}><i className="fa fa-plus"></i></button>}
 						</td>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody >
 					{createMode && <Participant createMode = { true } adderHandler = { setAdder } readOnly = { readOnly } />}
-					{row}
+					<div >
+						{row}
+					</div>
 				</tbody>
 			</table>
 		</>

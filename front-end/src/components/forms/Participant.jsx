@@ -27,7 +27,7 @@ function Participant({ participant, createMode, adderHandler, readOnly }) {
     return (
         <tr>
             <td>
-                {editMode && <input type="email" ref={newParticipant} onKeyDown={
+                {editMode && <input type="email" className="input" ref={newParticipant} onKeyDown={
                     (e) => {
                         if (e.code == "Enter") {
                             setParticipants(e)
@@ -37,21 +37,21 @@ function Participant({ participant, createMode, adderHandler, readOnly }) {
             </td>
             {!readOnly && <td colSpan={editMode ? 2 : 1}>
                 {
-                    editMode && <button onClick={setParticipants}>Save
+                    editMode && <button className="btn-par save" onClick={setParticipants}>Save
                     </button> ||
-                    <>
-                        <button onClick={(e) => {
+                    <div className="btn-par-container">
+                        <button className="btn-par edit" onClick={(e) => {
                             e.preventDefault()
                             setEditMode(true)
                             setFocus()
                             adderHandler(false, false) // To go out from adding elements
-                        }}>Edit</button>
-                        <button onClick={(e) => {
+                        }}><i className="fa fa-edit"></i></button>
+                        <button className="btn-par del" onClick={(e) => {
                             e.preventDefault()
                             console.log('removing ' + participant)
                             handleParticipants('', participant)
-                        }}>Remove</button>
-                    </>
+                        }}><i className="fa fa-trash"></i></button>
+                    </div>
                 }
             </td>}
         </tr>

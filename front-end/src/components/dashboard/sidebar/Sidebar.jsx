@@ -52,11 +52,12 @@ function Sidebar() {
             <button onClick= {
                 () => setView('daily')
             }>Daily</button>
+            <hr/><br/>
             <Link to='/task'>
                 <button><i className="fa fa-plus"></i> Create</button>
             </Link>
             {selected.length != 0 && <button style={{backgroundColor: 'rgb(218, 49, 49)' }} onClick={deleteTasks}>
-                Delete
+            <i className="fa fa-trash"></i> Delete
             </button>}
             <button className='logout-btn' onClick={logout}><i className="fa fa-chevron-left"></i>  Log out</button>
         </div>

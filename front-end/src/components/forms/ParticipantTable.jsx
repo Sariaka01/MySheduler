@@ -62,7 +62,7 @@ function ParticipantTable({ participants, participates, readOnly }) {
 						// setParticipates(false)
 					}
 				}} />
-				<label htmlFor="participate" className = 'bold'>Participate</label>
+				<label htmlFor="participate" className = 'bold'>Participate to this task</label>
 			</div>
 			<table className = 'participant-table'>
 				<thead>

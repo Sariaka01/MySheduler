@@ -300,7 +300,7 @@ function TaskManager() {
                         </div>
 
                         <div className="wrap-input">
-                            <label htmlFor="before-start">Notification (in minutes): </label>
+                            <label htmlFor="before-start">Notification (in minutes):&nbsp;</label>
                             <input id="before-start" type="number" name="beforeStart" value={taskInfo.beforeStart} onChange={handleInfos} />
                         </div>
 

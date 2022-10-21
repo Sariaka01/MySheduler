@@ -22,5 +22,11 @@ module.exports = [
         "lastname": "Andriamanana",
         "email": "sariaka@gmail.com",
         "password": "sariaka"
+    },
+    {
+        "firstname": "Tsiory",
+        "lastname": "Andria",
+        "email": "tsiory@gmail.com",
+        "password": "tsiory"
     }
 ]

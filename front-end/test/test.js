@@ -37,11 +37,11 @@ async function connect(email = 'safidy@gmail.com') {
     const user = users.find(user => user.email == email)
     if (user) {
         try {
-            const { data } = await Axios.post(`${DOMAIN}/user/login`, {
+            const res = await Axios.post(`${DOMAIN}/user/login`, {
                 email: email,
                 password: user.password
             })
-            return data.token
+            return res.data.user.token
         }
         catch {
             return 'An error occured during user login ' + email
@@ -73,10 +73,15 @@ async function addTask(email = 'safidy@gmail.com') {
             "beforeStart": parseInt(Math.random() * 100 % 61),
             "participants": [users[p1].email, users[p2].email, users[p3].email]
         }
-        await Axios.post(`${DOMAIN}/user/tasks/create`, {
-            token: token,
-            data: task
-        })
+        try {
+            await Axios.post(`${DOMAIN}/user/tasks/create`, {
+                token: token,
+                data: task
+            })
+        }
+        catch {
+            console.log('Unable to create task for ' + email)
+        }
     }
     console.log('Done...')
 }

@@ -17,13 +17,25 @@ A web app for managing your tasks
     - Create a local postgres database named test
     - Go to ./front-end and run npm install
     - Go to ./front-end/servercode and run npm install
+    - Change the DABABASE_URL in ./front-end/servercode/.env
 
 ## To run in development mode
 
     - Go to ./front-end
     - npm run migrate-db
-    - npm run populate-db
     - npm run dev
+
+## To populate the database
+
+    - npm run populate-db
+
+## Available email:password in the populated database
+
+    - mendrika@gmail.com:mendrika
+    - faniry@gmail.com:faniry
+    - sariaka@gmail.com:sariaka
+    - tsiory@gmail.com:tsiory
+    - safidy@gmail.com:safidy
 
 ## Features
 
@@ -33,4 +45,4 @@ A web app for managing your tasks
     - Sort tasks
     - View task information
     - Multiple task deletion
-    - Notification before a tasks starts
+    - Notification n minutes before a task starts

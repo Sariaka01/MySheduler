@@ -35,7 +35,7 @@ function TaskManager() {
     useEffect(() => {
 
         // console.log(token)
-
+        console.log('Getting task')
         if (!token)
             return nav('/')
         if(taskId) {
@@ -47,21 +47,27 @@ function TaskManager() {
                 let task = data
                 const { day: sDay, month: sMonth, year: sYear, hour: sHour, min: sMin, sec: sSec } = getLocaleDateTime(task.start)
                 const { day: eDay, month: eMonth, year: eYear, hour: eHour, min: eMin, sec: eSec } = getLocaleDateTime(task.end)
+                const startDate = `${sYear}-${sMonth}-${sDay}`
+                const startTime = `${sHour}:${sMin}:${sSec}`
+                const endDate = `${eYear}-${eMonth}-${eDay}`
+                const endTime = `${eHour}:${eMin}:${eSec}`
+                console.log( '==========================' + startTime)
                 setTaskInfo({
                     name: task.name,
                     creator: `${task.creator.firstname} ${task.creator.lastname}`,
                     description: task.description,
                     priority: task.priority,
                     // Months are counted from 0
-                    startDate: `${sYear}-${sMonth + 1 < 10 ? '0' : ''}${sMonth + 1}-${sDay < 10 ? '0' : ''}${sDay}`,
-                    startTime: `${sHour < 10 ? '0' : ''}${sHour}:${sMin < 10 ? '0' : ''}${sMin}:${sSec < 10 ? '0' : ''}${sSec}`,
-                    endDate: `${eYear}-${eMonth + 1 < 10 ? '0' : ''}${eMonth + 1}-${eDay < 10 ? '0' : ''}${eDay}`,
-                    endTime: `${eHour < 10 ? '0' : ''}${eHour}:${eMin < 10 ? '0' : ''}${eMin}:${sSec < 10 ? '0' : ''}${eSec}`,
+                    startDate: startDate,
+                    startTime: startTime,
+                    endDate: endDate,
+                    endTime: endTime,
                     beforeStart: task.beforeStart,
                     participants: task.participants.map(participant => participant.email)
                 })
                 setReadOnly(task.creator.email != userEmail)
-            }).catch(() => {
+            }).catch((e) => {
+                console.log(e)
                 nav('/task')
             })
 
@@ -188,6 +194,11 @@ function TaskManager() {
                                 <option value= "LOW">LOW</option>
                             </select><br/>
                         </div>
+                        
+                        <ParticipantsContext.Provider value={{ handleParticipants }}>
+                            {/* To handle the values from different users */}
+                            <ParticipantTable participants={ taskInfo.participants } participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
+                        </ParticipantsContext.Provider>
                     </div>
 
 
@@ -224,15 +235,12 @@ function TaskManager() {
                         
                         {/* <button type="submit" className="btn">{`${taskId ? 'Update ' : 'Create '}`}task</button> */}
                         
-                    </div>
-                    <ParticipantsContext.Provider value={{ handleParticipants }}>
-                        {/* To handle the values from different users */}
-                        <ParticipantTable participants={ taskInfo.participants } participates={taskInfo.participants.includes(userEmail)} readOnly={ readOnly } />
-                    </ParticipantsContext.Provider>
                     {!readOnly && <div className='controllers'>
-                        <button className = "btn" type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
-                        {taskId && <button className = "btn delete" onClick = {deleteTask}>Delete</button>}
+
+                        <button  className="btn-create" type="submit">{`${taskId ? 'Update ' : 'Create '}`}</button>
+                        {taskId && <button className=" delete" onClick = {deleteTask}>Delete</button>}
                     </div>}
+                    </div>
                 </form>
 
             </div>

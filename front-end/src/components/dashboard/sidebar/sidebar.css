@@ -3,11 +3,7 @@
     left: 0;
     top: 61px;
     z-index: 3;
-/* <<<<<<< HEAD
-    background: var(--light);
-======= */
     background: rgb(48, 47, 47);
-/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
     height: 100vh;
     width: 150px;
     padding: 25px 0;
@@ -18,15 +14,13 @@
 }
 
 #sidebar-container button {
-/* <<<<<<< HEAD
-    width: 100%;
-======= */
     width: 80%;
     height: 5.5%;
     margin-left: 12px;
     margin-bottom: 10px;
     border: none;
     border-radius: 3px;
+    background-color: rgb(9, 179, 113);
     color: white;
     font-weight: medium;
     animation: ease-in-out 500ms;
@@ -35,9 +29,5 @@
 
 #sidebar-container button:hover{
     background-color: rgb(11, 121, 79);
-/* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
-}
-
-#sidebar-container .hidden {
-    visibility: hidden;
+    animation: ease-in-out 500ms;
 }

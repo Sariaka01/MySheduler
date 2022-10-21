@@ -21,14 +21,24 @@ input[type="number"] {
     
 }
 .right{
-    margin-left: 20px;
+    margin-left: 70px;
+    
 }
 
 .create-form {
-    width: 115% !important;
+    width: 105% !important;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.2); 
     padding: 50px 40px 50px 40px;
     border-radius: 5px;
     background: #fff;
 /* >>>>>>> eee9bf56966f676be9f4252c8536f223386ed6a2 */
+}
+
+.participants {
+    font-weight: 500;
+}
+.participants input[type="checkbox"] {
+    height: 15px;
+    width: 15px;
+    margin: 0 10px 10px 0;
 }

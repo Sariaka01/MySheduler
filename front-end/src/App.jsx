@@ -15,11 +15,12 @@ function App() {
     const today = new Date()
     try {
       Axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/user/tasks/list`, {
-        token: localStorage.getItem('token'),
+        token: localStorage.getItem('my-scheduler-token'),
         start: new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString(),
         end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999).toISOString(),
       }).then(res => {
           // Setting timers
+          console.log(res.data)
         for (let timer of timers) {
           // Clear the previous one
           clearTimeout(timer)
@@ -34,6 +35,8 @@ function App() {
           }
         }
         setTimers(newtTimers)
+      }).catch(res => {
+        console.log(res)
       })
     }
     catch {

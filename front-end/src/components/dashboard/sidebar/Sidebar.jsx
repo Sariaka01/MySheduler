@@ -36,18 +36,6 @@ function Sidebar() {
             {/* <button onClick= { */}
                 {/* () => setView('test') */}
             {/* }>Test</button>*/}
-            <button className='logout-btn' onClick={logout}><i className="fa fa-chevron-left"></i>
-                &nbsp;Log out
-            </button>
-            {/* <button className='logout-btn' onClick={logout}>Log out</button> */}
-{/* ======= */}
-            <Link to='/task'>
-                <button><i className="fa fa-plus"></i> Create</button>
-            </Link>
-            <button className={`last-btn ${selected.length == 0? 'hidden': ''}`} onClick={deleteTasks}>
-                Delete
-            </button>
-
             <button onClick={
                 () => {
                     setView('yearly')

@@ -33,9 +33,9 @@ const sorter = {
 function Dashboard() {
     const nav = useNavigate()
     const { updateTimer } = useContext(AppContext)
-    const [view, setView] = useState('yearly')
+    const [view, setView] = useState('weekly')
     const [viewController, setViewController] = useState(VIEWS[view])
-    const [date, setDate] = useState(VIEWS[view].set(new Date(2022, 5, 20)))
+    const [date, setDate] = useState(VIEWS[view].set(new Date()))
     const [sortBy, setSortBy] = useState('priority')    // Sort by priority by default
     const [selected, setSelected] = useState([])
     const [tasks, setTasks] = useState([])

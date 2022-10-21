@@ -1,17 +1,18 @@
 export function getLocaleDateTime(ISOString) {
     // Extracting year, month, day, hour, min, sec from ISO string to locale string
-    let [month, day, year, _, hour, min, sec, amPm] = new Date(ISOString).toLocaleString().split(/[,:\s/]/)
-    hour = +hour + (amPm == 'PM' && +hour > 12 ? 12 : 0)
+    let date = new Date(ISOString)
+    // hour = +hour + (amPm == 'PM' && +hour > 12 ? 12 : 0) + ''
     // console.log(day, month, year, hour)
     // console.log(new Date(year, month - 1, day, hour).toUTCString()) // This should display another date
     /* Month - 1 because they are counted from 0 */
+    // console.log(year, month, day, hour, min, sec)
     return {
-        year: +year,
-        month: month - 1,   // Starts from 0 to 11
-        day: +day,
-        hour: +hour,
-        min: +min,
-        sec: +sec,
+        year: date.getFullYear(),
+        month: `0${date.getMonth() + 1}`.slice(-2),   // Starts from 0 to 11
+        day: `0${date.getDate()}`.slice(-2),
+        hour: `0${date.getHours()}`.slice(-2),
+        min: `0${date.getMinutes()}`.slice(-2),
+        sec: '00',
         week: getWeek(ISOString),
         offset: new Date().getTimezoneOffset()
     }

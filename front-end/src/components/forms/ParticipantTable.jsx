@@ -38,15 +38,12 @@ function ParticipantTable({ participants, participates, readOnly }) {
 		setAdder(false)
 	}*/
 	return (
-// <<<<<<< HEAD
-		<>
-			<div>
-				<label htmlFor="participate">Participate to this task: </label>
-{/* =======
-// <<<<<<< HEAD
-		<div className = 'participants'>
-			<div className = 'check-me'>
->>>>>>> 91923343e325e01086276d9d55e9ba42d1c28620 */}
+			// <div>
+			// <label htmlFor="participate">Participate to this task</label>
+		<div>
+			<div className = 'participants'>
+				{/* <div className = 'check-me'> */}
+	{/* >>>>>>> 91923343e325e01086276d9d55e9ba42d1c28620 */}
 				<input checked = {participates} id = "participate" type="checkbox" onChange={(e) => {
 					if (e.target.checked) {
 						handleParticipants(userEmail)
@@ -57,27 +54,28 @@ function ParticipantTable({ participants, participates, readOnly }) {
 						// setParticipates(false)
 					}
 				}} />
+				<label htmlFor="participate">Participate to this task</label>
 			</div>
-			<table className="participant-list">
-				<thead>
-					<tr>
-						<th >Participants List</th>
-						<td >
-							{!readOnly && addButton && <button className="btn-par add" onClick={(e) => {
-								e.preventDefault()
-								setAdder(false, true)
-							}}><i className="fa fa-plus"></i></button>}
-						</td>
-					</tr>
-				</thead>
-				<tbody >
-					{createMode && <Participant createMode = { true } adderHandler = { setAdder } readOnly = { readOnly } />}
-					<div >
-						{row}
-					</div>
-				</tbody>
-			</table>
-		</>
+				<table className="participant-list">
+					<thead>
+						<tr>
+							<th >Participants List</th>
+							<td >
+								{!readOnly && addButton && <button className="btn-par add" onClick={(e) => {
+									e.preventDefault()
+									setAdder(false, true)
+								}}><i className="fa fa-plus"></i></button>}
+							</td>
+						</tr>
+					</thead>
+					<tbody >
+						{createMode && <Participant createMode = { true } adderHandler = { setAdder } readOnly = { readOnly } />}
+						<div >
+							{row}
+						</div>
+					</tbody>
+				</table>
+			</div>
   )
 }
 
